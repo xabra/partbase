@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en" ng-app="docnumTestApp">
+<head>
+  <meta charset="utf-8">
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>JS Tester</title>
+  <!-- Library scripts and stylesheets -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+  <!--  My scripts and stylesheets -->
+  <script src="docnum.js"></script> 
+  <script src="docnum_testApp.js"></script>
+
+
+
+</head>
+<body>
+
+  <div ng-controller = 'docnumTestAppCtrl'>
+    <input class="btn btn-primary" type="button" value="Next Doc Num" ng-click = 'increment()'>
+    <input class="btn btn-default" type="button" value="Reset Doc Num" ng-click = 'reset()'>
+     <input class="btn btn-primary" type="button" value="Bump Rev" ng-click = 'bumpRev()'>
+    <input class="btn btn-default" type="button" value="Reset Rev" ng-click = 'resetRev()'>
+    <dl class="dl-horizontal"> 
+      <dt>Document Number:</dt>   <dd>{{dnString}}</dd>
+    </dl> 
+
+  </div>
+
+</body>
+</html>
