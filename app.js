@@ -18,7 +18,7 @@ var app = express();
 mongo.init(app, {
    mongoHost: 'localhost',
    mongoPort: '27017',
-   mongoDBName: 'partbase',   //Comment
+   mongoDBName: 'partbase',   //Comment has changed
 });
 
 
