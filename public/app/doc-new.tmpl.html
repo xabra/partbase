@@ -1,0 +1,94 @@
+
+<!-- Include Nav Bar -->
+<div ng-include = "'app/nav-bar.tmpl.html'"></div>
+
+<!-- Setup grid row in fluid container -->
+<div class="container-fluid">
+	<div class="row">
+
+		<!-- Include Side Bar as First Column-->
+		<div class="col-sm-3 col-md-2 sidebar">
+			<div ng-include = "'app/side-bar.tmpl.html'"></div>
+		</div>
+
+		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+
+			<!-- START CONTENT AREA =============== -->
+
+			<h2>New Document</h2>
+
+			<form class="form-horizontal">
+				<div class="form-group">
+					<label for="inputTitle" class="col-sm-2 control-label">Title</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="inputTitle" placeholder="Title" ng-model = "document.title">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputDescription" class="col-sm-2 control-label">Description</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="inputDescription" placeholder="Description" ng-model = "document.description">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputDocType" class="col-sm-2 control-label">Document Type</label>
+					<div class="col-sm-10">
+						<select class="form-control"  ng-model = "document.docType">
+							<option value="Part Model">Part Model</option>
+							<option value="Assembly Model">Assembly Model</option>
+							<option value="Drawing">Drawing</option>
+							<option value="Specification">Commercial Part Specification</option>
+							<option value="BOM">BOM (Bill of Materials)</option>
+							<option value="ECO">ECO (Engineering Change Order)</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="inputPartType" class="col-sm-2 control-label">Part Type</label>
+					<div class="col-sm-10">
+						<select class="form-control" ng-model = "document.partType">
+						<option value="Proprietary">Proprietary</option>
+						<option value="Commercial">Commercial</option>
+						<option value="Standard">Standard</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="inputProject" class="col-sm-2 control-label">Project</label>
+					<div class="col-sm-10">
+						<select class="form-control" ng-model = "document.project">
+						<option value="Solar Tracker">Solar Tracker</option>
+						<option value="Robot Panel Cleaner">Robot Panel Cleaner</option>
+						<option value="Centurion">Centurion</option>
+						<option value="Athena<">Athena</option>
+						<option value="NeoSun">NeoSun</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputAuthor" class="col-sm-2 control-label">Author</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="inputAuthor" placeholder="Author" ng-model = "document.author">
+					</div>
+				</div>
+
+
+				<!-- BUTTONS -->
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-primary" ng-click="save()">
+							<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Save</button>
+						<a class="btn btn-default" href="#/docs" role="button">
+							<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel</a>
+					</div>
+				</div>
+
+			</form>
+
+			<!-- END CONTENT AREA ================= -->
+		</div>
+	</div>  <!-- END Row -->
+</div>  <!-- END container-flud -->
