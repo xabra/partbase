@@ -1,8 +1,3 @@
-#!/usr/bin/env node
-
-/**
- * Module dependencies.
- */
 
 var app = require('./app');
 var debug = require('debug')('partbase:server');
@@ -10,13 +5,6 @@ var http = require('http');
 // var https = require('https');
 // var fs = require('fs');  // Needed for reading in SSL keys & cert
 
-/**
- * Read in HTTPS keys
- */
-
-//var privateKey  = fs.readFileSync('./sslkeys/localhost.key', 'utf8');
-//var certificate = fs.readFileSync('./sslkeys/localhost.cert', 'utf8');
-//var credentials = {key: privateKey, cert: certificate};
 
 /**
  * Get port from environment and store in Express.
@@ -25,10 +13,10 @@ var http = require('http');
 var httpPort = parseInt(process.env.PORT, 10) || 3000;
 console.log("process.env.PORT: " + process.env.PORT);
 console.log("httpPort: " + httpPort)
-//var httpsPort = 8443;  //???
+
 
 app.set('httpPort', httpPort);
-//app.set('httpsPort', httpsPort);
+
 
 /**
  * Create HTTP server.

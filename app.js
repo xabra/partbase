@@ -6,9 +6,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 
-var auth = require('./api/auth');
-var routes = require('./api/routes');
-var mongo = require('./api/mongo');
+var auth = require('./server/auth');
+var routes = require('./server/routes');
+var mongo = require('./server/mongo');
 
 var app = express();
 
