@@ -2,6 +2,7 @@
 
 var express = require('express');
 var stormpath = require('stormpath');
+var crypto = require('crypto');
 
 /**
  * === Set up Stormpath client ===
@@ -66,5 +67,17 @@ module.exports.loginRequired = function(request, response, next) {
       next();
    }
 };
+
+/*
+*  --- Pasword hashing and salting utility functions
+*/
+exports.createSalt = function() {
+  return crypto.randomBytes(128).toString('base64');
+}
+
+exports.hashPwd = function(salt, pwd) {
+  var hmac = crypto.createHmac('sha1', salt);
+  return hmac.update(pwd).digest('hex');
+}
 
 // TODO:  add a groupsRequired middleware here

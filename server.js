@@ -12,8 +12,12 @@ var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 var config = require('./server/config/config')[env];
 
 // Configure  Mongo DB connection ===
-mongo = require('./server/config/mongo');
+var mongo = require('./server/config/mongo');
 mongo.init(app, config);
+
+// Configure  Mongoose DB connection ===
+var mongoose = require('./server/config/mongoose');
+mongoose(config);
 
 // Configure the Express app
 require('./server/config/express')(app, config);

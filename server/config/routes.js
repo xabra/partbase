@@ -10,7 +10,7 @@ var router = express.Router();
 var organizations = require('../organizations');
 var users = require('../users');
 var documents = require('../documents');
-var authenticate = require('../authenticate'); 
+var authenticate = require('../authenticate');
 
 // --- Mount the various sub-routers
 router.use(organizations);
