@@ -7,10 +7,10 @@ var router = express.Router();
 
 
 // --- Require various elements of the API
-var organizations = require('./organizations');
-var users = require('./users');
-var documents = require('./documents');
-var authenticate = require('./authenticate');
+var organizations = require('../organizations');
+var users = require('../users');
+var documents = require('../documents');
+var authenticate = require('../authenticate'); 
 
 // --- Mount the various sub-routers
 router.use(organizations);
@@ -22,6 +22,6 @@ router.use(authenticate);
 router.get('/', function(request, response) {
 	response.send('Reqest to server for ROOT');
 });
-  
+
 
 module.exports = router;

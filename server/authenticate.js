@@ -3,7 +3,7 @@
 var express = require('express');
 var router = express.Router();
 
-var auth = require('./auth');
+var auth = require('./config/auth');
 
 // ======== AUTHENTICATE =======
 // --- Authenticate User (STORMPATH Wrapper)

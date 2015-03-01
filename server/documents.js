@@ -5,8 +5,8 @@ var router = express.Router();
 var objectId = require('mongodb').ObjectID;
 var assert = require('assert');
 
-var mongo = require('./mongo');
-var auth = require('./auth');
+var mongo = require('./config/mongo');
+var auth = require('./config/auth');
 
 
 // ======== DOCUMENTS =======

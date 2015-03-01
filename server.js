@@ -1,87 +1,71 @@
-
-var app = require('./app');
-var debug = require('debug')('partbase:server');
+var express = require('express');
 var http = require('http');
-// var https = require('https');
-// var fs = require('fs');  // Needed for reading in SSL keys & cert
 
-
-/**
- * Get port from environment and store in Express.
- */
-
-var httpPort = parseInt(process.env.PORT, 10) || 3000;
-console.log("process.env.PORT: " + process.env.PORT);
-console.log("httpPort: " + httpPort)
-
-
-app.set('httpPort', httpPort);
-
-
-/**
- * Create HTTP server.
- */
+var app = express();
 
 var httpServer = http.createServer(app);
-//var httpsServer = https.createServer(credentials, app);
 
-/**
- * Listen on provided port, on all network interfaces.
- */
+// Switch to define whether we use 'development' or 'production' enviroment
+var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
-httpServer.listen(httpPort);
-httpServer.on('error', onError);
-httpServer.on('listening', onHTTPListening);
+// Set the config variables based on the env switch
+var config = require('./server/config/config')[env];
 
-/**
- * Start HTTPS Server
- */
-/*
-httpsServer.listen(httpsPort);
-httpsServer.on('error', onError);
-httpsServer.on('listening', onHTTPSListening);
-*/
+// Configure  Mongo DB connection ===
+mongo = require('./server/config/mongo');
+mongo.init(app, config);
+
+// Configure the Express app
+require('./server/config/express')(app, config);
+
+// Configure auth and Stormpath
+var auth = require('./server/config/auth');
+auth.init(app, {
+   secretKey: 'dzkjflkhIYGUYTDCLKJH9238jdlksd92n',
+   enableHTTPS: false,
+   sessionDuration: 20*60*60*1000,
+   stormpathApiKeyFile: process.env.HOME + '/dev/keys/stormpath-apikey.properties',
+   stormpathApplicationURL: 'https://api.stormpath.com/v1/applications/7dPCdUUTIwYZTDY81jXitE',
+});
+
+//Configure the server routes
+app.use('/', require('./server/config/routes'));
+
+httpServer.listen(config.port);
+
+httpServer.on('listening', function () {
+    console.log('Express HTTP server listening on port ' + httpServer.address().port + '...');
+ });
+
+// FOR LATER
+//require('./server/config/mongoose')(config);
+
+//require('./server/config/passport')();
 
 
-/**
- * Event listener for HTTP server "error" event.
- */
-
-function onError(error) {
-   if (error.syscall !== 'listen') {
-      throw error;
-   }
-
-   // handle specific listen errors with friendly messages
-   switch (error.code) {
-      case 'EACCES':
-         console.error('Port ' + httpPort + ' requires elevated privileges');
-         process.exit(1);
-         break;
-      case 'EADDRINUSE':
-         console.error('Port ' + httpPort + ' is already in use');
-         process.exit(1);
-         break;
-      default:
-         throw error;
-   };
-};
-
-/**
- * Event listener for HTTP server "listening" event.
- */
-
-function onHTTPListening() {
-   console.log('HTTP Listening on port ' + httpServer.address().port);
-   debug('HTTP Listening on port ' + httpServer.address().port);
-}
-
-/**
- * Event listener for HTTPS server "listening" event.
- */
-/*
-function onHTTPSListening() {
-  console.log('HTTPS Listening on port ' + httpsServer.address().port);
-  debug('HTTPS Listening on port ' + httpsServer.address().port);
-}
-*/
+//--------------------
+// /**
+//  * Event listener for HTTP server "error" event.
+//  */
+//
+// function onError(error) {
+//    if (error.syscall !== 'listen') {
+//       throw error;
+//    }
+//
+//    // handle specific listen errors with friendly messages
+//    switch (error.code) {
+//       case 'EACCES':
+//          console.error('Port ' + httpPort + ' requires elevated privileges');
+//          process.exit(1);
+//          break;
+//       case 'EADDRINUSE':
+//          console.error('Port ' + httpPort + ' is already in use');
+//          process.exit(1);
+//          break;
+//       default:
+//          throw error;
+//    };
+// };
+//
+//

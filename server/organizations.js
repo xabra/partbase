@@ -2,11 +2,11 @@
 
 var express = require('express');
 var router = express.Router();
-var mongo = require('./mongo');
+var mongo = require('./config/mongo');
 var objectId = require('mongodb').ObjectID;
 var assert = require('assert');
 
-var auth = require('./auth');
+var auth = require('./config/auth');
 
 // ======== ORGANIZATIONS =======
 // --- GET /organizations/docnum/format ---

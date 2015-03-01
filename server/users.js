@@ -4,10 +4,10 @@
 
 var express = require('express');
 var router = express.Router();
-var mongo = require('./mongo');		// QUESTION: how do the calls to collection below 'see' the mongo methods when I didnt require 'mongo'?
+var mongo = require('./config/mongo');		// QUESTION: how do the calls to collection below 'see' the mongo methods when I didnt require 'mongo'?
 var objectId = require('mongodb').ObjectID;
 var assert = require('assert');		// Not being used right now...
-var auth = require('./auth');
+var auth = require('./config/auth');
 
 // --- GET /users/list ---
 router.get('/users/list', auth.loginRequired, function(request, response) {
