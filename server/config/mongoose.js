@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');
 
 // For populating dummy data-- Get rid of these later
-var accountModel = require('../api/accounts/accountModel');
-
+var accountModel = require('../api/accounts/account-model');
+var groupModel = require('../api/groups/group-model');
 
 module.exports = function(config) {
    mongoose.connect(config.db);
@@ -14,6 +14,6 @@ module.exports = function(config) {
 
 
    // For populating dummy data-- Get rid of these later
-   accountModel.createDefaultAccounts();
-
+   accountModel.populateDBWithDummyData();
+   groupModel.populateDBWithDummyData();
 };
