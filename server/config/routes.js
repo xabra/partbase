@@ -8,13 +8,13 @@ var router = express.Router();
 
 // --- Require various elements of the API
 var organizations = require('../organizations');
-var users = require('../users');
+var accountsRoutes = require('../api/accounts/accounts-routes');
 var documents = require('../documents');
 var authenticate = require('../authenticate');
 
 // --- Mount the various sub-routers
 router.use(organizations);
-router.use(users);
+router.use(accountsRoutes);
 router.use(documents);
 router.use(authenticate);
 

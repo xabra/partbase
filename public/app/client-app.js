@@ -5,7 +5,7 @@
 var partBaseApp = angular.module('partBaseApp', [
    'ngRoute',
    'partBaseControllers',
-   'constants' 
+   'constants'
 ]);
 
 // --- Route Config ---
@@ -207,13 +207,12 @@ partBaseApp.factory('Users', function($http, ENV, $location) {
    //----- Read in all documents via http GET
    service.list = function() {
       //----- HTTP Get data
-      $http.get('/users/list').
+      $http.get('/api/accounts').
       success(function(response) { // If GET is successful...
          service.entries = response;
-         service.entries.forEach(function(element) { // loop over all documents
-            element.createdDate = new Date(element.createdDate); //convert date strings to Date objects
-         });
-
+         //service.entries.forEach(function(element) { // loop over all documents
+         //   element.createdDate = new Date(element.createdDate); //convert date strings to Date objects
+         //});
       }).
       error(function(response, status) { // Otherwise, error during GET
          console.log('<< Users: ERR: During CLIENT GETting documents.  Status: ' + status);

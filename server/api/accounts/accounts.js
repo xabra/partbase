@@ -34,7 +34,7 @@ exports.updateAccount = function(request, response) {
       // Otherwise found a matching account...
       var updates = request.body;
 
-      // This is kludgey...need a function to only update fileds that have been passed in
+      // TODO: This is kludgey...need a function to only update fileds that have been passed in
       if(updates.givenName) {
          account.givenName = updates.givenName;
       }
