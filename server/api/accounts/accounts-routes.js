@@ -1,10 +1,8 @@
 'use strict';
 
-// ===== users.js =====
-
 var express = require('express');
 var router = express.Router();
-var accounts = require('./accounts');
+var accounts = require('./accounts-logic');
 
 
 router.get('/api/accounts', accounts.getAccounts);

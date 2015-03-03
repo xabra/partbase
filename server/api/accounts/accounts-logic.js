@@ -4,6 +4,7 @@
 
 var encrypt = require('../../utilities/encryption');
 var Account = require('mongoose').model('Account');
+var helpers = require('../../utilities/helpers');
 
 exports.getAccounts = function(request, response) {
    Account.find({}, function(err, collection) {
@@ -31,39 +32,27 @@ exports.updateAccount = function(request, response) {
          return response.status(400).send({reason: err.toString()});    // respond with error
       }
 
-      // Otherwise found a matching account...
+      // Otherwise, found a matching account...
       var updates = request.body;
 
-      // TODO: This is kludgey...need a function to only update fileds that have been passed in
-      if(updates.givenName) {
-         account.givenName = updates.givenName;
+      if(updates.email) {     // If the email address will be updated...
+         updates.email = updates.email.toLowerCase(); // Force the new email to lower case before updating account
       }
 
-      if(updates.surname) {
-         account.surname = updates.surname;
-      }
-
-      if(updates.username) {
-         account.username = updates.username;
-      }
-
-      if(updates.email) {
-         account.email = updates.email.toLowerCase(); // Force email to lower case
-      }
+      // Overwrite values of all account keys that are in the updates object
+      // (Since the account does not contain a password key, the plaintext password should never get written to account object)
+      account = helpers.updateObjectValues(updates, account);
 
       account.username = account.email; // Override username: Force username to be email address
 
-      if(updates.password) {
+      if(updates.password) {     // If the password is being updated...
          account.salt = encrypt.createSalt();     // Create a new salt
-         account.hashed_pwd = encrypt.hashPwd(account.salt, accountData.password);   // Hash the new password with the new salt
+         account.hashed_pwd = encrypt.hashPwd(account.salt, updates.password);   // Hash the new password with the new salt
       }
 
-      if(updates.status) {
-         account.status = updates.status;
-      }
-
-      account.save(function(err){
-         response.status(202).send(account); // Return the modified account
+      account.save(function(err){      // Save the updated account to the DB
+         if (err) {;} // TODO: Do some error checking here !
+         response.status(202).send(account); // Otherwise no err, return the updated account
       });
    });
 }
