@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var accountsModel = require('../api/accounts/accounts-model');
 var groupsModel = require('../api/groups/groups-model');
 var tenantsModel = require('../api/tenants/tenants-model');
+var documentsModel = require('../api/documents/documents-model');
 
 module.exports = function(config) {
    mongoose.connect(config.db);
@@ -18,4 +19,5 @@ module.exports = function(config) {
    accountsModel.populateDBWithDummyData();
    groupsModel.populateDBWithDummyData();
    tenantsModel.populateDBWithDummyData();
+   documentsModel.populateDBWithDummyData();
 };

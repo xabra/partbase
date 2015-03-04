@@ -10,13 +10,13 @@ var router = express.Router();
 //var organizations = require('../organizations');
 var tenantsRoutes = require('../api/tenants/tenants-routes');
 var accountsRoutes = require('../api/accounts/accounts-routes');
-var documents = require('../documents');
+var documentsRoutes = require('../api/documents/documents-routes');
 var authenticate = require('../authenticate');
 
 // --- Mount the various sub-routers
 router.use(tenantsRoutes);
 router.use(accountsRoutes);
-router.use(documents);
+router.use(documentsRoutes);
 router.use(authenticate);
 
 // --- Root Route

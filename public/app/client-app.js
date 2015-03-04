@@ -265,7 +265,7 @@ partBaseApp.factory('Documents', function($http, ENV, $location) {
    service.readAll = function() {
 
       //----- HTTP Get data
-      $http.get('/documents/list').
+      $http.get('/api/documents').
       success(function(response) { // If GET is successful...
          service.entries = response;
          console.log('<< CLIENT GOT DATA');
@@ -311,7 +311,7 @@ partBaseApp.factory('Documents', function($http, ENV, $location) {
       if (toUpdate) { //if it exists, we update
 
          console.log('<< CLIENT UPDATE: ' + JSON.stringify(entry));
-         $http.post('/documents/update', entry). //update in the server
+         $http.post('/api/documents/' + entry._id, entry). //update in the server
          success(function(data) {
             if (data.success) {
                //copy all the properties from "entry" to the object we want to update
@@ -324,7 +324,7 @@ partBaseApp.factory('Documents', function($http, ENV, $location) {
       } else { //otherwise we create it
          //push new entry to the cloud
          console.log('<< CLIENT NEW: >>' + JSON.stringify(entry));
-         $http.post('/documents/create', entry).
+         $http.post('/api/documents', entry).
          success(function(response) {
             console.log("CREATE/SUCCESS. Server Response: " + JSON.stringify(response));
             service.entries.push(response); // Push new document sent back by server
@@ -338,9 +338,7 @@ partBaseApp.factory('Documents', function($http, ENV, $location) {
    //----- delete an entry
    service.delete = function(entry) {
       //delete on the server, if successful update client side
-      $http.post('/documents/delete', {
-         _id: entry._id
-      }).
+      $http.delete('/documents/' + entry._id).
       success(function(response) {
          console.log("<< DELETE/SUCCESS. Server Response: " + JSON.stringify(response));
          if (response.success) { // If the delete operation was successful...
