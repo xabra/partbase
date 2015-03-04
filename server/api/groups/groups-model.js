@@ -3,9 +3,6 @@ var mongoose = require('mongoose');
 var statusENUM = ['ENABLED', 'DISABLED'];
 
 var groupSchema = mongoose.Schema({
-   href: {
-      type: String,
-   },
    name: {
       type: String,
       required: '{PATH} is required!',
@@ -19,9 +16,6 @@ var groupSchema = mongoose.Schema({
       enum: statusENUM,
       required: '{PATH} is required!',
    },
-   accounts: {    // TODO: Needs work...Link to the accounts contained in this group
-      type: String,
-   },
 });
 
 
@@ -33,27 +27,21 @@ function populateDBWithDummyData() {
       if (collection.length === 0) {
 
          Group.create({
-            href: '',
             name: 'Admins',
             description: 'Group of all admins',
             status: 'ENABLED',
-            accounts: '',
          });
 
          Group.create({
-            href: '',
             name: 'Engineers',
             description: 'Group of all engineers',
             status: 'ENABLED',
-            accounts: '',
          });
 
          Group.create({
-            href: '',
             name: 'Document Control',
             description: 'Doc control people with read only access',
             status: 'ENABLED',
-            accounts: '',
          });
       }
    })

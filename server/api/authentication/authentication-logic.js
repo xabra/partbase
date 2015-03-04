@@ -7,9 +7,9 @@ exports.authenticateAccount = function(request, response) {
    response.status(200).send({}); // Send response with user that was inserted into DB
 };
 
-exports.createAccount = function(request, response) {
+exports.registerNewAccount = function(request, response) {
    ;  // TODO: do something here
-   response.status(200).send({}); // Send response with user that was inserted into DB 
+   response.status(200).send({}); // Send response with user that was inserted into DB
 }
 
 exports.logout = function(request, response) {
