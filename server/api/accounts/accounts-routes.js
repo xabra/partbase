@@ -5,11 +5,11 @@ var router = express.Router();
 var accounts = require('./accounts-logic');
 
 
-router.get('/api/accounts', accounts.getAccounts);
-router.get('/api/account/:accountId', accounts.getAccount);
-router.delete('/api/account/:accountId', accounts.deleteAccount);
-router.post('/api/account/:accountId', accounts.updateAccount);
-router.post('/api/accounts', accounts.createAccount);
+router.get('/api/accounts', accounts.getList);
+router.get('/api/account/:accountId', accounts.getById);
+router.delete('/api/account/:accountId', accounts.deleteById);
+router.post('/api/account/:accountId', accounts.updateById);
+router.post('/api/accounts', accounts.create);
 // CREATE should be in the path of the object that OWNS the accounts such as directories, but that doesn't exist yet...
 
 module.exports = router;

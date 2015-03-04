@@ -43,13 +43,13 @@ partBaseApp.config(['$routeProvider', '$locationProvider',
          templateUrl: 'app/users-list.tmpl.html',
          controller: 'usersListCtrl'
       }).
-      when('/organizations/list', {
-         templateUrl: 'app/organizations-list.tmpl.html',
-         controller: 'organizationsListCtrl'
+      when('/tenants/list', {
+         templateUrl: 'app/tenants-list.tmpl.html',
+         controller: 'tenantsListCtrl'
       }).
-      when('/organizations/create', {
-         templateUrl: 'app/organizations-create.tmpl.html',
-         controller: 'organizationsCreateCtrl'
+      when('/tenants/create', {
+         templateUrl: 'app/tenants-create.tmpl.html',
+         controller: 'tenantsCreateCtrl'
       }).
       otherwise({
          redirectTo: '/docs'
@@ -59,16 +59,16 @@ partBaseApp.config(['$routeProvider', '$locationProvider',
 
 
 /*
- *=====  AUTHENTICATION Service: provides access to the organizations  =====
+ *=====  AUTHENTICATION Service: provides access to the tenants  =====
  */
-partBaseApp.factory('Authentication', function($http, $location, Organizations, Documents, Users) {
+partBaseApp.factory('Authentication', function($http, $location, Tenants, Documents, Users) {
 
    // --- Initialization, executed during a page refresh
    var service = {}; // Reset the service object
    console.log('<< Authentication SERVICE initialized');
 
    service.flushAll = function() {
-      Organizations.flush();
+      Tenants.flush();
       Documents.flush();
       Users.flush();
    }
@@ -123,21 +123,21 @@ partBaseApp.factory('Authentication', function($http, $location, Organizations, 
 
 
 /*
- *=====  ORGANIZATIONS Service: provides access to the organizations  =====
+ *=====  TenantS Service: provides access to the tenants  =====
  */
-partBaseApp.factory('Organizations', function($http) {
+partBaseApp.factory('Tenants', function($http) {
 
    // --- Initialization, executed during a page refresh
    var service = {}; // Reset the service object
    service.entries = []; // Reset the the array of documents
 
-   console.log('<< Organizations SERVICE initialized');
+   console.log('<< Tenants SERVICE initialized');
 
 
    // ---- METHODS ----
    service.create = function(entry) {
-      console.log('<< CLIENT REGISTER NEW ORGANIZATION: >>' + JSON.stringify(entry));
-      $http.post('/organizations/create', entry).
+      console.log('<< CLIENT REGISTER NEW Tenant: >>' + JSON.stringify(entry));
+      $http.post('/api/tenants', entry).
       success(function(response) {
          console.log("SUCCESSFUL. Server Response: " + JSON.stringify(response));
       }).
@@ -147,14 +147,14 @@ partBaseApp.factory('Organizations', function($http) {
    }
 
    service.flush = function() {
-      console.log('<< FLUSH ORGANIZATION');
+      console.log('<< FLUSH Tenant');
       service.entries = []; // Clear out cache
    }
 
    //----- Read in all documents via http GET
    service.list = function() {
       //----- HTTP Get data
-      $http.get('/organizations/list').
+      $http.get('/api/tenants').
       success(function(response) { // If GET is successful...
          service.entries = response;
          service.entries.forEach(function(element) { // loop over all documents
@@ -162,7 +162,7 @@ partBaseApp.factory('Organizations', function($http) {
          });
       }).
       error(function(response, status) { // Otherwise, error during GET
-         console.log('<< ORGANIZATIONS: ERR: During CLIENT GETting organizations');
+         console.log('<< TenantS: ERR: During CLIENT GETting tenants');
       });
    }
 
@@ -171,9 +171,7 @@ partBaseApp.factory('Organizations', function($http) {
    //----- delete an entry
    service.delete = function(entry) {
       //delete on the server, if successful update client side
-      $http.post('/organizations/delete', {
-         _id: entry._id
-      }).
+      $http.delete('/api/tenants/' + entry._id).
       success(function(response) {
          console.log("<< DELETE/SUCCESS. Server Response: " + JSON.stringify(response));
          if (response.success) { // If the delete operation was successful...

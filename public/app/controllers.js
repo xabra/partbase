@@ -41,7 +41,7 @@ partBaseControllers.controller('registerCtrl', ['$scope', '$location', '$http','
       $scope.user = {
          givenName: '',
          surname: '',
-         organization: '',
+         tenant: '',
          email: '',
          password: '',
       };
@@ -57,7 +57,7 @@ partBaseControllers.controller('registerCtrl', ['$scope', '$location', '$http','
             email: $scope.user.email,
             password: $scope.user.password,
             customData: {
-               organization: $scope.user.organization
+               tenant: $scope.user.tenant
             }
          };
          console.log("Registering: " + JSON.stringify(newAccount));
@@ -68,27 +68,27 @@ partBaseControllers.controller('registerCtrl', ['$scope', '$location', '$http','
 ]);
 
 // --- ORGANIZATIONS list controller ---
-partBaseControllers.controller('organizationsListCtrl', ['$scope', 'Organizations',
-   function($scope, Organizations) {
-      $scope.organizations = Organizations.entries;
+partBaseControllers.controller('tenantsListCtrl', ['$scope', 'Tenants',
+   function($scope, Tenants) {
+      $scope.tenants = Tenants.entries;
 
       //I DONT UNDERSTAND THIS !! --we need to watch the list of documents more closely to have it always updated ---
       $scope.$watch(function() {
-         return Organizations.entries;
+         return Tenants.entries;
       }, function(entries) {
-         $scope.organizations = entries;
+         $scope.tenants = entries;
       });
    }
 ]);
 
 // --- ORGANIZATIONS create Controller ---
-partBaseControllers.controller('organizationsCreateCtrl', ['$scope', '$location', 'Organizations',
-   function($scope, $location, Organizations) {
+partBaseControllers.controller('tenantCreateCtrl', ['$scope', '$location', 'Tenants',
+   function($scope, $location, Tenants) {
       //--
       $scope.create = function() {
-         console.log("Creating New Organization: " + JSON.stringify($scope.organization));
-         Organizations.create($scope.organization);
-         $location.path('/organizations/list'); //Send user back to the root
+         console.log("Creating New Tenant: " + JSON.stringify($scope.tenant));
+         Tenants.create($scope.tenant);
+         $location.path('/tenants/list'); //Send user back to the root
       };
    }
 ]);

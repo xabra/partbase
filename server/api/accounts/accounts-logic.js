@@ -6,26 +6,26 @@ var encrypt = require('../../utilities/encryption');
 var Account = require('mongoose').model('Account');
 var helpers = require('../../utilities/helpers');
 
-exports.getAccounts = function(request, response) {
+exports.getList = function(request, response) {
    Account.find({}, function(err, collection) {
       response.send(collection);
    });
 };
 
-exports.getAccount = function(request, response) {
+exports.getById = function(request, response) {
    var id = request.params.accountId;
    Account.findById(id, function(err, account) {
       response.send(account);
    });
 }
-exports.deleteAccount = function(request, response) {
+exports.deleteById = function(request, response) {
    var id = request.params.accountId;
    Account.findByIdAndRemove(id, function(err, account) {
       response.status(204).send();
    });
 }
 
-exports.updateAccount = function(request, response) {
+exports.updateById = function(request, response) {
    var id = request.params.accountId;
    Account.findById(id, function(err, account) {
       if (err) {     // If error finding account...
@@ -59,7 +59,7 @@ exports.updateAccount = function(request, response) {
 
 
 
-exports.createAccount = function(request, response, next) {
+exports.create = function(request, response, next) {
    var accountData = request.body;
    accountData.email = accountData.email.toLowerCase(); // Lowercase it to prevent differences in case from becoming unique accounts
    accountData.username = accountData.username;    // Case sensitive username (not used here)

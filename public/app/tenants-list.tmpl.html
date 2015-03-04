@@ -15,7 +15,7 @@
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
       <!-- START CONTENT AREA =============== -->
-      <h2>Organizations <a class="btn btn-primary btn-sm" href="#/organizations/create" role="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New</a></h2>
+      <h2>Tenants <a class="btn btn-primary btn-sm" href="#/tenants/create" role="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New</a></h2>
 
       <p><input type="checkbox" ng-model="idIsShown">  Show IDs</p>
       <div class="table-responsive">
@@ -24,16 +24,14 @@
             <tr>
               <th ng-show = "idIsShown">ID</th>
               <th>Name</th>
-              <th>Domain</th>
-              <th>Created Date</th>
+              <th>Key</th>
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat = "organization in organizations">
-              <td ng-show = "idIsShown"><a href="#organizations/detail/{{organization._id}}">{{organization._id}}<a/></td>
-              <td>{{organization.name}}</td>
-              <td>{{organization.domain}}</td>      
-              <td>{{organization.createdDate | date: 'short'}}</td>
+            <tr ng-repeat = "tenant in tenants">
+              <td ng-show = "idIsShown"><a href="#tenants/detail/{{tenant._id}}">{{tenant._id}}<a/></td>
+              <td>{{tenant.name}}</td>
+              <td>{{tenant.key}}</td>
             </tr>
           </tbody>
         </table>
@@ -43,5 +41,3 @@
     </div>
   </div>  <!-- END Row -->
 </div>  <!-- END container-flud -->
-
-
