@@ -15,7 +15,7 @@
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
       <!-- START CONTENT AREA =============== -->
-      <h2>Accounts</h2>
+      <h2>Groups <a class="btn btn-primary btn-sm" href="#/groups/create" role="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New</a></h2>
 
       <p><input type="checkbox" ng-model="idIsShown">  Show IDs</p>
       <div class="table-responsive">
@@ -23,21 +23,17 @@
           <thead>
             <tr>
               <th ng-show = "idIsShown">ID</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Userame</th>
-              <th>eMail</th>
+              <th>Name</th>
+              <th>Description</th>
               <th>Status</th>
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat = "user in users">
-              <td ng-show = "idIsShown"><a href="#docs/detail/{{doc._id}}">{{user._id}}<a/></td>
-              <td>{{user.givenName}}</td>
-              <td>{{user.surname}}</td>
-              <td>{{user.username}}</td>
-              <td>{{user.email}}</td>
-              <td>{{user.status}}</td>
+            <tr ng-repeat = "group in groups">
+              <td ng-show = "idIsShown"><a href="#groups/detail/{{group._id}}">{{group._id}}<a/></td>
+              <td>{{group.name}}</td>
+              <td>{{group.description}}</td>
+              <td>{{group.status}}</td>
             </tr>
           </tbody>
         </table>

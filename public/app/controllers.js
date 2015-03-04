@@ -67,7 +67,7 @@ partBaseControllers.controller('registerCtrl', ['$scope', '$location', '$http','
    }
 ]);
 
-// --- ORGANIZATIONS list controller ---
+// --- Tenants list controller ---
 partBaseControllers.controller('tenantsListCtrl', ['$scope', 'Tenants',
    function($scope, Tenants) {
       $scope.tenants = Tenants.entries;
@@ -81,7 +81,7 @@ partBaseControllers.controller('tenantsListCtrl', ['$scope', 'Tenants',
    }
 ]);
 
-// --- ORGANIZATIONS create Controller ---
+// --- Tenants create Controller ---
 partBaseControllers.controller('tenantCreateCtrl', ['$scope', '$location', 'Tenants',
    function($scope, $location, Tenants) {
       //--
@@ -93,7 +93,21 @@ partBaseControllers.controller('tenantCreateCtrl', ['$scope', '$location', 'Tena
    }
 ]);
 
-// --- USERS list controller ---
+// --- Groups list controller ---
+partBaseControllers.controller('groupsListCtrl', ['$scope', 'Groups',
+   function($scope, Groups) {
+      $scope.groups = Groups.entries;
+
+      //I DONT UNDERSTAND THIS !! --we need to watch the list of documents more closely to have it always updated ---
+      $scope.$watch(function() {
+         return Groups.entries;
+      }, function(entries) {
+         $scope.groups = entries;
+      });
+   }
+]);
+
+// --- Accounts list controller ---
 partBaseControllers.controller('usersListCtrl', ['$scope', 'Users',
    function($scope, Users) {
       $scope.users = Users.entries;

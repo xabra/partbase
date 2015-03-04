@@ -51,6 +51,14 @@ partBaseApp.config(['$routeProvider', '$locationProvider',
          templateUrl: 'app/tenants-create.tmpl.html',
          controller: 'tenantsCreateCtrl'
       }).
+      when('/groups', {
+         templateUrl: 'app/groups-list.tmpl.html',
+         controller: 'groupsListCtrl'
+      }).
+      when('/memberships', {
+         templateUrl: 'app/memberships-list.tmpl.html',
+         controller: 'membershipsListCtrl'
+      }).
       otherwise({
          redirectTo: '/docs'
       });
@@ -121,9 +129,74 @@ partBaseApp.factory('Authentication', function($http, $location, Tenants, Docume
    return service;
 });
 
+/*
+ *=====  Groups Service: provides access to the groups  =====
+ */
+partBaseApp.factory('Groups', function($http) {
+
+   // --- Initialization, executed during a page refresh
+   var service = {}; // Reset the service object
+   service.entries = []; // Reset the the array of documents
+
+   console.log('<< Groups SERVICE initialized');
+
+
+   // ---- METHODS ----
+   service.create = function(entry) {
+      console.log('<< CLIENT REGISTER NEW Group: >>' + JSON.stringify(entry));
+      $http.post('/api/groups', entry).
+      success(function(response) {
+         console.log("SUCCESSFUL. Server Response: " + JSON.stringify(response));
+      }).
+      error(function(data, status) {
+         alert('New entry error!');
+      });
+   }
+
+   service.flush = function() {
+      console.log('<< FLUSH group');
+      service.entries = []; // Clear out cache
+   }
+
+   //----- Read in all documents via http GET
+   service.list = function() {
+      //----- HTTP Get data
+      $http.get('/api/groups').
+      success(function(response) { // If GET is successful...
+         service.entries = response;
+         service.entries.forEach(function(element) { // loop over all documents
+            element.createdDate = new Date(element.createdDate); //convert date strings to Date objects
+         });
+      }).
+      error(function(response, status) { // Otherwise, error during GET
+         console.log('<< Groups: ERR: During CLIENT GETting groups');
+      });
+   }
+
+   service.list(); // Call the server and read in all the documents
+
+   //----- delete an entry
+   service.delete = function(entry) {
+      //delete on the server, if successful update client side
+      $http.delete('/api/groups/' + entry._id).
+      success(function(response) {
+         console.log("<< DELETE/SUCCESS. Server Response: " + JSON.stringify(response));
+         if (response.success) { // If the delete operation was successful...
+            service.entries = _.reject(service.entries, function(element) { // Remove the document from the client-side cache
+               return element._id == entry._id;
+            });
+         }
+      }).
+      error(function(response, status) {
+         alert('Delete error!');
+      })
+   }
+   return service;
+});
+
 
 /*
- *=====  TenantS Service: provides access to the tenants  =====
+ *=====  Tenants Service: provides access to the tenants  =====
  */
 partBaseApp.factory('Tenants', function($http) {
 
