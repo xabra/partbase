@@ -11,10 +11,6 @@ var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 // Set the config variables based on the env switch
 var config = require('./server/config/config')[env];
 
-// Configure  Mongo DB connection ===
-var mongo = require('./server/config/mongo');
-mongo.init(app, config);
-
 // Configure  Mongoose DB connection ===
 var mongoose = require('./server/config/mongoose');
 mongoose(config);
