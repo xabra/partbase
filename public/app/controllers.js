@@ -107,6 +107,20 @@ partBaseControllers.controller('groupsListCtrl', ['$scope', 'Groups',
    }
 ]);
 
+// --- Memberships list controller ---
+partBaseControllers.controller('membershipsListCtrl', ['$scope', 'Memberships',
+   function($scope, Memberships) {
+      $scope.memberships = Memberships.entries;
+
+      //I DONT UNDERSTAND THIS !! --we need to watch the list of documents more closely to have it always updated ---
+      $scope.$watch(function() {
+         return Memberships.entries;
+      }, function(entries) {
+         $scope.memberships = entries;
+      });
+   }
+]);
+
 // --- Accounts list controller ---
 partBaseControllers.controller('usersListCtrl', ['$scope', 'Users',
    function($scope, Users) {

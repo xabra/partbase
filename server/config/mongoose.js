@@ -23,4 +23,5 @@ module.exports = function(config) {
    tenantsModel.populateDBWithDummyData();
    documentsModel.populateDBWithDummyData();
    groupsModel.populateDBWithDummyData();
+   membershipsModel.populateDBWithDummyData();
 };

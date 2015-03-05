@@ -15,7 +15,7 @@
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
       <!-- START CONTENT AREA =============== -->
-      <h2>Memberships <a class="btn btn-primary btn-sm" href="#/tenants/create" role="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New</a></h2>
+      <h2>Memberships <a class="btn btn-primary btn-sm" href="#/membership/create" role="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New</a></h2>
 
       <p><input type="checkbox" ng-model="idIsShown">  Show IDs</p>
       <div class="table-responsive">
@@ -23,15 +23,15 @@
           <thead>
             <tr>
               <th ng-show = "idIsShown">ID</th>
-              <th>Name</th>
-              <th>Key</th>
+              <th>Account Id</th>
+              <th>Group Id</th>
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat = "tenant in tenants">
-              <td ng-show = "idIsShown"><a href="#tenants/detail/{{tenant._id}}">{{tenant._id}}<a/></td>
-              <td>{{tenant.name}}</td>
-              <td>{{tenant.key}}</td>
+            <tr ng-repeat = "membership in memberships">
+              <td ng-show = "idIsShown"><a href="#memberships/detail/{{membership._id}}">{{membership._id}}<a/></td>
+              <td>{{membership.accountId}}</td>
+              <td>{{membership.groupId}}</td>
             </tr>
           </tbody>
         </table>

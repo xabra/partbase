@@ -13,3 +13,25 @@ var membershipSchema = mongoose.Schema({
 
 
 var Membership = mongoose.model('Membership', membershipSchema);
+
+
+// --- Populate DB with some dummy data.  TODO: move or eliminate this
+function populateDBWithDummyData() {
+   Membership.find({}).exec(function(err, collection) {
+      if (collection.length === 0) {
+
+         Membership.create({
+            accountId: new mongoose.Types.ObjectId,
+            groupId: new mongoose.Types.ObjectId,
+         });
+
+         Membership.create({
+            accountId: new mongoose.Types.ObjectId,
+            groupId: new mongoose.Types.ObjectId,
+         });
+
+      }
+   })
+};
+
+exports.populateDBWithDummyData = populateDBWithDummyData;
