@@ -2,7 +2,6 @@
 
 // TODO: Better error checking
 
-var encrypt = require('../../utilities/encryption');
 var Group = require('mongoose').model('Group');
 var helpers = require('../../utilities/helpers');
 

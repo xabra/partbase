@@ -2,7 +2,6 @@
 
 // TODO: Better error checking
 
-var encrypt = require('../../utilities/encryption');
 var Membership = require('mongoose').model('Membership');
 var helpers = require('../../utilities/helpers');
 
