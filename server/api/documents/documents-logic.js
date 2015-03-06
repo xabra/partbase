@@ -6,16 +6,32 @@ var encrypt = require('../../utilities/encryption');
 var Document = require('mongoose').model('Document');
 var helpers = require('../../utilities/helpers');
 
+var dbToAPI = function(db)
+{
+   var result = {};
+   result.href = "http://localhost:3000/api/documents/" + db._id;      // TODO: Pass in URI prefix somehow
+   result.title = db.title;
+   result.description = db.description;
+   result.docType = db.docType;
+   result.partType = db.partType;
+   result.project = db.project;
+   result.author = db.author;
+   result.createdDate = db.createdDate;
+   result.revision = db.revision;
+   result.documentNum = db.documentNum;
+
+   return result;
+}
 exports.getList = function(request, response) {
    Document.find({}, function(err, collection) {
-      response.send(collection);
+      response.send(collection.map(dbToAPI));
    });
 };
 
 exports.getById = function(request, response) {
    var id = request.params.documentId;
    Document.findById(id, function(err, document) {
-      response.send(document);
+      response.send(dbToAPI(document));
    });
 }
 exports.deleteById = function(request, response) {
@@ -40,7 +56,7 @@ exports.updateById = function(request, response) {
 
       document.save(function(err){      // Save the updated document to the DB
          if (err) {;} // TODO: Do some error checking here !
-         response.status(202).send(document); // Otherwise no err, return the updated document
+         response.status(202).send(dbToAPI(document)); // Otherwise no err, return the updated document
       });
    });
 }
@@ -55,7 +71,7 @@ exports.create = function(request, response, next) {
          }
          return response.status(400).send({reason: err.toString()});    // Otherwise some other error
       }
-      response.status(201).send(document); // Otherwise success, send back document
+      response.status(201).send(dbToAPI(document)); // Otherwise success, send back document
    })
 };
 

@@ -4,9 +4,7 @@ var encrypt = require('../../utilities/encryption');
 var statusENUM = ['ENABLED', 'DISABLED', 'UNVERIFIED'];
 
 var accountSchema = mongoose.Schema({
-   href: {
-      type: String,     // Should be computed...?
-   },
+
    username: {
       type: String,
       required: '{PATH} is required!',
@@ -45,8 +43,6 @@ var accountSchema = mongoose.Schema({
       type: String,
       default: '',
    },
-   groups: [String],    // TODO: Needs work...
-   default: [],
 });
 
 accountSchema.methods = {
@@ -57,6 +53,10 @@ accountSchema.methods = {
       return this.groups.indexOf(group) > -1;
    }
 };
+
+accountSchema.virtual('href').get(function(){
+   return 'https://blahblah/' + this._id;
+});
 
 // TODO: add virtual functions to compute Full Name and HREFs based on object IDs
 
@@ -70,7 +70,6 @@ function populateDBWithDummyData() {
          salt = encrypt.createSalt();
          hash = encrypt.hashPwd(salt, 'joe');
          Account.create({
-            href: '',
             username: 'joe',
             email: 'joe@x.com',
             givenName: 'Joe',
@@ -79,12 +78,10 @@ function populateDBWithDummyData() {
             hashed_pwd: hash,
             status: 'ENABLED',
             emailVerificationToken: '',
-            groups: ['admin'],
          });
          salt = encrypt.createSalt();
          hash = encrypt.hashPwd(salt, 'john');
          Account.create({
-            href: '',
             username: 'john',
             email: 'john@x.com',
             givenName: 'John',
@@ -93,12 +90,10 @@ function populateDBWithDummyData() {
             hashed_pwd: hash,
             status: 'ENABLED',
             emailVerificationToken: '',
-            groups: [],
          });
          salt = encrypt.createSalt();
          hash = encrypt.hashPwd(salt, 'dan');
          Account.create({
-            href: '',
             username: 'dan',
             email: 'dan@x.com',
             givenName: 'John',
@@ -107,7 +102,6 @@ function populateDBWithDummyData() {
             hashed_pwd: hash,
             status: 'DISABLED',
             emailVerificationToken: '',
-            groups: [],
          });
       }
    })

@@ -367,9 +367,7 @@ partBaseApp.factory('Users', function($http, ENV, $location) {
    //----- delete an entry
    service.delete = function(entry) {
       //delete on the server, if successful update client side
-      $http.post('/users/delete', {
-         _id: entry._id
-      }).
+      $http.delete('/api/accounts/' + entry._id ).
       success(function(response) {
          console.log("<< DELETE/SUCCESS. Server Response: " + JSON.stringify(response));
          if (response.success) { // If the delete operation was successful...
@@ -476,7 +474,7 @@ partBaseApp.factory('Documents', function($http, ENV, $location) {
    //----- delete an entry
    service.delete = function(entry) {
       //delete on the server, if successful update client side
-      $http.delete('/documents/' + entry._id).
+      $http.delete('/api/documents/' + entry._id).
       success(function(response) {
          console.log("<< DELETE/SUCCESS. Server Response: " + JSON.stringify(response));
          if (response.success) { // If the delete operation was successful...

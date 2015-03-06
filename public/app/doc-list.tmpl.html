@@ -19,12 +19,12 @@
         <a class="btn btn-primary btn-sm" href="#/docs/new" role="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New  </a>
       </h2>
 
-      <p><input type="checkbox" ng-model="idIsShown">  Show IDs</p>
+      <p><input type="checkbox" ng-model="idIsShown">  Show HREFs</p>
       <div class="table-responsive">
         <table class="table table-striped table-condensed">
           <thead>
             <tr>
-              <th ng-show = "idIsShown">ID</th>
+              <th ng-show = "idIsShown">HREF</th>
               <th>Doc Number</th>
               <th>Revision</th>
               <th>Title</th>
@@ -38,8 +38,8 @@
           </thead>
           <tbody>
             <tr ng-repeat = "doc in docs">
-              <td ng-show = "idIsShown"><a href="#docs/detail/{{doc._id}}">{{doc._id}}<a/></td>
-              <td><a href="#/docs/detail/{{doc._id}}">{{doc.documentNum}}</a></td>
+              <td ng-show = "idIsShown"><a href="{{doc.href}}">{{doc.href}}<a/></td>
+              <td><a href="{{doc.href}}">{{doc.documentNum}}</a></td>
               <td>{{doc.revision}}</td>
               <td>{{doc.title}}</td>
               <td>{{doc.description}}</td>

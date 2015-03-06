@@ -8,41 +8,34 @@ var httpServer = http.createServer(app);
 // Switch to define whether we use 'development' or 'production' enviroment
 var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
-// Set the config variables based on the env switch
-var config = require('./server/config/config')[env];
+// Set the config parameters based on the env switch
+var params = require('./server/config/config-params')[env];
 
 // Configure  Mongoose DB connection ===
-var mongoose = require('./server/config/mongoose');
-mongoose(config);
+var mongooseConfig = require('./server/config/mongoose-config');
+mongooseConfig(params);
 
 // Configure the Express app
-require('./server/config/express')(app, config);
+var expressConfig = require('./server/config/express-config');
+expressConfig(app, params);
 
 // Configure auth and Stormpath
-var auth = require('./server/config/auth');
-auth.init(app, {
-   secretKey: 'dzkjflkhIYGUYTDCLKJH9238jdlksd92n',
-   enableHTTPS: false,
-   sessionDuration: 20*60*60*1000,
-   stormpathApiKeyFile: process.env.HOME + '/dev/keys/stormpath-apikey.properties',
-   stormpathApplicationURL: 'https://api.stormpath.com/v1/applications/7dPCdUUTIwYZTDY81jXitE',
-});
+var sessionConfig = require('./server/config/session-config');
+sessionConfig(app, params);
 
 //Configure the server routes
-app.use('/', require('./server/config/routes'));
+var allRoutes = require('./server/config/route-index');
+app.use('/', allRoutes);
 
-httpServer.listen(config.port);
+// Start the server listening
+httpServer.listen(params.port);
 
+// Report server has started
 httpServer.on('listening', function () {
     console.log('Express HTTP server listening on port ' + httpServer.address().port + '...');
  });
 
 // FOR LATER
-//require('./server/config/mongoose')(config);
-
-//require('./server/config/passport')();
-
-
 //--------------------
 // /**
 //  * Event listener for HTTP server "error" event.

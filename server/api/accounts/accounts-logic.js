@@ -6,16 +6,31 @@ var encrypt = require('../../utilities/encryption');
 var Account = require('mongoose').model('Account');
 var helpers = require('../../utilities/helpers');
 
+var dbToAPI = function(db)
+{
+   var result = {};
+   result.href = "http://localhost:3000/api/accounts/" + db._id;      // TODO: Pass in URI prefix somehow
+   result.username = db.username;
+   result.email = db.email;
+   result.givenName = db.givenName;
+   result.surname = db.surname;
+   result.status = db.status;
+   result.emailVerificationToken = db.emailVerificationToken;
+
+   return result;
+}
+
 exports.getList = function(request, response) {
    Account.find({}, function(err, collection) {
-      response.send(collection);
+
+      response.send(collection.map(dbToAPI));
    });
 };
 
 exports.getById = function(request, response) {
    var id = request.params.accountId;
    Account.findById(id, function(err, account) {
-      response.send(account);
+      response.send(dbToAPI(account));
    });
 }
 exports.deleteById = function(request, response) {
@@ -52,7 +67,7 @@ exports.updateById = function(request, response) {
 
       account.save(function(err){      // Save the updated account to the DB
          if (err) {;} // TODO: Do some error checking here !
-         response.status(202).send(account); // Otherwise no err, return the updated account
+         response.status(202).send(dbToAPI(account)); // Otherwise no err, return the updated account
       });
    });
 }
@@ -76,6 +91,6 @@ exports.create = function(request, response, next) {
          }
          return response.status(400).send({reason: err.toString()});    // Otherwise some other error
       }
-      response.status(201).send(account); // Otherwise success, send back account
+      response.status(201).send(dbTOAPI(account)); // Otherwise success, send back account
    })
 };

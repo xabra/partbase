@@ -6,16 +6,27 @@ var encrypt = require('../../utilities/encryption');
 var Group = require('mongoose').model('Group');
 var helpers = require('../../utilities/helpers');
 
+var dbToAPI = function(db)
+{
+   var result = {};
+   result.href = "http://localhost:3000/api/groups/" + db._id;      // TODO: Pass in URI prefix somehow
+   result.name = db.name;
+   result.description = db.description;
+   result.status = db.status;
+
+   return result;
+}
+
 exports.getList = function(request, response) {
    Group.find({}, function(err, collection) {
-      response.send(collection);
+      response.send(collection.map(dbToAPI));
    });
 };
 
 exports.getById = function(request, response) {
    var id = request.params.groupId;
    Group.findById(id, function(err, group) {
-      response.send(group);
+      response.send(dbToAPI(group));
    });
 }
 exports.deleteById = function(request, response) {
@@ -40,7 +51,7 @@ exports.updateById = function(request, response) {
 
       group.save(function(err){      // Save the updated group to the DB
          if (err) {;} // TODO: Do some error checking here !
-         response.status(202).send(group); // Otherwise no err, return the updated group
+         response.status(202).send(dbToAPI(group)); // Otherwise no err, return the updated group
       });
    });
 }
@@ -55,6 +66,6 @@ exports.create = function(request, response, next) {
          }
          return response.status(400).send({reason: err.toString()});    // Otherwise some other error
       }
-      response.status(201).send(group); // Otherwise success, send back group
+      response.status(201).send(dbToAPI(group)); // Otherwise success, send back group
    })
 };

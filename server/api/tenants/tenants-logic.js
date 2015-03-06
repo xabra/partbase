@@ -6,16 +6,27 @@ var encrypt = require('../../utilities/encryption');
 var Tenant = require('mongoose').model('Tenant');
 var helpers = require('../../utilities/helpers');
 
+var dbToAPI = function(db)
+{
+   var result = {};
+   result.href = "http://localhost:3000/api/tenants/" + db._id;      // TODO: Pass in URI prefix somehow
+   result.name = db.name;
+   result.key = db.key;
+
+   return result;
+}
+
+
 exports.getList = function(request, response) {
    Tenant.find({}, function(err, collection) {
-      response.send(collection);
+      response.send(collection.map(dbToAPI));
    });
 };
 
 exports.getById = function(request, response) {
    var id = request.params.tenantId;
    Tenant.findById(id, function(err, tenant) {
-      response.send(tenant);
+      response.send(dbToAPI(tenant));
    });
 }
 exports.deleteById = function(request, response) {
@@ -40,7 +51,7 @@ exports.updateById = function(request, response) {
 
       tenant.save(function(err){      // Save the updated tenant to the DB
          if (err) {;} // TODO: Do some error checking here !
-         response.status(202).send(tenant); // Otherwise no err, return the updated tenant
+         response.status(202).send(dbToAPI(tenant)); // Otherwise no err, return the updated tenant
       });
    });
 }
@@ -55,6 +66,6 @@ exports.create = function(request, response, next) {
          }
          return response.status(400).send({reason: err.toString()});    // Otherwise some other error
       }
-      response.status(201).send(tenant); // Otherwise success, send back tenant
+      response.status(201).send(dbToAPI(tenant)); // Otherwise success, send back tenant
    })
 };
