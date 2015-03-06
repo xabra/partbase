@@ -30,6 +30,16 @@ function populateDBWithDummyData() {
             groupId: new mongoose.Types.ObjectId,
          });
 
+         Membership.create({
+            accountId: new mongoose.Types.ObjectId, 
+            groupId: new mongoose.Types.ObjectId,
+         });
+
+         Membership.create({
+            accountId: new mongoose.Types.ObjectId,
+            groupId: new mongoose.Types.ObjectId,
+         });
+
       }
    })
 };

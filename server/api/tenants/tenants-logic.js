@@ -1,7 +1,5 @@
 'use strict';
 
-var Tenant = require('mongoose').model('Tenant');
-
 
 exports.mapping = function(item)
 {

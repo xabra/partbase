@@ -6,42 +6,24 @@ var encrypt = require('../../utilities/encryption');
 var Account = require('mongoose').model('Account');
 var helpers = require('../../utilities/helpers');
 
-var dbToAPI = function(db)
+var mapping = function(item)
 {
    var result = {};
-   result.href = "http://localhost:3000/api/accounts/" + db._id;      // TODO: Pass in URI prefix somehow
-   result.username = db.username;
-   result.email = db.email;
-   result.givenName = db.givenName;
-   result.surname = db.surname;
-   result.status = db.status;
-   result.emailVerificationToken = db.emailVerificationToken;
+   result.href = "http://localhost:3000/api/accounts/" + item._id;      // TODO: Pass in URI prefix somehow
+   result.username = item.username;
+   result.email = item.email;
+   result.givenName = item.givenName;
+   result.surname = item.surname;
+   result.status = item.status;
+   result.emailVerificationToken = item.emailVerificationToken;
 
    return result;
 }
 
-exports.getList = function(request, response) {
-   Account.find({}, function(err, collection) {
-
-      response.send(collection.map(dbToAPI));
-   });
-};
-
-exports.getById = function(request, response) {
-   var id = request.params.accountId;
-   Account.findById(id, function(err, account) {
-      response.send(dbToAPI(account));
-   });
-}
-exports.deleteById = function(request, response) {
-   var id = request.params.accountId;
-   Account.findByIdAndRemove(id, function(err, account) {
-      response.status(204).send();
-   });
-}
+exports.mapping = mapping;
 
 exports.updateById = function(request, response) {
-   var id = request.params.accountId;
+   var id = request.params.itemId;
    Account.findById(id, function(err, account) {
       if (err) {     // If error finding account...
          return response.status(400).send({reason: err.toString()});    // respond with error
@@ -67,15 +49,16 @@ exports.updateById = function(request, response) {
 
       account.save(function(err){      // Save the updated account to the DB
          if (err) {;} // TODO: Do some error checking here !
-         response.status(202).send(dbToAPI(account)); // Otherwise no err, return the updated account
+         response.status(202).send(mapping(account)); // Otherwise no err, return the updated account
       });
    });
 }
 
 
 
-exports.create = function(request, response, next) {
+exports.create = function(request, response) {
    var accountData = request.body;
+
    accountData.email = accountData.email.toLowerCase(); // Lowercase it to prevent differences in case from becoming unique accounts
    accountData.username = accountData.username;    // Case sensitive username (not used here)
    accountData.username = accountData.email;    // Make the username be the email address
@@ -89,8 +72,8 @@ exports.create = function(request, response, next) {
          if (err.toString().indexOf('E11000') > -1) {    // If Mongo error E11000 meaning non-uniqueness...
             err = new Error('Duplicate Username');
          }
-         return response.status(400).send({reason: err.toString()});    // Otherwise some other error
+         return response.status(407).send({reason: err.toString()});    // Otherwise some other error
       }
-      response.status(201).send(dbTOAPI(account)); // Otherwise success, send back account
+      response.status(201).send(mapping(account)); // Otherwise success, send back account
    })
 };
