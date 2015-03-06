@@ -16,47 +16,47 @@ partBaseApp.config(['$routeProvider', '$locationProvider',
          redirectTo: '/docs'
       }).
       when('/docs', {
-         templateUrl: 'app/doc-list.tmpl.html',
+         templateUrl: 'app/documents/doc-list.tmpl.html',
          controller: 'docListCtrl'
       }).
       when('/docs/new', {
-         templateUrl: 'app/doc-new.tmpl.html',
+         templateUrl: 'app/documents/doc-new.tmpl.html',
          controller: 'docEditCtrl'
       }).
       when('/docs/edit/:id', {
-         templateUrl: 'app/doc-new.tmpl.html',
+         templateUrl: 'app/documents/doc-new.tmpl.html',
          controller: 'docEditCtrl'
       }).
       when('/docs/detail/:id', {
-         templateUrl: 'app/doc-detail.tmpl.html',
+         templateUrl: 'app/documents/doc-detail.tmpl.html',
          controller: 'docDetailCtrl'
       }).
       when('/login', {
-         templateUrl: 'app/login.tmpl.html',
+         templateUrl: 'app/authentication/login.tmpl.html',
          controller: 'loginCtrl'
       }).
       when('/register', {
-         templateUrl: 'app/register.tmpl.html',
+         templateUrl: 'app/authentication/register.tmpl.html',
          controller: 'registerCtrl'
       }).
       when('/users/list', {
-         templateUrl: 'app/users-list.tmpl.html',
+         templateUrl: 'app/accounts/accounts-list.tmpl.html',
          controller: 'usersListCtrl'
       }).
       when('/tenants/list', {
-         templateUrl: 'app/tenants-list.tmpl.html',
+         templateUrl: 'app/tenants/tenants-list.tmpl.html',
          controller: 'tenantsListCtrl'
       }).
       when('/tenants/create', {
-         templateUrl: 'app/tenants-create.tmpl.html',
+         templateUrl: 'app/tenants/tenants-create.tmpl.html',
          controller: 'tenantsCreateCtrl'
       }).
       when('/groups', {
-         templateUrl: 'app/groups-list.tmpl.html',
+         templateUrl: 'app/groups/groups-list.tmpl.html',
          controller: 'groupsListCtrl'
       }).
       when('/memberships', {
-         templateUrl: 'app/memberships-list.tmpl.html',
+         templateUrl: 'app/memberships/memberships-list.tmpl.html',
          controller: 'membershipsListCtrl'
       }).
       otherwise({
