@@ -4,12 +4,13 @@
 // --- Set up module with dependencies
 var partBaseApp = angular.module('partBaseApp', [
    'ngRoute',
-   'partBaseControllers',
    'groupsControllers',
    'tenantsControllers',
    'membershipsControllers',
    'documentsControllers',
    'accountsControllers',
+   'authenticationControllers',
+   'navigationControllers',
    'constants'
 ]);
 

@@ -1,20 +1,8 @@
-/* Controllers */
+var authenticationControllers = angular.module('authenticationControllers', []);
 
-var partBaseControllers = angular.module('partBaseControllers', []);
-
-// --- NavBar View Controller ---
-partBaseControllers.controller('navbarCtrl', ['$scope', '$location', 'Authentication',
-   function($scope, $location, Authentication) {
-
-      $scope.logout = function() {   // If logout command...
-         Authentication.logout();      // The the Authentication service to logout: wipe client-side data caches
-         $location.path('/login');     // Redirect to the login view
-      }
-   }
-]);
 
 // --- Login View Controller ---
-partBaseControllers.controller('loginCtrl', ['$scope', '$location', '$http', 'Authentication',
+authenticationControllers.controller('loginCtrl', ['$scope', '$location', '$http', 'Authentication',
    function($scope, $location, $http, Authentication) {
       // Initialization
       $scope.user = { email: '', password: ''};
@@ -35,7 +23,7 @@ partBaseControllers.controller('loginCtrl', ['$scope', '$location', '$http', 'Au
 ]);
 
 // --- Register View Controller ---
-partBaseControllers.controller('registerCtrl', ['$scope', '$location', '$http','Authentication',
+authenticationControllers.controller('registerCtrl', ['$scope', '$location', '$http','Authentication',
    function($scope, $location, $http, Authentication) {
 
       $scope.user = {
