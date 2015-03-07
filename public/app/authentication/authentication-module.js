@@ -2,8 +2,8 @@ angular.module('authenticationModule', [])
 
 
 // --- Login View Controller ---
-.controller('loginCtrl', ['$scope', '$location', '$http', 'Authentication',
-   function($scope, $location, $http, Authentication) {
+.controller('loginCtrl', ['$scope', '$location', '$http', 'authenticationService',
+   function($scope, $location, $http, authenticationService) {
       // Initialization
       $scope.user = { email: '', password: ''};
 
@@ -15,7 +15,7 @@ angular.module('authenticationModule', [])
             password: $scope.user.password
          };
          console.log("CLIENT: Attempting to authenticate with: " + JSON.stringify(authRequest));
-         Authentication.authenticate(authRequest);
+         authenticationService.authenticate(authRequest);
          // TODO: Handle errors and redirects here
       };
 
@@ -23,8 +23,8 @@ angular.module('authenticationModule', [])
 ])
 
 // --- Register View Controller ---
-.controller('registerCtrl', ['$scope', '$location', '$http','Authentication',
-   function($scope, $location, $http, Authentication) {
+.controller('registerCtrl', ['$scope', '$location', '$http','authenticationService',
+   function($scope, $location, $http, authenticationService) {
 
       $scope.user = {
          givenName: '',
@@ -49,7 +49,7 @@ angular.module('authenticationModule', [])
             }
          };
          console.log("Registering: " + JSON.stringify(newAccount));
-         Authentication.register(newAccount);      // Invoke register on the Authentication service with the new account
+         authenticationService.register(newAccount);      // Invoke register on the Authentication service with the new account
          // TODO: Handle errors and redirects here
       };
    }
@@ -60,7 +60,7 @@ angular.module('authenticationModule', [])
 /*
  *=====  AUTHENTICATION Service: provides access to the tenants  =====
  */
-.factory('Authentication', function($http, $location, Tenants, Documents, Users) {
+.factory('authenticationService', function($http, $location, tenantsService, documentsService, accountsService) {
 
    // --- Initialization, executed during a page refresh
    var service = {}; // Reset the service object
@@ -68,8 +68,8 @@ angular.module('authenticationModule', [])
 
    service.flushAll = function() {
       Tenants.flush();
-      Documents.flush();
-      Users.flush();
+      documentsService.flush();
+      accountsService.flush();
    }
 
    service.logout = function() {

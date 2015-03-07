@@ -2,13 +2,13 @@ angular.module('membershipsModule', [])
 
 
 // --- Memberships list controller ---
-.controller('membershipsListCtrl', ['$scope', 'Memberships',
-   function($scope, Memberships) {
-      $scope.memberships = Memberships.entries;
+.controller('membershipsListCtrl', ['$scope', 'membershipsService',
+   function($scope, membershipsService) {
+      $scope.memberships = membershipsService.entries;
 
       //I DONT UNDERSTAND THIS !! --we need to watch the list of documents more closely to have it always updated ---
       $scope.$watch(function() {
-         return Memberships.entries;
+         return membershipsService.entries;
       }, function(entries) {
          $scope.memberships = entries;
       });
@@ -19,7 +19,7 @@ angular.module('membershipsModule', [])
 /*
  *=====  Memberships Service: provides access to the tenants  =====
  */
-.factory('Memberships', function($http) {
+.factory('membershipsService', function($http) {
 
    // --- Initialization, executed during a page refresh
    var service = {}; // Reset the service object

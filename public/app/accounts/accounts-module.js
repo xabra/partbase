@@ -2,13 +2,13 @@ angular.module('accountsModule', [])
 
 
 // --- Accounts list controller ---
-.controller('usersListCtrl', ['$scope', 'Users',
-   function($scope, Users) {
-      $scope.users = Users.entries;
+.controller('usersListCtrl', ['$scope', 'accountsService',
+   function($scope, accountsService) {
+      $scope.users = accountsService.entries;
 
       //I DONT UNDERSTAND THIS !! --we need to watch the list of documents more closely to have it always updated ---
       $scope.$watch(function() {
-         return Users.entries;
+         return accountsService.entries;
       }, function(entries) {
          $scope.users = entries;
       });
@@ -19,7 +19,7 @@ angular.module('accountsModule', [])
 /*
  * =====  USERS Service: provides access to the users  =====
  */
-.factory('Users', function($http, ENV, $location) {
+.factory('accountsService', function($http, ENV, $location) {
 
    // --- Initialization, executed during a page refresh
    var service = {}; // Reset the service object

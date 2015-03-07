@@ -1,13 +1,13 @@
 angular.module('tenantsModule', [])
 
 // --- Tenants list controller ---
-.controller('tenantsListCtrl', ['$scope', 'Tenants',
-   function($scope, Tenants) {
-      $scope.tenants = Tenants.entries;
+.controller('tenantsListCtrl', ['$scope', 'tenantsService',
+   function($scope, tenantsService) {
+      $scope.tenants = tenantsService.entries;
 
       //I DONT UNDERSTAND THIS !! --we need to watch the list of documents more closely to have it always updated ---
       $scope.$watch(function() {
-         return Tenants.entries;
+         return tenantsService.entries;
       }, function(entries) {
          $scope.tenants = entries;
       });
@@ -16,12 +16,12 @@ angular.module('tenantsModule', [])
 
 
 // --- Tenants create Controller ---
-.controller('tenantCreateCtrl', ['$scope', '$location', 'Tenants',
-   function($scope, $location, Tenants) {
+.controller('tenantCreateCtrl', ['$scope', '$location', 'tenantsService',
+   function($scope, $location, tenantsService) {
       //--
       $scope.create = function() {
          console.log("Creating New Tenant: " + JSON.stringify($scope.tenant));
-         Tenants.create($scope.tenant);
+         tenantsService.create($scope.tenant);
          $location.path('/tenants/list'); //Send user back to the root
       };
    }
@@ -31,7 +31,7 @@ angular.module('tenantsModule', [])
 /*
  *=====  Tenants Service: provides access to the tenants  =====
  */
-.factory('Tenants', function($http) {
+.factory('tenantsService', function($http) {
 
    // --- Initialization, executed during a page refresh
    var service = {}; // Reset the service object

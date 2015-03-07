@@ -3,13 +3,13 @@
 // --- Document list controller ---
 angular.module('documentsModule', [])
 
-.controller('docListCtrl', ['$scope', 'Documents',
-   function($scope, Documents) {
-      $scope.docs = Documents.entries;
+.controller('docListCtrl', ['$scope', 'documentsService',
+   function($scope, documentsService) {
+      $scope.docs = documentsService.entries;
 
       //I DONT UNDERSTAND THIS !! --we need to watch the list of documents more closely to have it always updated ---
       $scope.$watch(function() {
-         return Documents.entries;
+         return documentsService.entries;
       }, function(entries) {
          $scope.docs = entries;
       });
@@ -18,39 +18,39 @@ angular.module('documentsModule', [])
 
 
 // --- New/Edit Document View Controller ---
-.controller('docEditCtrl', ['$scope', '$routeParams', '$location', 'Documents',
-   function($scope, $routeParams, $location, Documents) {
+.controller('docEditCtrl', ['$scope', '$routeParams', '$location', 'documentsService',
+   function($scope, $routeParams, $location, documentsService) {
       if (!$routeParams.id) {
          // Hmmmm  !
       } else { // Otherwise it is an EXISTING document for updating
-         $scope.document = _.clone(Documents.getById($routeParams.id));
+         $scope.document = _.clone(documentsService.getById($routeParams.id));
       }
 
       //push the expense to the array of expenses. Duplicate entries will thow error unless adding  "track by $index" to the ng-repeat directive
       $scope.save = function() {
          console.log("Saving...")
-         Documents.save($scope.document);
+         documentsService.save($scope.document);
          $location.path('/'); //Send user back to the root
       };
    }
 ])
 
 // --- Document detail controller ---
-.controller('docDetailCtrl', ['$scope', '$routeParams', '$location', 'Documents',
-   function($scope, $routeParams, $location, Documents) {
+.controller('docDetailCtrl', ['$scope', '$routeParams', '$location', 'documentsService',
+   function($scope, $routeParams, $location, documentsService) {
       console.log("<< docDetailCtrl: Got doc ID: " + $routeParams.id);
       //console.log("<< docDetailCtrl: Got doc ID: 4" + Documents.entries[4]);
 
       //I DONT UNDERSTAND THIS !! --we need to watch the list of documents more closely to have it always updated ---
       $scope.$watch(function() {
-         return Documents.entries;
+         return documentsService.entries;
       }, function(entries) {
-         $scope.doc = Documents.getById($routeParams.id);
+         $scope.doc = documentsService.getById($routeParams.id);
          //$scope.docs = entries;
       });
 
       if ($routeParams.id) {
-         $scope.doc = Documents.getById($routeParams.id);
+         $scope.doc = documentsService.getById($routeParams.id);
       } else { // Otherwise it is an EXISTING document for updating
          // Error... handle it
          console.log("docDetailCtrl: ERR no id");
@@ -60,7 +60,7 @@ angular.module('documentsModule', [])
 
       $scope.delete = function() {
          console.log("<< docDetailCtrl: Deleteing " + $scope.doc);
-         Documents.delete($scope.doc);
+         documentsService.delete($scope.doc);
          $location.path('/'); //Send user back to the root
       };
    }
@@ -69,7 +69,7 @@ angular.module('documentsModule', [])
 /*
  * =====  DOCUMENTS Service: provides access to the client-side =====
  */
-.factory('Documents', function($http, ENV, $location) {
+.factory('documentsService', function($http, ENV, $location) {
 
    // --- Initialization, executed during a page refresh
    var service = {}; // Reset the service object
