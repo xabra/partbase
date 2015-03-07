@@ -5,6 +5,11 @@
 var partBaseApp = angular.module('partBaseApp', [
    'ngRoute',
    'partBaseControllers',
+   'groupsControllers',
+   'tenantsControllers',
+   'membershipsControllers',
+   'documentsControllers',
+   'accountsControllers',
    'constants'
 ]);
 

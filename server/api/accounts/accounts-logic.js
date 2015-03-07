@@ -4,7 +4,7 @@
 
 var encrypt = require('../../utilities/encryption');
 var Account = require('mongoose').model('Account');
-var helpers = require('../../utilities/helpers');
+var helpers = require('../../utilities/helpers'); 
 
 var mapping = function(item)
 {
