@@ -1,9 +1,9 @@
 
 
-var navigationControllers = angular.module('navigationControllers', []);
+angular.module('navigationModule', [])
 
 // --- NavBar View Controller ---
-navigationControllers.controller('navbarCtrl', ['$scope', '$location', 'Authentication',
+.controller('navbarCtrl', ['$scope', '$location', 'Authentication',
    function($scope, $location, Authentication) {
 
       $scope.logout = function() {   // If logout command...
