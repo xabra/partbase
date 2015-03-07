@@ -1,21 +1,68 @@
 <!-- Nav Bar TEMPLATE -->
-<nav class="navbar navbar-inverse navbar-fixed-top" ng-controller = "navbarCtrl">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">PartBase</a>
-    </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings</a></li>
-        <li><a href="#"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Help</a></li>
-        <li><a href="" ng-click = "logout()"><span class="glyphicon glyphicon-account" aria-hidden="true"></span> Logout</a></li>
-      </ul>
-    </div>
-  </div>
-</nav> <!-- END - Nav Bar -->
+<nav class="navbar navbar-default navbar-fixed-top" ng-controller="navbarCtrl">
+   <div class="container-fluid">
+      <div class="navbar-header">
+         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+         </button>
+         <a class="navbar-brand" href="#">PartBase</a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+         <ul class="nav navbar-nav navbar-right">
+
+            <li id="fatmenu" class="dropdown">
+               <a id="drop1" href="#/documents" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
+                  Help
+                  <span class="caret"></span>
+               </a>
+               <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+                  <li role="presentation">
+                     <a role="menuitem" tabindex="-1" href="#">Documentation</a>
+                  </li>
+                  <li role="presentation">
+                     <a role="menuitem" tabindex="-1" href="#">Community</a>
+                  </li>
+                  <li role="presentation">
+                     <a role="menuitem" tabindex="-1" href="#">Contact Support</a>
+                  </li>
+               </ul>
+            </li>
+
+            <li id="fatmenu" class="dropdown">
+               <a id="drop2" href="#/documents" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
+                  <span class="glyphicon glyphicon-account" aria-hidden="true"></span>
+                  Username
+                  <span class="caret"></span>
+               </a>
+               <ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
+                  <li role="presentation">
+                     <a role="menuitem" tabindex="-1" href="#">Profile</a>
+                  </li>
+                  <li role="presentation" class="divider"></li>
+                  <li role="presentation">
+                     <a role="menuitem" tabindex="-1" href="#">Settings</a>
+                  </li>
+                  <li role="presentation">
+                     <a role="menuitem" tabindex="-1" href="#">Subscription</a>
+                  </li>
+                  <li role="presentation">
+                     <a role="menuitem" tabindex="-1" href="#">Billing</a>
+                  </li>
+                  <li role="presentation" class="divider"></li>
+                  <li role="presentation">
+                     <a role="menuitem" tabindex="-1" ng-click = "logout()">Logout</a>
+                  </li>
+               </ul>
+            </li>
+
+         </ul>
+      </div>
+   </div>
+</nav>
+<!-- END - Nav Bar -->
+<!--
+<span class="glyphicon glyphicon-account" aria-hidden="true"> </span>
+-->
