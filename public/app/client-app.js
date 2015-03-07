@@ -11,6 +11,7 @@ angular.module('app', [
    'accountsModule',
    'authenticationModule',
    'navigationModule',
+   'dashboardModule',
    'constants',
 ]);
 
@@ -23,6 +24,10 @@ angular.module('app').config(['$routeProvider', '$locationProvider',
       $routeProvider.
       when('/', {
          redirectTo: '/documents'
+      }).
+      when('/dashboard', {
+         templateUrl: 'app/dashboard/dashboard.tmpl.html',
+         controller: 'dashboardCtrl'
       }).
       when('/documents', {
          templateUrl: 'app/documents/doc-list.tmpl.html',

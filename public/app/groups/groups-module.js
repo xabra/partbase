@@ -2,12 +2,12 @@
 angular.module('groupsModule', [])
 
 .controller('groupsListCtrl', ['$scope', 'groupsService',
-   function($scope, Groups) {
-      $scope.groups = Groups.entries;
+   function($scope, groupsService) {
+      $scope.groups = groupsService.entries;
 
       //I DONT UNDERSTAND THIS !! --we need to watch the list of documents more closely to have it always updated ---
       $scope.$watch(function() {
-         return Groups.entries;
+         return groupsService.entries;
       }, function(entries) {
          $scope.groups = entries;
       });
