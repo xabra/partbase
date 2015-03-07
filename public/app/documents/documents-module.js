@@ -5,13 +5,13 @@ angular.module('documentsModule', [])
 
 .controller('docListCtrl', ['$scope', 'documentsService',
    function($scope, documentsService) {
-      $scope.docs = documentsService.entries;
+      $scope.documents = documentsService.entries;
 
       //I DONT UNDERSTAND THIS !! --we need to watch the list of documents more closely to have it always updated ---
       $scope.$watch(function() {
          return documentsService.entries;
       }, function(entries) {
-         $scope.docs = entries;
+         $scope.documents = entries;
       });
    }
 ])
@@ -30,7 +30,7 @@ angular.module('documentsModule', [])
       $scope.save = function() {
          console.log("Saving...")
          documentsService.save($scope.document);
-         $location.path('/'); //Send user back to the root
+         $location.path('/'); //Send account back to the root
       };
    }
 ])
@@ -45,23 +45,23 @@ angular.module('documentsModule', [])
       $scope.$watch(function() {
          return documentsService.entries;
       }, function(entries) {
-         $scope.doc = documentsService.getById($routeParams.id);
-         //$scope.docs = entries;
+         $scope.document = documentsService.getById($routeParams.id);
+         //$scope.document = entries;
       });
 
       if ($routeParams.id) {
-         $scope.doc = documentsService.getById($routeParams.id);
+         $scope.document = documentsService.getById($routeParams.id);
       } else { // Otherwise it is an EXISTING document for updating
          // Error... handle it
          console.log("docDetailCtrl: ERR no id");
       }
 
-      console.log("<< docDetailCtrl: Got doc ID: " + $routeParams.id + $scope.doc);
+      console.log("<< docDetailCtrl: Got doc ID: " + $routeParams.id + $scope.document);
 
       $scope.delete = function() {
-         console.log("<< docDetailCtrl: Deleteing " + $scope.doc);
-         documentsService.delete($scope.doc);
-         $location.path('/'); //Send user back to the root
+         console.log("<< docDetailCtrl: Deleteing " + $scope.document);
+         documentsService.delete($scope.document);
+         $location.path('/'); //Send account back to the root
       };
    }
 ])

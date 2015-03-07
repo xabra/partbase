@@ -16,7 +16,7 @@
 
       <!-- START CONTENT AREA =============== -->
       <h2>Documents
-        <a class="btn btn-primary btn-sm" href="#/docs/new" role="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New  </a>
+        <a class="btn btn-primary btn-sm" href="#/documents/new" role="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New  </a>
       </h2>
 
       <p><input type="checkbox" ng-model="idIsShown">  Show HREFs</p>
@@ -37,17 +37,17 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat = "doc in docs">
-              <td ng-show = "idIsShown"><a href="{{doc.href}}">{{doc.href}}<a/></td>
-              <td><a href="{{doc.href}}">{{doc.documentNum}}</a></td>
-              <td>{{doc.revision}}</td>
-              <td>{{doc.title}}</td>
-              <td>{{doc.description}}</td>
-              <td>{{doc.docType}}</td>
-              <td>{{doc.partType}}</td>
-              <td>{{doc.project}}</td>
-              <td>{{doc.createdDate | date: 'short'}}</td>
-              <td>{{doc.author}}</td>
+            <tr ng-repeat = "document in documents">
+              <td ng-show = "idIsShown"><a href="{{document.href}}">{{document.href}}<a/></td>
+              <td><a href="{{document.href}}">{{document.documentNum}}</a></td>
+              <td>{{document.revision}}</td>
+              <td>{{document.title}}</td>
+              <td>{{document.description}}</td>
+              <td>{{document.docType}}</td>
+              <td>{{document.partType}}</td>
+              <td>{{document.project}}</td>
+              <td>{{document.createdDate | date: 'short'}}</td>
+              <td>{{document.author}}</td>
             </tr>
           </tbody>
         </table>

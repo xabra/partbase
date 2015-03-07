@@ -22,21 +22,21 @@ angular.module('app').config(['$routeProvider', '$locationProvider',
 
       $routeProvider.
       when('/', {
-         redirectTo: '/docs'
+         redirectTo: '/documents'
       }).
-      when('/docs', {
+      when('/documents', {
          templateUrl: 'app/documents/doc-list.tmpl.html',
          controller: 'docListCtrl'
       }).
-      when('/docs/new', {
+      when('/documents/new', {
          templateUrl: 'app/documents/doc-new.tmpl.html',
          controller: 'docEditCtrl'
       }).
-      when('/docs/edit/:id', {
+      when('/documents/edit/:id', {
          templateUrl: 'app/documents/doc-new.tmpl.html',
          controller: 'docEditCtrl'
       }).
-      when('/docs/detail/:id', {
+      when('/documents/detail/:id', {
          templateUrl: 'app/documents/doc-detail.tmpl.html',
          controller: 'docDetailCtrl'
       }).
@@ -48,11 +48,11 @@ angular.module('app').config(['$routeProvider', '$locationProvider',
          templateUrl: 'app/authentication/register.tmpl.html',
          controller: 'registerCtrl'
       }).
-      when('/users/list', {
+      when('/accounts', {
          templateUrl: 'app/accounts/accounts-list.tmpl.html',
-         controller: 'usersListCtrl'
+         controller: 'accountsListCtrl'
       }).
-      when('/tenants/list', {
+      when('/tenants', {
          templateUrl: 'app/tenants/tenants-list.tmpl.html',
          controller: 'tenantsListCtrl'
       }).
@@ -69,7 +69,7 @@ angular.module('app').config(['$routeProvider', '$locationProvider',
          controller: 'membershipsListCtrl'
       }).
       otherwise({
-         redirectTo: '/docs'
+         redirectTo: '/documents'
       });
    }
 ]);

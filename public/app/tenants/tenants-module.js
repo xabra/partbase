@@ -22,7 +22,7 @@ angular.module('tenantsModule', [])
       $scope.create = function() {
          console.log("Creating New Tenant: " + JSON.stringify($scope.tenant));
          tenantsService.create($scope.tenant);
-         $location.path('/tenants/list'); //Send user back to the root
+         $location.path('/tenants/list'); //Send account back to the root
       };
    }
 ])

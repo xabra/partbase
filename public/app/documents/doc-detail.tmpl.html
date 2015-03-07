@@ -17,7 +17,7 @@
 			<!-- START CONTENT AREA =============== -->
 			<h2>
 				Document Detail
-				<a class="btn btn-primary btn-sm" href="#/docs/edit/{{doc._id}}" role="button">
+				<a class="btn btn-primary btn-sm" href="#/documents/edit/{{document._id}}" role="button">
 					<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit
 				</a>
 
@@ -27,16 +27,16 @@
 			</h2>
 
 			<dl class="dl-horizontal">
-				<dt>Title</dt>   <dd>{{doc.title}}</dd>
-				<dt>Description</dt>   <dd>{{doc.description}}</dd>
-				<dt>Doc Num</dt>   <dd>{{doc.documentNum}}</dd>
-				<dt>Revision</dt>   <dd>{{doc.revision}}</dd>
-				<dt>Document Type</dt>   <dd>{{doc.docType}}</dd>
-				<dt>Part Type</dt>   <dd>{{doc.partType}}</dd>
-				<dt>Project</dt>   <dd>{{doc.project}}</dd>
-				<dt>Author</dt>   <dd>{{doc.author}}</dd>
-				<dt>Date Created</dt>   <dd>{{doc.createdDate | date: 'short'}}</dd>
-				<dt>_id</dt>   <dd>{{doc._id}}</dd>
+				<dt>Title</dt>   <dd>{{document.title}}</dd>
+				<dt>Description</dt>   <dd>{{document.description}}</dd>
+				<dt>Doc Num</dt>   <dd>{{document.documentNum}}</dd>
+				<dt>Revision</dt>   <dd>{{document.revision}}</dd>
+				<dt>Document Type</dt>   <dd>{{document.docType}}</dd>
+				<dt>Part Type</dt>   <dd>{{document.partType}}</dd>
+				<dt>Project</dt>   <dd>{{document.project}}</dd>
+				<dt>Author</dt>   <dd>{{document.author}}</dd>
+				<dt>Date Created</dt>   <dd>{{document.createdDate | date: 'short'}}</dd>
+				<dt>_id</dt>   <dd>{{document._id}}</dd>
 			</dl>
 
 			<!-- END CONTENT AREA ================= -->

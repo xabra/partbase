@@ -25,19 +25,19 @@
               <th ng-show = "hrefIsShown">HREF</th>
               <th>First Name</th>
               <th>Last Name</th>
-              <th>Userame</th>
+              <th>accountame</th>
               <th>eMail</th>
               <th>Status</th>
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat = "user in users">
-              <td ng-show = "hrefIsShown"><a href="{{user.href}}">{{user.href}}<a/></td>
-              <td>{{user.givenName}}</td>
-              <td>{{user.surname}}</td>
-              <td>{{user.username}}</td>
-              <td>{{user.email}}</td>
-              <td>{{user.status}}</td>
+            <tr ng-repeat = "account in accounts">
+              <td ng-show = "hrefIsShown"><a href="{{account.href}}">{{account.href}}<a/></td>
+              <td>{{account.givenName}}</td>
+              <td>{{account.surname}}</td>
+              <td>{{account.accountname}}</td>
+              <td>{{account.email}}</td>
+              <td>{{account.status}}</td>
             </tr>
           </tbody>
         </table>

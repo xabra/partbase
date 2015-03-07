@@ -5,7 +5,7 @@ var statusENUM = ['ENABLED', 'DISABLED', 'UNVERIFIED'];
 
 var accountSchema = mongoose.Schema({
 
-   username: {
+   accountname: {
       type: String,
       required: '{PATH} is required!',
       unique: true,
@@ -70,7 +70,7 @@ function populateDBWithDummyData() {
          salt = encrypt.createSalt();
          hash = encrypt.hashPwd(salt, 'joe');
          Account.create({
-            username: 'joe',
+            accountname: 'joe',
             email: 'joe@x.com',
             givenName: 'Joe',
             surname: 'Smith',
@@ -82,7 +82,7 @@ function populateDBWithDummyData() {
          salt = encrypt.createSalt();
          hash = encrypt.hashPwd(salt, 'john');
          Account.create({
-            username: 'john',
+            accountname: 'john',
             email: 'john@x.com',
             givenName: 'John',
             surname: 'Smith',
@@ -94,7 +94,7 @@ function populateDBWithDummyData() {
          salt = encrypt.createSalt();
          hash = encrypt.hashPwd(salt, 'dan');
          Account.create({
-            username: 'dan',
+            accountname: 'dan',
             email: 'dan@x.com',
             givenName: 'John',
             surname: 'Smith',

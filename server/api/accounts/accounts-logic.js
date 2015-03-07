@@ -10,7 +10,7 @@ var mapping = function(item)
 {
    var result = {};
    result.href = "http://localhost:3000/api/accounts/" + item._id;      // TODO: Pass in URI prefix somehow
-   result.username = item.username;
+   result.accountname = item.accountname;
    result.email = item.email;
    result.givenName = item.givenName;
    result.surname = item.surname;
@@ -40,7 +40,7 @@ exports.updateById = function(request, response) {
       // (Since the account does not contain a password key, the plaintext password should never get written to account object)
       account = helpers.updateObjectValues(updates, account);
 
-      account.username = account.email; // Override username: Force username to be email address
+      account.accountname = account.email; // Override accountname: Force accountname to be email address
 
       if(updates.password) {     // If the password is being updated...
          account.salt = encrypt.createSalt();     // Create a new salt
@@ -60,8 +60,8 @@ exports.create = function(request, response) {
    var accountData = request.body;
 
    accountData.email = accountData.email.toLowerCase(); // Lowercase it to prevent differences in case from becoming unique accounts
-   accountData.username = accountData.username;    // Case sensitive username (not used here)
-   accountData.username = accountData.email;    // Make the username be the email address
+   accountData.accountname = accountData.accountname;    // Case sensitive accountname (not used here)
+   accountData.accountname = accountData.email;    // Make the accountname be the email address
    // Could validate email address so it has the form of a real email address
 
    accountData.salt = encrypt.createSalt();     // Create the salt
@@ -70,7 +70,7 @@ exports.create = function(request, response) {
    Account.create(accountData, function(err, account) {
       if (err) {     // If error...
          if (err.toString().indexOf('E11000') > -1) {    // If Mongo error E11000 meaning non-uniqueness...
-            err = new Error('Duplicate Username');
+            err = new Error('Duplicate accountname');
          }
          return response.status(407).send({reason: err.toString()});    // Otherwise some other error
       }

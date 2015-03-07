@@ -2,22 +2,22 @@ angular.module('accountsModule', [])
 
 
 // --- Accounts list controller ---
-.controller('usersListCtrl', ['$scope', 'accountsService',
+.controller('accountsListCtrl', ['$scope', 'accountsService',
    function($scope, accountsService) {
-      $scope.users = accountsService.entries;
+      $scope.accounts = accountsService.entries;
 
       //I DONT UNDERSTAND THIS !! --we need to watch the list of documents more closely to have it always updated ---
       $scope.$watch(function() {
          return accountsService.entries;
       }, function(entries) {
-         $scope.users = entries;
+         $scope.accounts = entries;
       });
    }
 ])
 
 
 /*
- * =====  USERS Service: provides access to the users  =====
+ * =====  accountS Service: provides access to the accounts  =====
  */
 .factory('accountsService', function($http, ENV, $location) {
 
@@ -25,7 +25,7 @@ angular.module('accountsModule', [])
    var service = {}; // Reset the service object
    service.entries = []; // Reset the the array of documents
 
-   console.log('<< Users SERVICE initialized');
+   console.log('<< Accounts SERVICE initialized');
 
 
    // ---- METHODS ----
@@ -42,7 +42,7 @@ angular.module('accountsModule', [])
          //});
       }).
       error(function(response, status) { // Otherwise, error during GET
-         console.log('<< Users: ERR: During CLIENT GETting documents.  Status: ' + status);
+         console.log('<< Accounts: ERR: During CLIENT GETting documents.  Status: ' + status);
          $location.path('/login');     // TODO  need to check what err code here to decide what to do.
       });
    }
@@ -51,7 +51,7 @@ angular.module('accountsModule', [])
 
 
    service.flush = function() {
-      console.log('<< FLUSH Users');
+      console.log('<< FLUSH accounts');
       service.entries = []; // Clear out cache
    }
 

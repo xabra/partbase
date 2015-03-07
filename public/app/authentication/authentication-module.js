@@ -5,14 +5,14 @@ angular.module('authenticationModule', [])
 .controller('loginCtrl', ['$scope', '$location', '$http', 'authenticationService',
    function($scope, $location, $http, authenticationService) {
       // Initialization
-      $scope.user = { email: '', password: ''};
+      $scope.account = { email: '', password: ''};
 
       //TODO give feedback on failed login
 
       $scope.login = function() {      // When the login button is clicked...
-         var authRequest = {     // Create an auth request from the form fields supplied by user
-            username: $scope.user.email,     // Stormpath expects an authRequest object with a 'username' key
-            password: $scope.user.password
+         var authRequest = {     // Create an auth request from the form fields supplied by account
+            accountname: $scope.account.email,     // Stormpath expects an authRequest object with a 'accountname' key
+            password: $scope.account.password
          };
          console.log("CLIENT: Attempting to authenticate with: " + JSON.stringify(authRequest));
          authenticationService.authenticate(authRequest);
@@ -26,7 +26,7 @@ angular.module('authenticationModule', [])
 .controller('registerCtrl', ['$scope', '$location', '$http','authenticationService',
    function($scope, $location, $http, authenticationService) {
 
-      $scope.user = {
+      $scope.account = {
          givenName: '',
          surname: '',
          tenant: '',
@@ -39,13 +39,13 @@ angular.module('authenticationModule', [])
       //--
       $scope.register = function() {     // When the register button is clicked...
          var newAccount = {      // Create a new account object
-            givenName: $scope.user.givenName,
-            surname: $scope.user.surname,
-            username: '',
-            email: $scope.user.email,
-            password: $scope.user.password,
+            givenName: $scope.account.givenName,
+            surname: $scope.account.surname,
+            accountname: '',
+            email: $scope.account.email,
+            password: $scope.account.password,
             customData: {
-               tenant: $scope.user.tenant
+               tenant: $scope.account.tenant
             }
          };
          console.log("Registering: " + JSON.stringify(newAccount));
@@ -67,14 +67,14 @@ angular.module('authenticationModule', [])
    console.log('<< Authentication SERVICE initialized');
 
    service.flushAll = function() {
-      Tenants.flush();
+      tenantsService.flush();
       documentsService.flush();
       accountsService.flush();
    }
 
    service.logout = function() {
       service.flushAll();
-      $http.post('/logout'). // Tell server to logout user
+      $http.post('/logout'). // Tell server to logout account
       success(function(response) {
          console.log("SUCCESSFUL. Server Logged out");
       }).
@@ -88,15 +88,15 @@ angular.module('authenticationModule', [])
          .success(function(data, status, headers, config) {
             console.log("CLIENT: AUTHENTICATED ACCOUNT: " + JSON.stringify(data) + "HEADERS:" + JSON.stringify(headers));
             // TODO: Need to decide wether to cache the account on the client side here
-            $location.path('/docs') //Redirect to docs/dashboard page
+            $location.path('/documents') //Redirect to documents/dashboard page
             // TODO : Refactor the redirects and UI stuff out of here
          })
          .error(function(data, status, headers, config) {
-            // TODO: Erase the token/cookie and client side account info if the user fails to log in
+            // TODO: Erase the token/cookie and client side account info if the account fails to log in
 
             // Handle login errors here
             console.log("CLIENT: received err");
-            // TODO: GIVE FAIL FEEDBACK HERE:  $scope.message = 'Error: Invalid user or password';
+            // TODO: GIVE FAIL FEEDBACK HERE:  $scope.message = 'Error: Invalid account or password';
             // TODO : Refactor the redirects and UI stuff out of here
          });
    }
@@ -106,12 +106,12 @@ angular.module('authenticationModule', [])
          .success(function(data, status, headers, config) {
             console.log("Registration SUCCESSFUL - Account created: " + JSON.stringify(data));
             // TODO: Need to decide wether to cache the account on the client side here
-            $location.path('/docs') //Redirect to docs page
+            $location.path('/documents') //Redirect to documents page
             // TODO : Refactor the redirects and UI stuff out of here
          })
          .error(function(data, status) {
-            // TODO: Erase the token/cookie and client side account info if the user fails to log in
-            // TODO: GIVE FAIL FEEDBACK HERE:  $scope.message = 'Error: Invalid user or password';
+            // TODO: Erase the token/cookie and client side account info if the account fails to log in
+            // TODO: GIVE FAIL FEEDBACK HERE:  $scope.message = 'Error: Invalid account or password';
             alert('Registration error');
             // TODO : Refactor the redirects and UI stuff out of here
          });
