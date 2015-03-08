@@ -84,9 +84,20 @@ body {
   margin-top: 0;
 }
 
+.table-edit-icon .table-delete-icon {
+   color: #400;
+}
+
+#Enabled-OK-Sign {
+   color: #0A0;
+}
+
+#Disabled-Remove-Sign {
+   color: #A00;
+}
 /*
 * Document List Table Font Size
-*/ 
+*/
 tbody {
   font-size: small;
 }
