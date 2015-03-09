@@ -14,9 +14,9 @@
       <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
          <!-- START CONTENT AREA =============== -->
-         <h3>
+         <h3 class="content-header">
             <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-            Accounts
+            &nbsp Accounts
             <a class="btn btn-primary btn-sm pull-right" href="#/accounts/create" role="button">
                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                New
@@ -27,29 +27,29 @@
             <table class="table table-hover table-condensed">
                <thead>
                   <tr>
+                     <th>
+                        <input type="checkbox">
+                     </th>
                      <th>NAME</th>
                      <th>EMAIL</th>
                      <th>STATUS</th>
-                     <th >&nbsp &nbsp &nbsp &nbsp   ACTION</th>
+                     <th>&nbsp &nbsp &nbsp ACTIONS</th>
                   </tr>
                </thead>
                <tbody>
                   <tr ng-repeat="account in accounts">
                      <td>
-                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{account.givenName + " " + account.surname}}</td>
-                     <td>{{account.email}}</td>
+                        <input type="checkbox">
+                     </td>
                      <td>
-                        <div class="btn-group">
-                          <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                             <span id="Enabled-OK-Sign" class="glyphicon glyphicon-ok-sign"></span>
-                             {{account.status}}
-                             <span class="caret"></span>
-                          </button>
-                          <ul class="dropdown-menu" role="menu">
-                            <li><a href="#">Enable</a></li>
-                            <li><a href="#">Disable</a></li>
-                          </ul>
-                        </div>
+                        <span id="table-row-icon" class="glyphicon glyphicon-user" aria-hidden="true"></span> {{account.givenName + " " + account.surname}}
+                     </td>
+                     <td>{{account.email}}
+                     </td>
+                     <td ng-switch="account.status">
+                        <span ng-switch-when="ENABLED" id="Enabled-OK-Sign" class="glyphicon glyphicon-ok-sign"></span>
+                        <span ng-switch-when="DISABLED" id="Disabled-Remove-Sign" class="glyphicon glyphicon-remove-sign"></span>
+                        {{account.status}}
                      </td>
                      <td>
                         <a class="btn btn-sm" href="#/accounts/edit" role="button">
@@ -58,9 +58,25 @@
                         <a class="btn btn-sm" href="#/accounts/edit" role="button">
                            <span class="glyphicon glyphicon-trash" class="table-edit-icon" aria-hidden="true"></span>
                         </a>
-                        <a class="btn btn-sm" href="#/accounts/edit" role="button">
-                           <span class="glyphicon glyphicon-chevron-down" class="table-edit-icon" aria-hidden="true"></span>
-                        </a>
+                        <span class="dropdown">
+                           <a id="drop1" href="" class="dropdown-toggle btn btn-sm" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
+                              <span class="glyphicon glyphicon-chevron-down"></span>
+                           </a>
+                           <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="drop1">
+                              <li role="presentation"><a role="menuitem" tabindex="-1" href="">Disable</a>
+                              </li>
+                              <li role="presentation"><a role="menuitem" tabindex="-1" href="">Reset Password</a>
+                              </li>
+                              <li role="presentation"><a role="menuitem" tabindex="-1" href="">Resend Verification Email</a>
+                              </li>
+                              <li role="presentation" class="divider"></li>
+                              <li role="presentation"><a role="menuitem" tabindex="-1" href="">Add to Group</a>
+                              </li>
+                              <li role="presentation"><a role="menuitem" tabindex="-1" href="">Remove from Group</a>
+                              </li>
+                           </ul>
+                        </span>
+
                      </td>
                   </tr>
                </tbody>

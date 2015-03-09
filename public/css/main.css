@@ -84,10 +84,14 @@ body {
   margin-top: 0;
 }
 
-.table-edit-icon .table-delete-icon {
-   color: #400;
+.content-header {
+   color: #666;
+   margin-bottom: 25px;
 }
 
+#table-row-icon {
+   color: #999;
+}
 #Enabled-OK-Sign {
    color: #0A0;
 }
