@@ -42,7 +42,9 @@
                         <input type="checkbox">
                      </td>
                      <td>
-                        <span id="table-row-icon" class="glyphicon glyphicon-user" aria-hidden="true"></span> {{account.givenName + " " + account.surname}}
+                        <a class="btn btn-sm" ng-href="#/accounts/detail/{{$index}}"role="button">
+                           <span id="table-row-icon" class="glyphicon glyphicon-user" aria-hidden="true"></span> {{account.givenName + " " + account.surname}}
+                        </a>
                      </td>
                      <td>{{account.email}}
                      </td>

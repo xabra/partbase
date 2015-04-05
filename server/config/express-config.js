@@ -6,13 +6,10 @@ var favicon = require('serve-favicon');
 
 module.exports = function(app, config) {
 
-  //app.configure(function() {
-
     app.use(favicon(config.rootPath + '/public/favicon.ico'));
     app.use(logger('dev'));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(express.static(config.rootPath + '/public'));
 
-  //});
 }

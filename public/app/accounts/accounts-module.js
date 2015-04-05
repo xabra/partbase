@@ -2,8 +2,8 @@ angular.module('accountsModule', [])
 
 
 // --- Accounts list controller ---
-.controller('accountsListCtrl', ['$scope', 'accountsService',
-   function($scope, accountsService) {
+.controller('accountsListCtrl', ['$scope', 'accountsService', '$location',
+   function($scope, accountsService, $location) {
       $scope.accounts = accountsService.entries;
 
       //I DONT UNDERSTAND THIS !! --we need to watch the list of documents more closely to have it always updated ---
@@ -12,6 +12,32 @@ angular.module('accountsModule', [])
       }, function(entries) {
          $scope.accounts = entries;
       });
+
+   }
+])
+
+// --- Accounts list controller ---
+.controller('accountsDetailCtrl', ['$scope', '$routeParams', 'accountsService',
+   function($scope, $routeParams, accountsService) {
+      $scope.accounts = accountsService.entries;
+
+      //I DONT UNDERSTAND THIS !! --we need to watch the list of documents more closely to have it always updated ---
+
+      $scope.$watch(function() {
+         return accountsService.entries;
+      }, function(entries) {
+         $scope.accounts = entries;
+      });
+
+      var idx = $routeParams.itemIndex;
+      console.log("itemIndex = " + idx);
+      if (idx) {
+         $scope.account = $scope.accounts[idx]
+         console.log("account = " + JSON.stringify($scope.account));
+      } else { // Otherwise it is an EXISTING document for updating
+         // Error... handle it
+         console.log("docDetailCtrl: ERR no id");
+      }
    }
 ])
 
@@ -37,6 +63,7 @@ angular.module('accountsModule', [])
       $http.get('/api/accounts').
       success(function(response) { // If GET is successful...
          service.entries = response;
+         console.log('<< Accounts SERVICE got data: ' + JSON.stringify(service.entries));
          //service.entries.forEach(function(element) { // loop over all documents
          //   element.createdDate = new Date(element.createdDate); //convert date strings to Date objects
          //});
@@ -47,7 +74,7 @@ angular.module('accountsModule', [])
       });
    }
 
-   service.list(); // Call the server and read in all the    documents
+   service.list(); // Call the server and read in all the accounts
 
 
    service.flush = function() {
@@ -71,5 +98,26 @@ angular.module('accountsModule', [])
          alert('Delete error!');
       })
    }
+
+   //----- Helper function to find an entry by id in the client array, using underscore.js
+   service.getById = function(id) {
+      console.log("<< Accounts Service: service.getById(" + id + ")");
+
+      //find retrieves the first entry that passes the condition.
+      var entry = _.find(service.entries, function(entry) { // Underscore library
+         return entry._id == id; //  Matching condition
+      });
+
+      return entry;
+   }
+
+   //----- Helper function to find an entry by id in the client array, using underscore.js
+   service.getByIndex = function(index) {
+      console.log("<< Accounts Service: service.getByIndex(" + index + ")");
+
+      return service.entries[index];
+   }
+
+
    return service;
 });

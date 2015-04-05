@@ -22,13 +22,16 @@ angular.module('app').config(['$routeProvider', '$locationProvider',
       //$locationProvider.html5Mode(true);  TODO: tackle this URL bullshit later...
 
       $routeProvider.
+//-------- ROOT ROUTE
       when('/', {
          redirectTo: '/documents'
       }).
+//-------- ACCOUNTS ROUTES
       when('/dashboard', {
          templateUrl: 'app/dashboard/dashboard.tmpl.html',
          controller: 'dashboardCtrl'
       }).
+//-------- DOCUMENTS ROUTES
       when('/documents', {
          templateUrl: 'app/documents/doc-list.tmpl.html',
          controller: 'docListCtrl'
@@ -37,14 +40,15 @@ angular.module('app').config(['$routeProvider', '$locationProvider',
          templateUrl: 'app/documents/doc-new.tmpl.html',
          controller: 'docEditCtrl'
       }).
-      when('/documents/edit/:id', {
+      when('/documents/edit/:itemIndex', {
          templateUrl: 'app/documents/doc-new.tmpl.html',
          controller: 'docEditCtrl'
       }).
-      when('/documents/detail/:id', {
+      when('/documents/detail/:itemIndex', {
          templateUrl: 'app/documents/doc-detail.tmpl.html',
          controller: 'docDetailCtrl'
       }).
+//-------- AUTHENTICATION ROUTES
       when('/login', {
          templateUrl: 'app/authentication/login.tmpl.html',
          controller: 'loginCtrl'
@@ -53,10 +57,17 @@ angular.module('app').config(['$routeProvider', '$locationProvider',
          templateUrl: 'app/authentication/register.tmpl.html',
          controller: 'registerCtrl'
       }).
+//-------- ACCOUNTS ROUTES
       when('/accounts', {
          templateUrl: 'app/accounts/accounts-list.tmpl.html',
          controller: 'accountsListCtrl'
       }).
+
+      when('/accounts/detail/:itemIndex', {
+         templateUrl: 'app/accounts/account-detail.tmpl.html',
+         controller: 'accountsDetailCtrl'
+      }).
+//-------- TENANTS ROUTES
       when('/tenants', {
          templateUrl: 'app/tenants/tenants-list.tmpl.html',
          controller: 'tenantsListCtrl'
@@ -65,14 +76,17 @@ angular.module('app').config(['$routeProvider', '$locationProvider',
          templateUrl: 'app/tenants/tenants-create.tmpl.html',
          controller: 'tenantsCreateCtrl'
       }).
+//-------- GROUPS ROUTES
       when('/groups', {
          templateUrl: 'app/groups/groups-list.tmpl.html',
          controller: 'groupsListCtrl'
       }).
+//-------- MEMBERSHIPS ROUTES
       when('/memberships', {
          templateUrl: 'app/memberships/memberships-list.tmpl.html',
          controller: 'membershipsListCtrl'
       }).
+//-------- DEFAULT REDIRECT ROUTE
       otherwise({
          redirectTo: '/documents'
       });

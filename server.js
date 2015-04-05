@@ -19,7 +19,7 @@ mongooseConfig(params);
 var expressConfig = require('./server/config/express-config');
 expressConfig(app, params);
 
-// Configure auth and Stormpath
+// Configure auth
 var sessionConfig = require('./server/config/session-config');
 sessionConfig(app, params);
 
@@ -35,30 +35,23 @@ httpServer.on('listening', function () {
     console.log('Express HTTP server listening on port ' + httpServer.address().port + '...');
  });
 
-// FOR LATER
-//--------------------
-// /**
-//  * Event listener for HTTP server "error" event.
-//  */
-//
-// function onError(error) {
-//    if (error.syscall !== 'listen') {
-//       throw error;
-//    }
-//
-//    // handle specific listen errors with friendly messages
-//    switch (error.code) {
-//       case 'EACCES':
-//          console.error('Port ' + httpPort + ' requires elevated privileges');
-//          process.exit(1);
-//          break;
-//       case 'EADDRINUSE':
-//          console.error('Port ' + httpPort + ' is already in use');
-//          process.exit(1);
-//          break;
-//       default:
-//          throw error;
-//    };
-// };
-//
-//
+ // Report server has started
+ httpServer.on('error', function (error) {
+    if (error.syscall !== 'listen') {
+      throw error;
+    }
+
+    // handle specific listen errors with friendly messages
+    switch (error.code) {
+      case 'EACCES':
+          console.error('Port ' + this.address().port + ' requires elevated privileges');
+          process.exit(1);
+          break;
+      case 'EADDRINUSE':
+          console.error('Port ' + this.address().port + ' is already in use');
+          process.exit(1);
+          break;
+      default:
+          throw error;
+    };
+});

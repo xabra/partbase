@@ -2,7 +2,7 @@
 
 var express = require('express');
 var router = express.Router();
-var authentication = require('./authentication-logic');
+var authentication = require('./authentication-controller');
 
 
 router.post('/api/authenticate', authentication.authenticateAccount);    // Get a list of tenants

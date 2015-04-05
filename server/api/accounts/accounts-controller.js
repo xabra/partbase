@@ -3,28 +3,41 @@
 // TODO: Better error checking
 
 var encrypt = require('../../utilities/encryption');
-var Account = require('mongoose').model('Account');
-var helpers = require('../../utilities/helpers'); 
+var helpers = require('../../utilities/helpers');
 
-var mapping = function(item)
-{
-   var result = {};
-   result.href = "http://localhost:3000/api/accounts/" + item._id;      // TODO: Pass in URI prefix somehow
-   result.accountname = item.accountname;
-   result.email = item.email;
-   result.givenName = item.givenName;
-   result.surname = item.surname;
-   result.status = item.status;
-   result.emailVerificationToken = item.emailVerificationToken;
+var resource = require('mongoose').model('Account');
 
-   return result;
-}
+exports.getList = function() {
+   return function(request, response) {
+      resource.find({}, function(err, collection) {
+         response.send(collection.map(mapping));
+      });
+   };
+};
 
-exports.mapping = mapping;
+exports.getById = function() {
+   return function(request, response) {
+      var id = request.params.itemId;
+      resource.findById(id, function(err, item) {
+         response.send(mapping(item));
+      });
+   };
+};
+
+
+exports.deleteById = function() {
+   return function(request, response) {
+      var id = request.params.itemId;
+      resource.findByIdAndRemove(id, function(err, item) {
+         response.status(204).send();
+      });
+   };
+};
+
 
 exports.updateById = function(request, response) {
    var id = request.params.itemId;
-   Account.findById(id, function(err, account) {
+   resource.findById(id, function(err, account) {
       if (err) {     // If error finding account...
          return response.status(400).send({reason: err.toString()});    // respond with error
       }
@@ -67,7 +80,7 @@ exports.create = function(request, response) {
    accountData.salt = encrypt.createSalt();     // Create the salt
    accountData.hashed_pwd = encrypt.hashPwd(accountData.salt, accountData.password);   // Hash the password with te salt
 
-   Account.create(accountData, function(err, account) {
+   resource.create(accountData, function(err, account) {
       if (err) {     // If error...
          if (err.toString().indexOf('E11000') > -1) {    // If Mongo error E11000 meaning non-uniqueness...
             err = new Error('Duplicate accountname');
@@ -77,3 +90,20 @@ exports.create = function(request, response) {
       response.status(201).send(mapping(account)); // Otherwise success, send back account
    })
 };
+
+
+
+var mapping = function(item)
+{
+   var result = {};
+   result._id = item._id;
+   result.href = "http://localhost:3000/api/accounts/" + item._id;      // TODO: Pass in URI prefix somehow
+   result.accountname = item.accountname;
+   result.email = item.email;
+   result.givenName = item.givenName;
+   result.surname = item.surname;
+   result.status = item.status;
+   result.emailVerificationToken = item.emailVerificationToken;
+
+   return result;
+}
