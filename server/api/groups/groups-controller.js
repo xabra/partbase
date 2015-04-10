@@ -2,15 +2,27 @@
 
 
 // TODO: Better error checking
+// TODO: replace mapping with 2-way function, maybe middleware
+// TODO: Implement HATEOAS URL links
 
 var helpers = require('../../utilities/helpers');
 var resource = require('mongoose').model('Group');
+
+
+exports.count = function() {
+   return function(request, response) {
+      resource.count({}, function(err, count) {
+         response.send({count: count});
+      });
+   };
+};
 
 exports.getList = function() {
 
    return function(request, response) {
       resource.find({}, function(err, collection) {
-         response.send(collection.map(mapping));
+         var m = mapping(request);
+         response.send(collection.map(m));
       });
    };
 };
@@ -19,7 +31,8 @@ exports.getById = function() {
    return function(request, response) {
       var id = request.params.itemId;
       resource.findById(id, function(err, item) {
-         response.send(mapping(item));
+         var m = mapping(request);
+         response.send(m(item));
       });
    };
 };
@@ -76,14 +89,16 @@ exports.create = function() {
    };
 };
 
-var mapping = function(item)
-{
-   var result = {};
-   result._id = item._id;
-   result.href = "http://localhost:3000/api/groups/" + item._id;      // TODO: Pass in URI prefix somehow
-   result.name = item.name;
-   result.description = item.description;
-   result.status = item.status;
+var mapping = function(request) {
+   return function(item) {
+      var result = {};
+      result._id = item._id;
 
-   return result;
-}
+      result.href = "TBD"; //request.protocol+"://"+request.hostname+request.path + item._id; // TODO: Pass in URI prefix somehow
+      result.name = item.name;
+      result.description = item.description;
+      result.status = item.status;
+
+      return result;
+   }
+};

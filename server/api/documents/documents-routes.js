@@ -5,6 +5,7 @@ var router = express.Router();
 
 var documents = require('./documents-controller');
 
+router.get('/api/documents/count', documents.count());                 // Get a list of documents
 router.get('/api/documents', documents.getList());                 // Get a list of documents
 router.get('/api/documents/:itemId', documents.getById());         // Get document given its Id
 router.delete('/api/documents/:itemId', documents.deleteById());  // Delete document given its Id

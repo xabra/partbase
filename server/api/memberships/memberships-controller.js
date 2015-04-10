@@ -1,7 +1,19 @@
 'use strict';
 
+// TODO: Better error checking
+// TODO: replace mapping with 2-way function, maybe middleware
+// TODO: Implement HATEOAS URL links
+
 var helpers = require('../../utilities/helpers');
 var resource = require('mongoose').model('Membership');
+
+exports.count = function() {
+   return function(request, response) {
+      resource.count({}, function(err, count) {
+         response.send({count: count});
+      });
+   };
+};
 
 exports.getList = function() {
 

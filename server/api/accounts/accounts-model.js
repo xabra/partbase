@@ -12,7 +12,7 @@ var accountSchema = mongoose.Schema({
    },
    email: {
       type: String,
-      required: '{PATH} is required!',
+      required: '{PATH} is required!', 
       unique: true,
    },
    givenName: {
