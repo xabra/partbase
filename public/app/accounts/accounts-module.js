@@ -16,7 +16,7 @@ angular.module('accountsModule', [])
    }
 ])
 
-// --- Accounts list controller ---
+// --- Account detail controller ---
 .controller('accountsDetailCtrl', ['$scope', '$routeParams', 'accountsService',
    function($scope, $routeParams, accountsService) {
       $scope.accounts = accountsService.entries;
@@ -43,7 +43,7 @@ angular.module('accountsModule', [])
 
 
 /*
- * =====  accountS Service: provides access to the accounts  =====
+ * =====  Accounts Service: provides access to the accounts  =====
  */
 .factory('accountsService', function($http, ENV, $location) {
 

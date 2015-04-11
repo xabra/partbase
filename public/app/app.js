@@ -4,6 +4,7 @@
 // --- Set up module with dependencies
 angular.module('app', [
    'ngRoute',
+   'ngResource',
    'groupsModule',
    'tenantsModule',
    'membershipsModule',
@@ -19,7 +20,7 @@ angular.module('app', [
 angular.module('app').config(['$routeProvider', '$locationProvider',
    function($routeProvider, $locationProvider) {
 
-      //$locationProvider.html5Mode(true);  TODO: tackle this URL bullshit later...
+      //$locationProvider.html5Mode(true);  TODO: tackle this URL stuff later...
 
       $routeProvider.
 //-------- ROOT ROUTE

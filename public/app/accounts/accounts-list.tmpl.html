@@ -6,11 +6,6 @@
 <div class="container-fluid">
    <div class="row">
 
-      <!-- Include Side Bar as First Column-->
-      <div class="col-sm-3 col-md-2 sidebar">
-         <div ng-include="'app/navigation/side-bar.tmpl.html'"></div>
-      </div>
-
       <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
          <!-- START CONTENT AREA =============== -->
@@ -33,7 +28,7 @@
                      <th>NAME</th>
                      <th>EMAIL</th>
                      <th>STATUS</th>
-                     <th>&nbsp &nbsp &nbsp ACTIONS</th>
+                     <th>ACTIONS</th>
                   </tr>
                </thead>
                <tbody>
@@ -54,18 +49,25 @@
                         {{account.status}}
                      </td>
                      <td>
+                     <!--
                         <a class="btn btn-sm" href="#/accounts/edit" role="button">
                            <span class="glyphicon glyphicon-pencil table-edit-icon" aria-hidden="true"></span>
                         </a>
                         <a class="btn btn-sm" href="#/accounts/edit" role="button">
                            <span class="glyphicon glyphicon-trash" class="table-edit-icon" aria-hidden="true"></span>
                         </a>
+                     -->
+
                         <span class="dropdown">
                            <a id="drop1" href="" class="dropdown-toggle btn btn-sm" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
                               <span class="glyphicon glyphicon-chevron-down"></span>
                            </a>
                            <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="drop1">
                               <li role="presentation"><a role="menuitem" tabindex="-1" href="">Disable</a>
+                              </li>
+                              <li role="presentation"><a role="menuitem" tabindex="-1" href="">Edit</a>
+                              </li>
+                              <li role="presentation"><a role="menuitem" tabindex="-1" href="">Delete Account</a>
                               </li>
                               <li role="presentation"><a role="menuitem" tabindex="-1" href="">Reset Password</a>
                               </li>
