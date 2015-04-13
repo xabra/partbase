@@ -15,7 +15,7 @@
 
             <!-- Header buttons -->
             <div class="btn-group pull-right">
-               <a class="btn btn-primary btn-sm" href="#/accounts/create" role="button">
+               <a class="btn btn-primary btn-sm" href="#/accounts/create" role="button" >
                   <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                   New
                </a>
@@ -24,10 +24,10 @@
                   <span class="caret"></span>
                </button>
                <ul class="dropdown-menu" role="menu">
-                  <li><a href="#">Disable Selected</a></li>
-                  <li><a href="#">Enable Selected</a></li>
+                  <li><a href="" ng-click="ctrl.setSelectionStatus('DISABLED')">Disable Selected</a></li>
+                  <li><a href="" ng-click="ctrl.setSelectionStatus('ENABLED')">Enable Selected</a></li>
                   <li class="divider"></li>
-                  <li><a href="#">Delete Selected</a></li>
+                  <li><a href=""  ng-click="ctrl.deleteSelection()">Delete Selected</a></li>
                </ul>
 
             </div>
@@ -47,7 +47,7 @@
                   </tr>
                </thead>
                <tbody>
-                  <tr ng-repeat="account in ctrl.accounts">
+                  <tr ng-repeat="account in ctrl.accounts track by account._id">  <!-- ng-repeat loop starts here -->
                      <td>
                         <input type="checkbox" ng-model="account.selected">
                      </td>
@@ -70,11 +70,11 @@
                               <span class="glyphicon glyphicon-chevron-down"></span>
                            </a>
                            <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="drop1">
-                              <li role="presentation"><a role="menuitem" tabindex="-1" href="">Disable</a>
+                              <li role="presentation"><a role="menuitem" tabindex="-1" href="" ng-click="ctrl.setItemStatus(account._id, 'DISABLED')">Disable</a>
                               </li>
-                              <li role="presentation"><a role="menuitem" tabindex="-1" href="">Edit</a>
+                              <li role="presentation"><a role="menuitem" tabindex="-1" href="" ng-click="ctrl.editItem(account._id)">Edit</a>
                               </li>
-                              <li role="presentation"><a role="menuitem" tabindex="-1" href="">Delete Account</a>
+                              <li role="presentation"><a role="menuitem" tabindex="-1" href="" ng-click="ctrl.deleteItem(account._id)">Delete Account</a>
                               </li>
                               <li role="presentation"><a role="menuitem" tabindex="-1" href="">Reset Password</a>
                               </li>
