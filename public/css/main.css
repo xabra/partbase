@@ -85,7 +85,8 @@ body {
 }
 
 .content-header {
-   color: #666;
+   color: #008;
+   margin-top: 25px;
    margin-bottom: 25px;
 }
 

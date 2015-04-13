@@ -61,12 +61,12 @@ angular.module('app').config(['$routeProvider', '$locationProvider',
 //-------- ACCOUNTS ROUTES
       when('/accounts', {
          templateUrl: 'app/accounts/accounts-list.tmpl.html',
-         controller: 'accountsListCtrl'
+         controller: 'accountsListCtrl as ctrl'
       }).
 
       when('/accounts/detail/:itemIndex', {
          templateUrl: 'app/accounts/account-detail.tmpl.html',
-         controller: 'accountsDetailCtrl'
+         controller: 'accountsDetailCtrl as ctrl'
       }).
 //-------- TENANTS ROUTES
       when('/tenants', {
