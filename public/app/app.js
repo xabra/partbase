@@ -63,10 +63,17 @@ angular.module('app').config(['$routeProvider', '$locationProvider',
          templateUrl: 'app/accounts/accounts-list.tmpl.html',
          controller: 'accountsListCtrl as ctrl'
       }).
-
       when('/accounts/detail/:itemIndex', {
          templateUrl: 'app/accounts/account-detail.tmpl.html',
          controller: 'accountsDetailCtrl as ctrl'
+      }).
+      when('/accounts/edit/:itemIndex', {
+         templateUrl: 'app/accounts/account-edit.tmpl.html',
+         controller: 'accountsEditCtrl as ctrl'
+      }).
+      when('/accounts/create', {
+         templateUrl: 'app/accounts/account-edit.tmpl.html',
+         controller: 'accountsEditCtrl as ctrl'
       }).
 //-------- TENANTS ROUTES
       when('/tenants', {
