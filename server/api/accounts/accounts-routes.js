@@ -10,6 +10,11 @@ router.get('/api/accounts', accounts.getList());
 router.get('/api/accounts/:itemId', accounts.getById());
 router.delete('/api/accounts/:itemId', accounts.deleteById());
 router.put('/api/accounts/:itemId', accounts.updateById);
-router.post('/api/accounts', accounts.create);
+
+ 
+router.post('/api/authenticate', accounts.authenticateAccount);    //
+router.post('/api/register', accounts.registerAccount);            //
+router.get('/api/logout', accounts.logout);                 //
+
 
 module.exports = router;

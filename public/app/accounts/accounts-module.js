@@ -81,19 +81,19 @@ angular.module('accountsModule', [])
 ])
 
 // --- Account EDIT controller ---
-.controller('accountsEditCtrl', ['$scope', '$routeParams', 'accountsService',
-   function($scope, $routeParams, accountsService) {
+.controller('accountsEditCtrl', ['$scope', '$routeParams', 'accountsService', '$location',
+   function($scope, $routeParams, accountsService, $location) {
       var self = this; // Capture scope
 
       // Init
       self.account = {};
       self.headingText = "";
 
-      var id = $routeParams.itemIndex;    // Get the item id from the route params
+      var id = $routeParams.itemIndex; // Get the item id from the route params
 
-      if (id == undefined) {    // CREATE a new item...
+      if (id == undefined) { // CREATE a new item...
          console.log("Create a new account...");
-         self.headingText  = "New User";
+         self.headingText = "New User";
 
       } else { // Otherwise EDIT and existing item
          console.log("Edit Existing Account id =" + id);
@@ -108,24 +108,17 @@ angular.module('accountsModule', [])
       }
 
       self.setItemStatus = function(newStatus) {
-         var update = {};
-         update.status = newStatus;
-         accountsService.update(self.account._id, update).
-         success(function(data) {
-            self.account = data; // Update local account variable
-         }).
-         error(function(response, status) {
-            console.log("ITEM ID = " + id + "Set Status Error=" + status);
-         })
+         self.account.status = newStatus; // Change the local value of account status, so it can be cancelled
       }
 
       self.save = function() {
-         accountsService.update(self.account._id, update).
+         accountsService.update(self.account._id, self.account).
          success(function(data) {
-            self.account = data; // Update local account variable
+            console.log("ITEM " + id + " UPDATED");
+            $location.path('/accounts')
          }).
          error(function(response, status) {
-            console.log("ITEM ID = " + id + "Set Status Error=" + status);
+            console.log("ITEM " + id + "Save Error=" + status);
          })
       }
    }
@@ -134,18 +127,22 @@ angular.module('accountsModule', [])
 // --- Account DETAIL controller ---
 .controller('accountsDetailCtrl', ['$scope', '$routeParams', 'accountsService',
    function($scope, $routeParams, accountsService) {
-      $scope.accounts = accountsService.entries;
+      var self = this; // Capture scope
 
+      // Init
+      self.account = {};
+      self.headingText = "";
 
-      var idx = $routeParams.itemIndex;
-      console.log("itemIndex = " + idx);
-      if (idx) {
-         $scope.account = $scope.accounts[idx]
-         console.log("account = " + JSON.stringify($scope.account));
-      } else { // Otherwise it is an EXISTING document for updating
-         // Error... handle it
-         console.log("docDetailCtrl: ERR no id");
-      }
+      var id = $routeParams.itemIndex; // Get the item id from the route params
+
+      accountsService.getById(id).
+      success(function(data) {
+         self.account = data;
+         self.headingText = self.account.givenName + " " + self.account.surname;
+      }).
+      error(function(response, status) {
+         console.log('ERROR:  Could not retrieve the item');
+      })
    }
 ])
 
@@ -179,7 +176,7 @@ angular.module('accountsModule', [])
    }
 
    //----- POST a new item
-   service.create = function(id, data) {
+   service.create = function(data) {
       return $http.post('/api/accounts/', data);
    }
 

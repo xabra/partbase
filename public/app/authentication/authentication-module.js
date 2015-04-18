@@ -84,7 +84,7 @@ angular.module('authenticationModule', [])
    }
 
    service.authenticate = function(authRequest) {
-      $http.post('/authenticate', authRequest)
+      $http.post('/api/authenticate', authRequest)
          .success(function(data, status, headers, config) {
             console.log("CLIENT: AUTHENTICATED ACCOUNT: " + JSON.stringify(data) + "HEADERS:" + JSON.stringify(headers));
             // TODO: Need to decide wether to cache the account on the client side here
@@ -102,7 +102,7 @@ angular.module('authenticationModule', [])
    }
 
    service.register = function(newAccount) {
-      $http.post('/register', newAccount)
+      $http.post('/api/register', newAccount)
          .success(function(data, status, headers, config) {
             console.log("Registration SUCCESSFUL - Account created: " + JSON.stringify(data));
             // TODO: Need to decide wether to cache the account on the client side here

@@ -5,8 +5,8 @@ var router = express.Router();
 var authentication = require('./authentication-controller');
 
 
-router.post('/api/authenticate', authentication.authenticateAccount);    // Get a list of tenants
-router.post('/api/register', authentication.registerNewAccount);            // Delete tenant given its Id
-router.get('/api/logout', authentication.logout);                 // Get tenant given its Id
+router.post('/api/authenticate', authentication.authenticateAccount);    //
+router.post('/api/register', authentication.registerNewAccount);            //
+router.get('/api/logout', authentication.logout);                 // 
 
 module.exports = router;

@@ -79,7 +79,7 @@ exports.updateById = function(request, response) {
 
 
 
-exports.create = function(request, response) {
+exports.registerAccount = function(request, response) {
    var accountData = request.body;
 
    accountData.email = accountData.email.toLowerCase(); // Lowercase it to prevent differences in case from becoming unique accounts
@@ -101,6 +101,16 @@ exports.create = function(request, response) {
    })
 };
 
+exports.authenticateAccount = function(request, response) {
+   ;  // TODO: do something here
+   response.status(200).send({}); // Send response with account that was inserted into DB
+};
+
+exports.logout = function(request, response) {
+   request.session.destroy();		// Delete the cookie with the accounts info.  TODO: Check if session exists first
+   console.log("account logged out from server");
+   response.status(200).send({}); // Send response with account that was inserted into DB
+}
 
 
 var mapping = function(item)

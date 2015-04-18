@@ -3,12 +3,11 @@
 angular.module('navigationModule', [])
 
 // --- NavBar View Controller ---
-.controller('navbarCtrl', ['$scope', '$location', 'authenticationService',
-   function($scope, $location, authenticationService) {
+.controller('navbarCtrl', ['$scope', '$location',
+   function($scope, $location) {
 
       $scope.logout = function() {   // If logout command...
-         authenticationService.logout();      // The the Authentication service to logout: wipe client-side data caches
-         $location.path('/login');     // Redirect to the login view
+         $location.path('/api/login');     // Redirect to the login view
       }
    }
 ]);

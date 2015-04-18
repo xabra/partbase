@@ -10,7 +10,6 @@ angular.module('app', [
    'membershipsModule',
    'documentsModule',
    'accountsModule',
-   'authenticationModule',
    'navigationModule',
    'dashboardModule',
    'constants',
@@ -68,10 +67,6 @@ angular.module('app').config(['$routeProvider', '$locationProvider',
          controller: 'accountsDetailCtrl as ctrl'
       }).
       when('/accounts/edit/:itemIndex', {
-         templateUrl: 'app/accounts/account-edit.tmpl.html',
-         controller: 'accountsEditCtrl as ctrl'
-      }).
-      when('/accounts/create', {
          templateUrl: 'app/accounts/account-edit.tmpl.html',
          controller: 'accountsEditCtrl as ctrl'
       }).

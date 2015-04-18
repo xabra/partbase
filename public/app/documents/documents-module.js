@@ -95,8 +95,8 @@ angular.module('documentsModule', [])
 
       }).
       error(function(response, status) { // Otherwise, error during GET
-         console.log('<< Documents: ERR: During CLIENT GETting documents');
-         $location.path('/login');     // TODO  need to check what status code here to decide what to do: redirect to login or alert
+         console.log('<< Documents: ERR: During CLIENT GETting documents'); 
+         $location.path('/api/login');     // TODO  need to check what status code here to decide what to do: redirect to login or alert
       });
    }
 
