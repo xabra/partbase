@@ -25,28 +25,28 @@
       <div class="form-group">
          <label for="inputGivenName" class="col-sm-2 control-label">First Name</label>
          <div class="col-sm-6">
-            <input type="text" id="inputGivenName" class="form-control" placeholder="First Name" required autofocus ng-model="ctrl.account.givenName">
+            <input type="text" id="inputGivenName" class="form-control" placeholder="First Name" required autofocus ng-model="ctrl.item.givenName">
          </div>
       </div>
       <div class="form-group">
          <label for="inputSurname" class="col-sm-2 control-label">Last Name</label>
          <div class="col-sm-6">
-            <input type="text" id="inputSurname" class="form-control" placeholder="Last Name" required autofocus ng-model="ctrl.account.surname">
+            <input type="text" id="inputSurname" class="form-control" placeholder="Last Name" required autofocus ng-model="ctrl.item.surname">
          </div>
       </div>
       <div class="form-group">
          <label for="inputEmail" class="col-sm-2 control-label">Email</label>
          <div class="col-sm-6">
-            <input type="text" id="inputEmail" class="form-control" placeholder="Email" required autofocus ng-model="ctrl.account.email">
+            <input type="text" id="inputEmail" class="form-control" placeholder="Email" required autofocus ng-model="ctrl.item.email">
          </div>
       </div>
       <div class="form-group">
          <label for="status" class="col-sm-2 control-label">Status</label>
-         <div class="col-sm-6 btn-group" ng-switch="ctrl.account.status">
+         <div class="col-sm-6 btn-group" ng-switch="ctrl.item.status">
             <button type="button" class="btn btn-default btn-sm">
                <span ng-switch-when="ENABLED" id="Enabled-OK-Sign" class="glyphicon glyphicon-ok-sign"></span>
                <span ng-switch-when="DISABLED" id="Disabled-Remove-Sign" class="glyphicon glyphicon-remove-sign"></span>
-               {{ctrl.account.status}}
+               {{ctrl.item.status}}
             </button>
             <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                <span class="caret"></span>

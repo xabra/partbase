@@ -15,7 +15,6 @@ angular.module('tenantsModule', [])
          Service.list().
          success(function(response) {
             self.items = response;
-            console.log('TENANTS: ' + JSON.stringify(self.items));
          }).
          error(function(response, status) { // Otherwise, error during GET
             console.log('ERR: list(): Status: ' + status);
