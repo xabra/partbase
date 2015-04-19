@@ -79,17 +79,20 @@ exports.updateById = function(request, response) {
 
 
 
-exports.registerAccount = function(request, response) {
-   var accountData = request.body;
+exports.register = function(request, response) {
+   var accountData = {};
 
-   accountData.email = accountData.email.toLowerCase(); // Lowercase it to prevent differences in case from becoming unique accounts
-   accountData.accountname = accountData.accountname;    // Case sensitive accountname (not used here)
-   accountData.accountname = accountData.email;    // Make the accountname be the email address
-   // Could validate email address so it has the form of a real email address
+   accountData.givenName = request.body.givenName;
+   accountData.surname = request.body.surname;
+   accountData.accountName = request.body.email.toLowerCase();    // Make the accountname be the email address
+   accountData.email = request.body.email.toLowerCase(); // Lowercase it to prevent differences in case from becoming unique accounts
+   accountData.status = 'ENABLED';
 
    accountData.salt = encrypt.createSalt();     // Create the salt
-   accountData.hashed_pwd = encrypt.hashPwd(accountData.salt, accountData.password);   // Hash the password with te salt
+   accountData.hashed_pwd = encrypt.hashPwd(accountData.salt, request.body.password);   // Hash the password with te salt
 
+
+   console.log("Attempting to create new account with:" + JSON.stringify(accountData));
    resource.create(accountData, function(err, account) {
       if (err) {     // If error...
          if (err.toString().indexOf('E11000') > -1) {    // If Mongo error E11000 meaning non-uniqueness...
@@ -101,7 +104,7 @@ exports.registerAccount = function(request, response) {
    })
 };
 
-exports.authenticateAccount = function(request, response) {
+exports.authenticate = function(request, response) {
    ;  // TODO: do something here
    response.status(200).send({}); // Send response with account that was inserted into DB
 };

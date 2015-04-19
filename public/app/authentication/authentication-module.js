@@ -29,7 +29,6 @@ angular.module('authenticationModule', [])
       $scope.account = {
          givenName: '',
          surname: '',
-         tenant: '',
          email: '',
          password: '',
       };
@@ -41,14 +40,11 @@ angular.module('authenticationModule', [])
          var newAccount = {      // Create a new account object
             givenName: $scope.account.givenName,
             surname: $scope.account.surname,
-            accountname: '',
+            accountName: '',
             email: $scope.account.email,
             password: $scope.account.password,
-            customData: {
-               tenant: $scope.account.tenant
-            }
          };
-         console.log("Registering: " + JSON.stringify(newAccount));
+         console.log("C controller: Registering: " + JSON.stringify(newAccount));
          authenticationService.register(newAccount);      // Invoke register on the Authentication service with the new account
          // TODO: Handle errors and redirects here
       };
@@ -74,7 +70,7 @@ angular.module('authenticationModule', [])
 
    service.logout = function() {
       service.flushAll();
-      $http.post('/logout'). // Tell server to logout account
+      $http.post('/accounts/logout'). // Tell server to logout account
       success(function(response) {
          console.log("SUCCESSFUL. Server Logged out");
       }).
@@ -84,7 +80,7 @@ angular.module('authenticationModule', [])
    }
 
    service.authenticate = function(authRequest) {
-      $http.post('/api/authenticate', authRequest)
+      $http.post('/api/accounts/authenticate', authRequest)
          .success(function(data, status, headers, config) {
             console.log("CLIENT: AUTHENTICATED ACCOUNT: " + JSON.stringify(data) + "HEADERS:" + JSON.stringify(headers));
             // TODO: Need to decide wether to cache the account on the client side here
@@ -102,11 +98,12 @@ angular.module('authenticationModule', [])
    }
 
    service.register = function(newAccount) {
-      $http.post('/api/register', newAccount)
+      console.log("C register service: Registering: " + JSON.stringify(newAccount));
+      $http.post('/api/accounts/register', newAccount)
          .success(function(data, status, headers, config) {
             console.log("Registration SUCCESSFUL - Account created: " + JSON.stringify(data));
             // TODO: Need to decide wether to cache the account on the client side here
-            $location.path('/documents') //Redirect to documents page
+            $location.path('/accounts') //Redirect to documents page
             // TODO : Refactor the redirects and UI stuff out of here
          })
          .error(function(data, status) {

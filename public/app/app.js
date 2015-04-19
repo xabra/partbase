@@ -12,6 +12,7 @@ angular.module('app', [
    'accountsModule',
    'navigationModule',
    'dashboardModule',
+   'authenticationModule',
    'constants',
 ]);
 

@@ -36,15 +36,29 @@ angular.module('accountsModule', [])
       self.count();
 
       // --- Bulk operations on a selection
-      self.setSelectionStatus = function(status) {
-         console.log("DISABLE SELECTION - TBI" + "Set Status=" + status);
+      self.setSelectionStatus = function(newStatus) {
+         console.log("EN/DISABLE SELECTION" + "Set Status=" + newStatus);
+         self.accounts.forEach(function(account, index) {
+            if (account.selected) {
+               self.setItemStatus(account._id, index, newStatus);
+            }
+         });
       }
 
       self.deleteSelection = function() {
-         console.log("DELETE SELECTION - TBI");
+         var i = 0;
+
+         var account = {};
+
+         console.log("DELETE SELECTION");
+         for (i = 0; i < self.accounts.length; i++) { // Loop over all accounts in local array
+            account = self.accounts[i]; //Get reference to an account
+            if (account.selected) { // If the account is selected...
+               self.deleteItem(account._id, i); //Delete the item from DB and local array
+            }
+         }
+         self.list();
       }
-
-
 
       // --- Single item operations
       self.setItemStatus = function(id, index, newStatus) {
@@ -64,13 +78,18 @@ angular.module('accountsModule', [])
          console.log("DELETE ITEM ID = " + id);
          accountsService.delete(id).
          success(function(response) {
-            console.log("DELETE SUCCESSFUL");
+            console.log("DB DELETE SUCCESSFUL");
             self.accounts.splice(index, 1); //  Yank the deleted item from the local array
+            console.log("LOCAL DELETE Index= " + index);
             self.count();
          }).
          error(function(response, status) {
             alert('Delete error!');
          })
+      }
+
+      self.fakeDeleteItem = function(id, index) {
+         console.log("PRE-DELETE ITEM ID = " + id + ", Index= " + index);
       }
 
       self.editItem = function(id) {

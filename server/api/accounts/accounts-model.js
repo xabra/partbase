@@ -5,7 +5,7 @@ var statusENUM = ['ENABLED', 'DISABLED', 'UNVERIFIED'];
 
 var accountSchema = mongoose.Schema({
 
-   accountname: {
+   accountName: {
       type: String,
       required: '{PATH} is required!',
       unique: true,
@@ -45,18 +45,7 @@ var accountSchema = mongoose.Schema({
    },
 });
 
-accountSchema.methods = {
-   authenticate: function(passwordToMatch) {
-      return encrypt.hashPwd(this.salt, passwordToMatch) === this.hashed_pwd;
-   },
-   hasRole: function(role) {
-      return this.groups.indexOf(group) > -1;
-   }
-};
 
-accountSchema.virtual('href').get(function(){
-   return 'https://blahblah/' + this._id;
-});
 
 // TODO: add virtual functions to compute Full Name and HREFs based on object IDs
 
@@ -68,9 +57,9 @@ function populateDBWithDummyData() {
       if (collection.length === 0) {
          var salt, hash;
          salt = encrypt.createSalt();
-         hash = encrypt.hashPwd(salt, 'joe');
+         hash = encrypt.hashPwd(salt, 'joe'); 
          Account.create({
-            accountname: 'joe',
+            accountName: 'joe',
             email: 'joe@x.com',
             givenName: 'Joe',
             surname: 'Smith',
@@ -82,7 +71,7 @@ function populateDBWithDummyData() {
          salt = encrypt.createSalt();
          hash = encrypt.hashPwd(salt, 'john');
          Account.create({
-            accountname: 'john',
+            accountName: 'john',
             email: 'john@x.com',
             givenName: 'John',
             surname: 'Smith',
@@ -94,7 +83,7 @@ function populateDBWithDummyData() {
          salt = encrypt.createSalt();
          hash = encrypt.hashPwd(salt, 'dan');
          Account.create({
-            accountname: 'dan',
+            accountName: 'dan',
             email: 'dan@x.com',
             givenName: 'John',
             surname: 'Smith',
