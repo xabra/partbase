@@ -27,7 +27,7 @@ angular.module('app').config(['$routeProvider', '$locationProvider',
       when('/', {
          redirectTo: '/documents'
       }).
-//-------- ACCOUNTS ROUTES
+//-------- DASHBOARD ROUTES
       when('/dashboard', {
          templateUrl: 'app/dashboard/dashboard.tmpl.html',
          controller: 'dashboardCtrl'
@@ -74,11 +74,15 @@ angular.module('app').config(['$routeProvider', '$locationProvider',
 //-------- TENANTS ROUTES
       when('/tenants', {
          templateUrl: 'app/tenants/tenants-list.tmpl.html',
-         controller: 'tenantsListCtrl'
+         controller: 'tenantsListCtrl as ctrl'
       }).
-      when('/tenants/create', {
-         templateUrl: 'app/tenants/tenants-create.tmpl.html',
-         controller: 'tenantsCreateCtrl'
+      when('/tenants/detail/:itemIndex', {
+         templateUrl: 'app/tenants/tenant-detail.tmpl.html',
+         controller: 'tenantsDetailCtrl as ctrl'
+      }).
+      when('/tenants/edit/:itemIndex', {
+         templateUrl: 'app/tenants/tenant-edit.tmpl.html',
+         controller: 'tenantsEditCtrl as ctrl'
       }).
 //-------- GROUPS ROUTES
       when('/groups', {

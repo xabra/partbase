@@ -1,39 +1,95 @@
-
 <!-- Include Nav Bar -->
-<div ng-include = "'app/navigation/nav-bar.tmpl.html'"></div>
+<div ng-include="'app/navigation/nav-bar.tmpl.html'"></div>
 
 
 <!-- Setup grid row in fluid container -->
 <div class="container-fluid">
-  <div class="row">
+   <div class="row">
+      <div class="col-sm-10 col-sm-offset-1 main">
 
-    <div class="col-sm-10 col-sm-offset-1  main">
+         <!-- START CONTENT AREA =============== -->
+         <h3 class="content-header">
+            <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span>
+            &nbsp {{ctrl.itemCount}} Tenants
 
-      <!-- START CONTENT AREA =============== -->
-      <h3>
-         <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span>
-         Tenants
-         <a class="btn btn-primary btn-sm pull-right" href="#/tenants/create" role="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New</a>
-      </h3>
+            <!-- Header buttons -->
+            <div class="btn-group pull-right">
+               <a class="btn btn-primary btn-sm" href="#/tenants/edit/0" role="button">
+                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                  New
+               </a>
+               <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                  Bulk Actions
+                  <span class="caret"></span>
+               </button>
+               <ul class="dropdown-menu" role="menu">
+                  <li><a href="" ng-click="ctrl.setSelectionStatus('DISABLED')">Disable Selected</a></li>
+                  <li><a href="" ng-click="ctrl.setSelectionStatus('ENABLED')">Enable Selected</a></li>
+                  <li class="divider"></li>
+                  <li><a href="" ng-click="ctrl.deleteSelection()">Delete Selected</a></li>
+               </ul>
 
-      <div class="table-responsive">
-        <table class="table table-hover table-condensed">
-          <thead>
-            <tr>
-              <th>NAME</th>
-              <th>KEY</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat = "tenant in tenants">
-              <td>{{tenant.name}}</td>
-              <td>{{tenant.key}}</td>
-            </tr>
-          </tbody>
-        </table>
+            </div>
+         </h3>
+
+         <div class="table-responsive">
+            <table class="table table-hover table-condensed">
+               <thead>
+                  <tr>
+                     <th>
+                        <input type="checkbox">
+                     </th>
+                     <th>Name</th>
+                     <th>Key</th>
+                     <th>Status</th>
+                     <th>Actions</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <!-- ======== ng-repeat LOOP start ========== -->
+                  <tr ng-repeat="tenant in ctrl.items">
+                     <td>
+                        <input type="checkbox" ng-model="tenant.selected">
+                     </td>
+                     <td>
+                        <a class="btn btn-sm" ng-href="#/tenants/detail/{{tenant._id}}" role="button">
+                           <span id="table-row-icon" class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> {{tenant.name}}
+                        </a>
+                     </td>
+                     <td>
+                        {{tenant.key}}
+                     </td>
+                     <td ng-switch="tenant.status">
+                        <span ng-switch-when="ENABLED" id="Enabled-OK-Sign" class="glyphicon glyphicon-ok-sign"></span>
+                        <span ng-switch-when="DISABLED" id="Disabled-Remove-Sign" class="glyphicon glyphicon-remove-sign"></span>
+                        {{tenant.status}}
+                     </td>
+
+                     <td>
+
+                        <span class="dropdown">
+                           <a id="drop1" href="" class="dropdown-toggle btn btn-sm" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
+                              <span class="glyphicon glyphicon-chevron-down"></span>
+                           </a>
+                           <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="drop1" ng-switch="tenant.status">
+                              <li role="presentation"><a role="menuitem" tabindex="-1" href="" ng-switch-when="DISABLED" ng-click="ctrl.setItemStatus(tenant._id, $index, 'ENABLED')">Enable</a></li>
+                              <li role="presentation"><a role="menuitem" tabindex="-1" href="" ng-switch-when="ENABLED" ng-click="ctrl.setItemStatus(tenant._id, $index, 'DISABLED')">Disable</a></li>
+                              <li role="presentation"><a role="menuitem" tabindex="-1" href="" ng-click="ctrl.editItem(tenant._id)">Edit</a>
+                              </li>
+                              <li role="presentation"><a role="menuitem" tabindex="-1" href="" ng-click="ctrl.deleteItem(tenant._id, $index)">Delete Tenant</a>
+                              </li>
+                           </ul>
+                        </span>
+
+                     </td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+
+         <!-- END CONTENT AREA ================= -->
       </div>
-
-      <!-- END CONTENT AREA ================= -->
-    </div>
-  </div>  <!-- END Row -->
-</div>  <!-- END container-flud -->
+   </div>
+   <!-- END Row -->
+</div>
+<!-- END container-flud -->

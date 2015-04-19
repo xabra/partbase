@@ -2,8 +2,8 @@ angular.module('accountsModule', [])
 
 
 // --- Accounts LIST controller ---
-.controller('accountsListCtrl', ['$scope', 'accountsService', '$location',
-   function($scope, accountsService, $location) {
+.controller('accountsListCtrl', ['accountsService', '$location',
+   function(accountsService, $location) {
       var self = this; // Capture scope
 
       // --- Init
@@ -24,7 +24,6 @@ angular.module('accountsModule', [])
       self.count = function() {
          accountsService.count().success(function(response) {
             self.itemCount = response.count;
-            console.log('accountsListCtrl: count() = : ' + response.count);
          }).
          error(function(response, status) { // Otherwise, error during GET
             console.log('ERR: accountsListCtrl: count(): Status: ' + status);
@@ -37,7 +36,6 @@ angular.module('accountsModule', [])
 
       // --- Bulk operations on a selection
       self.setSelectionStatus = function(newStatus) {
-         console.log("EN/DISABLE SELECTION" + "Set Status=" + newStatus);
          self.accounts.forEach(function(account, index) {
             if (account.selected) {
                self.setItemStatus(account._id, index, newStatus);
@@ -50,14 +48,13 @@ angular.module('accountsModule', [])
 
          var account = {};
 
-         console.log("DELETE SELECTION");
          for (i = 0; i < self.accounts.length; i++) { // Loop over all accounts in local array
             account = self.accounts[i]; //Get reference to an account
             if (account.selected) { // If the account is selected...
                self.deleteItem(account._id, i); //Delete the item from DB and local array
             }
          }
-         self.list();
+         self.list();      // Refresh the local array
       }
 
       // --- Single item operations
@@ -69,18 +66,14 @@ angular.module('accountsModule', [])
             self.accounts.splice(index, 1, data); // Update local array of items...could hit the API for the full array again...
          }).
          error(function(response, status) {
-            //
             console.log("ITEM ID = " + id + "Set Status Error=" + status);
          })
       }
 
       self.deleteItem = function(id, index) {
-         console.log("DELETE ITEM ID = " + id);
          accountsService.delete(id).
          success(function(response) {
-            console.log("DB DELETE SUCCESSFUL");
             self.accounts.splice(index, 1); //  Yank the deleted item from the local array
-            console.log("LOCAL DELETE Index= " + index);
             self.count();
          }).
          error(function(response, status) {
@@ -88,20 +81,15 @@ angular.module('accountsModule', [])
          })
       }
 
-      self.fakeDeleteItem = function(id, index) {
-         console.log("PRE-DELETE ITEM ID = " + id + ", Index= " + index);
-      }
-
       self.editItem = function(id) {
-         console.log("EDIT ITEM ID = " + id);
          $location.path("/accounts/edit/" + id)
       }
    }
 ])
 
 // --- Account EDIT controller ---
-.controller('accountsEditCtrl', ['$scope', '$routeParams', 'accountsService', '$location',
-   function($scope, $routeParams, accountsService, $location) {
+.controller('accountsEditCtrl', ['$routeParams', 'accountsService', '$location',
+   function($routeParams, accountsService, $location) {
       var self = this; // Capture scope
 
       // Init
@@ -115,7 +103,6 @@ angular.module('accountsModule', [])
          self.headingText = "New User";
 
       } else { // Otherwise EDIT and existing item
-         console.log("Edit Existing Account id =" + id);
          accountsService.getById(id).
          success(function(data) {
             self.account = data;
@@ -144,8 +131,8 @@ angular.module('accountsModule', [])
 ])
 
 // --- Account DETAIL controller ---
-.controller('accountsDetailCtrl', ['$scope', '$routeParams', 'accountsService',
-   function($scope, $routeParams, accountsService) {
+.controller('accountsDetailCtrl', ['$routeParams', 'accountsService',
+   function($routeParams, accountsService) {
       var self = this; // Capture scope
 
       // Init
@@ -173,38 +160,37 @@ angular.module('accountsModule', [])
 
    // --- Initialization, executed during a page refresh
    var service = {}; // Reset the service object
+   var path = '/api/accounts/';
 
    //----- GET Number of items in the collection
    service.count = function() {
-      return $http.get('/api/accounts/count'); // HTTP Get data. Return a promise
+      return $http.get(path + 'count'); // HTTP Get data. Return a promise
    }
 
    //----- GET all items
    service.list = function() {
-      return $http.get('/api/accounts');
+      return $http.get(path);
    }
 
    //----- GET one item by id
    service.getById = function(id) {
-      return $http.get('/api/accounts/' + id);
+      return $http.get(path + id);
    }
 
    //----- PUT one item by id
    service.update = function(id, data) {
-      return $http.put('/api/accounts/' + id, data);
+      return $http.put(path + id, data);
    }
 
    //----- POST a new item
    service.create = function(data) {
-      return $http.post('/api/accounts/', data);
+      return $http.post(path, data);
    }
 
    //----- DELETE an entry by _id
    service.delete = function(id) {
-      return $http.delete('/api/accounts/' + id);
+      return $http.delete(path + id);
    }
-
-
 
    return service;
 });

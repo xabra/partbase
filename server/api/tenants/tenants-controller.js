@@ -90,9 +90,11 @@ exports.create = function() {
 var mapping = function(item)
 {
    var result = {};
+   result._id = item._id;
    result.href = "http://localhost:3000/api/tenants/" + item._id;      // TODO: Pass in URI prefix somehow
    result.name = item.name;
    result.key = item.key;
+   result.status = item.status;
 
    return result;
 }
