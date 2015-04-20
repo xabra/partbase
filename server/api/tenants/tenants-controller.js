@@ -11,13 +11,14 @@ var resource = require('mongoose').model('Tenant');
 exports.count = function() {
    return function(request, response) {
       resource.count({}, function(err, count) {
-         response.send({count: count});
+         response.send({
+            count: count
+         });
       });
    };
 };
 
 exports.getList = function() {
-
    return function(request, response) {
       resource.find({}, function(err, collection) {
          response.send(collection.map(mapping));
@@ -87,11 +88,10 @@ exports.create = function() {
 };
 
 
-var mapping = function(item)
-{
+var mapping = function(item) {
    var result = {};
    result._id = item._id;
-   result.href = "http://localhost:3000/api/tenants/" + item._id;      // TODO: Pass in URI prefix somehow
+   result.href = "http://localhost:3000/api/tenants/" + item._id; // TODO: Pass in URI prefix somehow
    result.name = item.name;
    result.key = item.key;
    result.status = item.status;

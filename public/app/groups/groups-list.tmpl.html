@@ -5,46 +5,83 @@
 <!-- Setup grid row in fluid container -->
 <div class="container-fluid">
    <div class="row">
-
-      <div class="col-sm-10 col-sm-offset-1  main">
+      <div class="col-sm-10 col-sm-offset-1 main">
 
          <!-- START CONTENT AREA =============== -->
-         <h3>
+         <h3 class="content-header">
             <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
             <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-            Groups
-            <a class="btn btn-primary btn-sm pull-right" href="#/groups/create" role="button">
-               <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-               New
-            </a>
+            &nbsp {{ctrl.itemCount}} Groups
+
+            <!-- Header buttons -->
+            <div class="btn-group pull-right">
+               <a class="btn btn-primary btn-sm" href="#/groups/edit/0" role="button">
+                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                  New
+               </a>
+               <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                  Bulk Actions
+                  <span class="caret"></span>
+               </button>
+               <ul class="dropdown-menu" role="menu">
+                  <li><a href="" ng-click="ctrl.setSelectionStatus('DISABLED')">Disable Selected</a></li>
+                  <li><a href="" ng-click="ctrl.setSelectionStatus('ENABLED')">Enable Selected</a></li>
+                  <li class="divider"></li>
+                  <li><a href="" ng-click="ctrl.deleteSelection()">Delete Selected</a></li>
+               </ul>
+
+            </div>
          </h3>
 
          <div class="table-responsive">
             <table class="table table-hover table-condensed">
                <thead>
                   <tr>
-                     <th>NAME</th>
-                     <th>DESCRIPTION</th>
-                     <th>STATUS</th>
-                     <th>&nbsp &nbsp &nbsp &nbsp   ACTIONS</th>
+                     <th>
+                        <input type="checkbox">
+                     </th>
+                     <th>Name</th>
+                     <th>Description</th>
+                     <th>Status</th>
+                     <th>Actions</th>
                   </tr>
                </thead>
                <tbody>
-                  <tr ng-repeat="group in groups">
-                     <td>{{group.name}}</td>
-                     <td>{{group.description}}</td>
-                     <td>{{group.status}}</td>
+                  <!-- ======== ng-repeat LOOP start ========== -->
+                  <tr ng-repeat="group in ctrl.items">
                      <td>
-                        <a class="btn btn-sm" href="#/accounts/edit" role="button">
-                           <span class="glyphicon glyphicon-pencil table-edit-icon" aria-hidden="true"></span>
-                        </a>
-                        <a class="btn btn-sm" href="#/accounts/edit" role="button">
-                           <span class="glyphicon glyphicon-trash" class="table-edit-icon" aria-hidden="true"></span>
-                        </a>
-                        <a class="btn btn-sm" href="#/accounts/edit" role="button">
-                           <span class="glyphicon glyphicon-chevron-down" class="table-edit-icon" aria-hidden="true"></span>
+                        <input type="checkbox" ng-model="group.selected">
+                     </td>
+                     <td>
+                        <a class="btn btn-sm" ng-href="#/groups/detail/{{group._id}}" role="button">
+                           <span id="table-row-icon" class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> {{group.name}}
                         </a>
                      </td>
+                     <td>
+                        {{group.description}}
+                     </td>
+                     <td ng-switch="group.status">
+                        <span ng-switch-when="ENABLED" id="Enabled-OK-Sign" class="glyphicon glyphicon-ok-sign"></span>
+                        <span ng-switch-when="DISABLED" id="Disabled-Remove-Sign" class="glyphicon glyphicon-remove-sign"></span>
+                        {{group.status}}
+                     </td>
+
+                     <td>
+
+                        <span class="dropdown">
+                           <a id="drop1" href="" class="dropdown-toggle btn btn-sm" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
+                              <span class="glyphicon glyphicon-chevron-down"></span>
+                           </a>
+                           <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="drop1" ng-switch="group.status">
+                              <li role="presentation"><a role="menuitem" tabindex="-1" href="" ng-switch-when="DISABLED" ng-click="ctrl.setItemStatus(group._id, $index, 'ENABLED')">Enable</a></li>
+                              <li role="presentation"><a role="menuitem" tabindex="-1" href="" ng-switch-when="ENABLED" ng-click="ctrl.setItemStatus(group._id, $index, 'DISABLED')">Disable</a></li>
+                              <li role="presentation"><a role="menuitem" tabindex="-1" href="" ng-click="ctrl.editItem(group._id)">Edit</a>
+                              </li>
+                              <li role="presentation"><a role="menuitem" tabindex="-1" href="" ng-click="ctrl.deleteItem(group._id, $index)">Delete Group</a>
+                              </li>
+                           </ul>
+                        </span>
+
                      </td>
                   </tr>
                </tbody>

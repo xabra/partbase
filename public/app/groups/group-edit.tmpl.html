@@ -1,0 +1,64 @@
+<!-- Include Nav Bar -->
+<div ng-include="'app/navigation/nav-bar.tmpl.html'"></div>
+
+<!-- Setup grid row in fluid container -->
+<div class="container-fluid">
+   <div class="row">
+
+      <div class="col-sm-10 col-sm-offset-1  main">
+
+
+         <!-- START CONTENT AREA =============== -->
+
+         <h3>{{ctrl.headingText}}</h3>
+
+         <form class="form-horizontal">
+            <div class="form-group">
+               <label for="inputGroupName" class="col-sm-2 control-label">Group Name</label>
+               <div class="col-sm-10">
+                  <input type="text" class="form-control" id="inputGroupName" placeholder="My Group" ng-model="ctrl.item.name">
+               </div>
+            </div>
+            <div class="form-group">
+               <label for="inputTenantDomain" class="col-sm-2 control-label">Group Description</label>
+               <div class="col-sm-10">
+                  <input type="text" class="form-control" id="inputTenantDomain" placeholder="Description" ng-model="ctrl.item.description">
+               </div>
+            </div>
+            <div class="form-group">
+               <label for="status" class="col-sm-2 control-label">Status</label>
+               <div class="col-sm-6 btn-group" ng-switch="ctrl.item.status">
+                  <button type="button" class="btn btn-default btn-sm">
+                     <span ng-switch-when="ENABLED" id="Enabled-OK-Sign" class="glyphicon glyphicon-ok-sign"></span>
+                     <span ng-switch-when="DISABLED" id="Disabled-Remove-Sign" class="glyphicon glyphicon-remove-sign"></span>
+                     {{ctrl.item.status}}
+                  </button>
+                  <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                     <span class="caret"></span>
+                     <span class="sr-only">Toggle Dropdown</span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu">
+                     <li><a href="" ng-switch-when="DISABLED" ng-click="ctrl.setItemStatus('ENABLED')">Enable</a></li>
+                     <li><a href="" ng-switch-when="ENABLED" ng-click="ctrl.setItemStatus('DISABLED')">Disable</a></li>
+                  </ul>
+               </div>
+            </div>
+
+            <!-- BUTTONS -->
+            <div class="form-group">
+               <div class="col-sm-offset-2 col-sm-10">
+                  <button type="submit" class="btn btn-primary" ng-click="ctrl.save()">
+                     <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Save</button>
+                  <a class="btn btn-default" href="#/groups/" role="button">
+                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel</a>
+               </div>
+            </div>
+
+         </form>
+
+         <!-- END CONTENT AREA ================= -->
+      </div>
+   </div>
+   <!-- END Row -->
+</div>
+<!-- END container-flud -->

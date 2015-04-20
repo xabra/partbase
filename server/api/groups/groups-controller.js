@@ -1,6 +1,5 @@
 'use strict';
 
-
 // TODO: Better error checking
 // TODO: replace mapping with 2-way function, maybe middleware
 // TODO: Implement HATEOAS URL links
@@ -12,17 +11,17 @@ var resource = require('mongoose').model('Group');
 exports.count = function() {
    return function(request, response) {
       resource.count({}, function(err, count) {
-         response.send({count: count});
+         response.send({
+            count: count
+         });
       });
    };
 };
 
 exports.getList = function() {
-
    return function(request, response) {
       resource.find({}, function(err, collection) {
-         var m = mapping(request);
-         response.send(collection.map(m));
+         response.send(collection.map(mapping));
       });
    };
 };
@@ -31,8 +30,7 @@ exports.getById = function() {
    return function(request, response) {
       var id = request.params.itemId;
       resource.findById(id, function(err, item) {
-         var m = mapping(request);
-         response.send(m(item));
+         response.send(mapping(item));
       });
    };
 };
@@ -51,6 +49,7 @@ exports.updateById = function() {
    return function(request, response) {
       var id = request.params.itemId;
       resource.findById(id, function(err, item) {
+         console.log("updateById: ERR= " + err + ", Found Item with ID.  Item= " + JSON.stringify(item))
          if (err) { // If error finding item...
             return response.status(400).send({
                reason: err.toString()
@@ -59,13 +58,17 @@ exports.updateById = function() {
 
          // Otherwise, found a matching item...
          var updates = request.body;
+         console.log("updateById: UPDATES=" + JSON.stringify(updates))
 
          // Overwrite values of all item keys that are in the updates object
          item = helpers.updateObjectValues(updates, item);
+         console.log("updateById: NEW RECORD=" + JSON.stringify(item))
 
          item.save(function(err) { // Save the updated item to the DB
             if (err) {;
+               console.log("updateById: ERROR ON ITEM SAVE=" + err.toString());
             } // TODO: Do some error checking here !
+            console.log("updateById: Got to item save")
             response.status(202).send(mapping(item)); // Otherwise no err, return the updated item
          });
       });
@@ -89,16 +92,13 @@ exports.create = function() {
    };
 };
 
-var mapping = function(request) {
-   return function(item) {
-      var result = {};
-      result._id = item._id;
+var mapping = function(item) {
+   var result = {};
+   result._id = item._id;
+   result.href = "TBD"; //request.protocol+"://"+request.hostname+request.path + item._id; // TODO: Pass in URI prefix somehow
+   result.name = item.name;
+   result.description = item.description;
+   result.status = item.status;
 
-      result.href = "TBD"; //request.protocol+"://"+request.hostname+request.path + item._id; // TODO: Pass in URI prefix somehow
-      result.name = item.name;
-      result.description = item.description;
-      result.status = item.status;
-
-      return result;
-   }
-};
+   return result;
+}

@@ -6,7 +6,7 @@ var groupSchema = mongoose.Schema({
    name: {
       type: String,
       required: '{PATH} is required!',
-      unique: true,
+      unique: true, 
    },
    description: {
       type: String,

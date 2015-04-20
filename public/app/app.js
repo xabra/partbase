@@ -87,7 +87,15 @@ angular.module('app').config(['$routeProvider', '$locationProvider',
 //-------- GROUPS ROUTES
       when('/groups', {
          templateUrl: 'app/groups/groups-list.tmpl.html',
-         controller: 'groupsListCtrl'
+         controller: 'groupsListCtrl as ctrl'
+      }).
+      when('/groups/detail/:itemIndex', {
+         templateUrl: 'app/groups/group-detail.tmpl.html',
+         controller: 'groupsDetailCtrl as ctrl'
+      }).
+      when('/groups/edit/:itemIndex', {
+         templateUrl: 'app/groups/group-edit.tmpl.html',
+         controller: 'groupsEditCtrl as ctrl'
       }).
 //-------- MEMBERSHIPS ROUTES
       when('/memberships', {
