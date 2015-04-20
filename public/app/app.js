@@ -100,7 +100,7 @@ angular.module('app').config(['$routeProvider', '$locationProvider',
 //-------- MEMBERSHIPS ROUTES
       when('/memberships', {
          templateUrl: 'app/memberships/memberships-list.tmpl.html',
-         controller: 'membershipsListCtrl'
+         controller: 'membershipsListCtrl as ctrl'
       }).
 //-------- DEFAULT REDIRECT ROUTE
       otherwise({

@@ -5,39 +5,52 @@
 <!-- Setup grid row in fluid container -->
 <div class="container-fluid">
    <div class="row">
-
-
-      <!-- Include Side Bar as First Column-->
-      <!--
-      <div class="col-sm-3 col-md-2 sidebar">
-         <div ng-include="'app/navigation/side-bar.tmpl.html'"></div>
-      </div>
-      -->
-
-      <div class="col-sm-10 col-sm-offset-1  main">
+      <div class="col-sm-10 col-sm-offset-1 main">
 
          <!-- START CONTENT AREA =============== -->
-         <h3>
-            <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
-            Memberships
-            <a class="btn btn-primary btn-sm pull-right" href="#/membership/create" role="button">
-               <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-               New
-            </a>
+         <h3 class="content-header">
+            <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span>
+            &nbsp {{ctrl.itemCount}} Memberships
+
+            <!-- Header buttons -->
+            <div class="btn-group pull-right">
+               <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                  Bulk Actions
+                  <span class="caret"></span>
+               </button>
+               <ul class="dropdown-menu" role="menu">
+                  <li><a href="" ng-click="ctrl.deleteSelection()">Delete Selected</a></li>
+               </ul>
+
+            </div>
          </h3>
 
          <div class="table-responsive">
             <table class="table table-hover table-condensed">
                <thead>
                   <tr>
-                     <th>ACCOUNT ID</th>
-                     <th>GROUP ID</th>
+                     <th><input type="checkbox"></th>
+                     <th>Account HREF</th>
+                     <th>Group HREF</th>
                   </tr>
                </thead>
                <tbody>
-                  <tr ng-repeat="membership in memberships">
-                     <td>{{membership.account.href}}</td>
-                     <td>{{membership.group.href}}</td>
+                  <!-- ======== ng-repeat LOOP start ========== -->
+                  <tr ng-repeat="item in ctrl.items">
+                     <td>
+                        <input type="checkbox" ng-model="item.selected">
+                     </td>
+                     <td>
+                        <a class="btn btn-sm" ng-href="" role="button">
+                           <span id="table-row-icon" class="glyphicon glyphicon-link" aria-hidden="true"></span> {{item.account.href}}
+                        </a>
+                     </td>
+                     <td>
+                        <a class="btn btn-sm" ng-href="" role="button">
+                           <span id="table-row-icon" class="glyphicon glyphicon-link" aria-hidden="true"></span> {{item.group.href}}
+                        </a>
+                     </td>
+
                   </tr>
                </tbody>
             </table>
