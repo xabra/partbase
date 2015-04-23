@@ -1,0 +1,48 @@
+<!-- Include Nav Bar -->
+<div ng-include="'app/navigation/nav-bar.tmpl.html'"></div>
+
+
+<!-- Setup grid row in fluid container -->
+<div class="container-fluid">
+
+   <div class="row">
+      <div class="col-sm-10 col-sm-offset-1 main">
+
+         <h3 class="content-header">
+            <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+            &nbsp {{ctrl.headingText}}
+
+            <!-- Header buttons -->
+            <div class="btn-group pull-right">
+               <a class="btn btn-default btn-sm" href="#/documents/" role="button">
+                  <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                  Back
+               </a>
+               <a class="btn btn-primary btn-sm" href="#/documents/edit/{{ctrl.item._id}}" role="button">
+                  <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                  Edit
+               </a>
+            </div>
+         </h3>
+
+
+         <dl class="dl-horizontal">
+				<dt>Title</dt>   <dd>{{ctrl.item.title}}</dd>
+				<dt>Description</dt>   <dd>{{ctrl.item.description}}</dd>
+				<dt>Doc Num</dt>   <dd>{{ctrl.item.documentNum}}</dd>
+				<dt>Revision</dt>   <dd>{{ctrl.item.revision}}</dd>
+				<dt>Document Type</dt>   <dd>{{ctrl.item.docType}}</dd>
+				<dt>Part Type</dt>   <dd>{{ctrl.item.partType}}</dd>
+				<dt>Project</dt>   <dd>{{ctrl.item.project}}</dd>
+				<dt>Author</dt>   <dd>{{ctrl.item.author}}</dd>
+				<dt>Date Created</dt>   <dd>{{ctrl.item.createdDate | date: 'short'}}</dd>
+				<dt>_id</dt>   <dd>{{ctrl.item._id}}</dd>
+			</dl>
+
+      </div>
+   </div>
+
+
+
+</div>
+<!-- END container-flud -->

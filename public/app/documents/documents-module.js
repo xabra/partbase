@@ -1,174 +1,185 @@
-
-
-// --- Document list controller ---
 angular.module('documentsModule', [])
 
-.controller('docListCtrl', ['$scope', 'documentsService',
-   function($scope, documentsService) {
-      $scope.documents = documentsService.entries;
+// --- documents LIST controller ---
+.controller('documentsListCtrl', ['documentsService', '$location',
+   function(documentsService, $location) {
+      var self = this; // Capture scope
+      var Service = documentsService;
 
-      //I DONT UNDERSTAND THIS !! --we need to watch the list of documents more closely to have it always updated ---
-      $scope.$watch(function() {
-         return documentsService.entries;
-      }, function(entries) {
-         $scope.documents = entries;
-      });
+      // --- Init
+      self.items = [];
+      self.itemCount = null;
+
+      // --- Reading operation
+      self.list = function() {
+         Service.list().
+         success(function(response) {
+            self.items = response;
+         }).
+         error(function(response, status) { // Otherwise, error during GET
+            console.log('ERR: list(): Status: ' + status);
+         });
+      }
+
+      self.count = function() {
+         Service.count().success(function(response) {
+            self.itemCount = response.count;
+         }).
+         error(function(response, status) { // Otherwise, error during GET
+            console.log('ERR: count(): Status: ' + status);
+         });
+      }
+
+      // Init
+      self.list();
+      self.count();
+
+      // --- Bulk operations on a selection
+
+      self.deleteSelection = function() {
+         var i = 0;
+
+         var item = {};
+
+         for (i = 0; i < self.items.length; i++) { // Loop over all items in local array
+            item = self.items[i]; //Get reference to an item
+            if (item.selected) { // If the item is selected...
+               self.deleteItem(item._id, i); //Delete the item from DB and local array
+            }
+         }
+         self.list();      // Refresh the local array
+      }
+
+      // --- Single item operations
+
+      self.deleteItem = function(id, index) {
+         Service.delete(id).
+         success(function(response) {
+            self.items.splice(index, 1); //  Yank the deleted item from the local array
+            self.count();
+         }).
+         error(function(response, status) {
+            alert('Delete error!');
+         })
+      }
+
+      self.editItem = function(id) {
+         $location.path("/documents/edit/" + id)
+      }
    }
 ])
 
+// --- document EDIT controller ---
+.controller('documentsEditCtrl', ['$routeParams', 'documentsService', '$location',
+   function($routeParams, documentsService, $location) {
+      var self = this; // Capture scope
+      var Service = documentsService;
 
-// --- New/Edit Document View Controller ---
-.controller('docEditCtrl', ['$scope', '$routeParams', '$location', 'documentsService',
-   function($scope, $routeParams, $location, documentsService) {
-      if (!$routeParams.id) {
-         // Hmmmm  !
-      } else { // Otherwise it is an EXISTING document for updating
-         $scope.document = _.clone(documentsService.getById($routeParams.id));
+      // Init
+      self.item = {};
+      self.headingText = "";
+
+      var id = $routeParams.itemIndex; // Get the item id from the route params
+
+      if (id == undefined || id < 1) { // CREATE a new item...
+         self.headingText = "New Document";
+
+      } else { // Otherwise EDIT and existing item
+         Service.getById(id).
+         success(function(data) {
+            self.item = data;
+            self.headingText = self.item.title;
+         }).
+         error(function(response, status) {
+            console.log('ERROR:  Could not retrieve the item');
+         })
       }
 
-      //push the expense to the array of expenses. Duplicate entries will thow error unless adding  "track by $index" to the ng-repeat directive
-      $scope.save = function() {
-         console.log("Saving...")
-         documentsService.save($scope.document);
-         $location.path('/'); //Send account back to the root
-      };
+      self.save = function() {
+         if(id == undefined || id < 1) {  // CREATING a new record
+            Service.create(self.item).
+            success(function(data) {
+               console.log("ITEM " + id + " CREATED: " + JSON.stringify(data));
+               $location.path('/documents')
+            }).
+            error(function(response, status) {
+               console.log("CREATE Error=" + status);
+            })
+         } else{     // UPDATING an existing record
+            Service.update(self.item._id, self.item).
+            success(function(data) {
+               console.log("ITEM " + id + " UPDATED");
+               $location.path('/documents')
+            }).
+            error(function(response, status) {
+               console.log("ITEM " + id + "Save Error=" + status);
+            })
+         }
+      }
    }
 ])
 
-// --- Document detail controller ---
-.controller('docDetailCtrl', ['$scope', '$routeParams', '$location', 'documentsService',
-   function($scope, $routeParams, $location, documentsService) {
-      console.log("<< docDetailCtrl: Got doc ID: " + $routeParams.id);
-      //console.log("<< docDetailCtrl: Got doc ID: 4" + Documents.entries[4]);
+// --- document DETAIL controller ---
+.controller('documentsDetailCtrl', ['$routeParams', 'documentsService',
+   function($routeParams, documentsService) {
+      var self = this; // Capture scope
+      var Service = documentsService;
 
-      //I DONT UNDERSTAND THIS !! --we need to watch the list of documents more closely to have it always updated ---
-      $scope.$watch(function() {
-         return documentsService.entries;
-      }, function(entries) {
-         $scope.document = documentsService.getById($routeParams.id);
-         //$scope.document = entries;
-      });
+      // Init
+      self.item = {};
+      self.headingText = "";
 
-      if ($routeParams.id) {
-         $scope.document = documentsService.getById($routeParams.id);
-      } else { // Otherwise it is an EXISTING document for updating
-         // Error... handle it
-         console.log("docDetailCtrl: ERR no id");
-      }
+      var id = $routeParams.itemIndex; // Get the item id from the route params
 
-      console.log("<< docDetailCtrl: Got doc ID: " + $routeParams.id + $scope.document);
-
-      $scope.delete = function() {
-         console.log("<< docDetailCtrl: Deleteing " + $scope.document);
-         documentsService.delete($scope.document);
-         $location.path('/'); //Send account back to the root
-      };
+      Service.getById(id).
+      success(function(data) {
+         self.item = data;
+         self.headingText = self.item.title;
+      }).
+      error(function(response, status) {
+         console.log('ERROR:  Could not retrieve the item');
+      })
    }
 ])
 
 /*
- * =====  DOCUMENTS Service: provides access to the client-side =====
+ *=====  Documents Service: provides access to the documents  =====
  */
-.factory('documentsService', function($http, ENV, $location) {
+
+.factory('documentsService', function($http) {
 
    // --- Initialization, executed during a page refresh
    var service = {}; // Reset the service object
-   service.entries = []; // Reset the the array of documents
+   var path = '/api/documents/';
 
-   console.log('<< Documents SERVICE initialized');
-   // readAll() is executed below, after the method is defined....hmmm
-
-   // ---- METHODS ----
-
-   //----- Read in all documents via http GET
-   service.readAll = function() {
-
-      //----- HTTP Get data
-      $http.get('/api/documents').
-      success(function(response) { // If GET is successful...
-         service.entries = response;
-         console.log('<< CLIENT GOT DATA');
-
-         service.entries.forEach(function(element) { // loop over all documents
-            element.createdDate = new Date(element.createdDate); //convert date strings to Date objects
-         });
-
-      }).
-      error(function(response, status) { // Otherwise, error during GET
-         console.log('<< Documents: ERR: During CLIENT GETting documents'); 
-         $location.path('/api/login');     // TODO  need to check what status code here to decide what to do: redirect to login or alert
-      });
+   //----- GET Number of items in the collection
+   service.count = function() {
+      return $http.get(path + 'count'); // HTTP Get data. Return a promise
    }
 
-
-   service.readAll(); // Call the server and read in all the documents
-
-
-   service.flush = function() {
-      console.log('<< FLUSH Documents');
-      service.entries = []; // Clear out cache
+   //----- GET all items
+   service.list = function() {
+      return $http.get(path);
    }
 
-
-   //----- Helper function to find an entry by id in the client array, using underscore.js
+   //----- GET one item by id
    service.getById = function(id) {
-      console.log("<< Document Service: service.getById(" + id + ")");
-
-      //find retrieves the first entry that passes the condition.
-      var entry = _.find(service.entries, function(entry) { // Underscore library
-         return entry._id == id; //  Matching condition
-      });
-
-      return entry;
+      return $http.get(path + id);
    }
 
-   //----- update an entry
-   service.save = function(entry) {
-      //find element we want to update
-      var toUpdate = service.getById(entry._id);
-
-      if (toUpdate) { //if it exists, we update
-
-         console.log('<< CLIENT UPDATE: ' + JSON.stringify(entry));
-         $http.post('/api/documents/' + entry._id, entry). //update in the server
-         success(function(data) {
-            if (data.success) {
-               //copy all the properties from "entry" to the object we want to update
-               _.extend(toUpdate, entry);
-            }
-         }).
-         error(function(data, status) {
-            alert('Update error!');
-         });
-      } else { //otherwise we create it
-         //push new entry to the cloud
-         console.log('<< CLIENT NEW: >>' + JSON.stringify(entry));
-         $http.post('/api/documents', entry).
-         success(function(response) {
-            console.log("CREATE/SUCCESS. Server Response: " + JSON.stringify(response));
-            service.entries.push(response); // Push new document sent back by server
-         }).
-         error(function(data, status) {
-            alert('New entry error!');
-         });
-      }
+   //----- PUT one item by id
+   service.update = function(id, data) {
+      return $http.put(path + id, data);
    }
 
-   //----- delete an entry
-   service.delete = function(entry) {
-      //delete on the server, if successful update client side
-      $http.delete('/api/documents/' + entry._id).
-      success(function(response) {
-         console.log("<< DELETE/SUCCESS. Server Response: " + JSON.stringify(response));
-         if (response.success) { // If the delete operation was successful...
-            service.entries = _.reject(service.entries, function(element) { // Remove the document from the client-side cache
-               return element._id == entry._id;
-            });
-         }
-      }).
-      error(function(response, status) {
-         alert('Delete error!');
-      })
+   //----- POST a new item
+   service.create = function(data) {
+      return $http.post(path, data);
+   }
+
+   //----- DELETE an entry by _id
+   service.delete = function(id) {
+      return $http.delete(path + id);
    }
 
    return service;

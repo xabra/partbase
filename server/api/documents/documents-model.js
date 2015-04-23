@@ -7,18 +7,23 @@ var documentSchema = mongoose.Schema({
    },
    description: {
       type: String,
+      default: '',
    },
    docType: {
       type: String,
+      default: '',
    },
    partType: {
       type: String,
+      default: '',
    },
    project: {
       type: String,
+      default: '',
    },
    author: {
       type: String,
+      default: '',
    },
    createdDate: {
       type: Date,

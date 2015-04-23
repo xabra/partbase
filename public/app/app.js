@@ -25,7 +25,7 @@ angular.module('app').config(['$routeProvider', '$locationProvider',
       $routeProvider.
 //-------- ROOT ROUTE
       when('/', {
-         redirectTo: '/documents'
+         redirectTo: '/dashboard'
       }).
 //-------- DASHBOARD ROUTES
       when('/dashboard', {
@@ -34,20 +34,16 @@ angular.module('app').config(['$routeProvider', '$locationProvider',
       }).
 //-------- DOCUMENTS ROUTES
       when('/documents', {
-         templateUrl: 'app/documents/doc-list.tmpl.html',
-         controller: 'docListCtrl'
-      }).
-      when('/documents/new', {
-         templateUrl: 'app/documents/doc-new.tmpl.html',
-         controller: 'docEditCtrl'
+         templateUrl: 'app/documents/documents-list.tmpl.html',
+         controller: 'documentsListCtrl as ctrl'
       }).
       when('/documents/edit/:itemIndex', {
-         templateUrl: 'app/documents/doc-new.tmpl.html',
-         controller: 'docEditCtrl'
+         templateUrl: 'app/documents/document-edit.tmpl.html',
+         controller: 'documentsEditCtrl as ctrl'
       }).
       when('/documents/detail/:itemIndex', {
-         templateUrl: 'app/documents/doc-detail.tmpl.html',
-         controller: 'docDetailCtrl'
+         templateUrl: 'app/documents/document-detail.tmpl.html',
+         controller: 'documentsDetailCtrl as ctrl'
       }).
 //-------- AUTHENTICATION ROUTES
       when('/login', {
