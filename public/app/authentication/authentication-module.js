@@ -2,20 +2,23 @@ angular.module('authenticationModule', [])
 
 
 // --- Login View Controller ---
-.controller('loginCtrl', ['$scope', '$location', '$http', 'authenticationService',
-   function($scope, $location, $http, authenticationService) {
+.controller('loginCtrl', ['$location', 'authenticationService',
+   function($location, authenticationService) {
+      var self = this; // Capture scope
+      var Service = authenticationService;
+
       // Initialization
-      $scope.account = { email: '', password: ''};
+      self.account = { email: '', password: ''};
 
       //TODO give feedback on failed login
 
-      $scope.login = function() {      // When the login button is clicked...
+      self.login = function() {      // When the login button is clicked...
          var authRequest = {     // Create an auth request from the form fields supplied by account
-            accountname: $scope.account.email,     // Stormpath expects an authRequest object with a 'accountname' key
-            password: $scope.account.password
+            accountname: self.account.email,     // Stormpath expects an authRequest object with a 'accountname' key
+            password: self.account.password
          };
          console.log("CLIENT: Attempting to authenticate with: " + JSON.stringify(authRequest));
-         authenticationService.authenticate(authRequest);
+         Service.authenticate(authRequest);
          // TODO: Handle errors and redirects here
       };
 
@@ -23,29 +26,31 @@ angular.module('authenticationModule', [])
 ])
 
 // --- Register View Controller ---
-.controller('registerCtrl', ['$scope', '$location', '$http','authenticationService',
-   function($scope, $location, $http, authenticationService) {
+.controller('registerCtrl', ['$location', 'authenticationService',
+   function($location, authenticationService) {
+      var self = this; // Capture scope
+      var Service = authenticationService;
 
-      $scope.account = {
+      self.account = {
          givenName: '',
          surname: '',
          email: '',
          password: '',
       };
 
-      $scope.message = '';
+      self.message = '';
 
       //--
-      $scope.register = function() {     // When the register button is clicked...
+      self.register = function() {     // When the register button is clicked...
          var newAccount = {      // Create a new account object
-            givenName: $scope.account.givenName,
-            surname: $scope.account.surname,
+            givenName: self.account.givenName,
+            surname: self.account.surname,
             accountName: '',
-            email: $scope.account.email,
-            password: $scope.account.password,
+            email: self.account.email,
+            password: self.account.password,
          };
          console.log("C controller: Registering: " + JSON.stringify(newAccount));
-         authenticationService.register(newAccount);      // Invoke register on the Authentication service with the new account
+         Service.register(newAccount);      // Invoke register on the Authentication service with the new account
          // TODO: Handle errors and redirects here
       };
    }
@@ -56,20 +61,14 @@ angular.module('authenticationModule', [])
 /*
  *=====  AUTHENTICATION Service: provides access to the tenants  =====
  */
-.factory('authenticationService', function($http, $location, tenantsService, documentsService, accountsService) {
+.factory('authenticationService', function($http, $location) {
 
    // --- Initialization, executed during a page refresh
    var service = {}; // Reset the service object
    console.log('<< Authentication SERVICE initialized');
 
-   service.flushAll = function() {
-      tenantsService.flush();
-      documentsService.flush();
-      accountsService.flush();
-   }
 
    service.logout = function() {
-      service.flushAll();
       $http.post('/accounts/logout'). // Tell server to logout account
       success(function(response) {
          console.log("SUCCESSFUL. Server Logged out");
@@ -84,7 +83,7 @@ angular.module('authenticationModule', [])
          .success(function(data, status, headers, config) {
             console.log("CLIENT: AUTHENTICATED ACCOUNT: " + JSON.stringify(data) + "HEADERS:" + JSON.stringify(headers));
             // TODO: Need to decide wether to cache the account on the client side here
-            $location.path('/documents') //Redirect to documents/dashboard page
+            $location.path('/dashboard') //Redirect to documents/dashboard page
             // TODO : Refactor the redirects and UI stuff out of here
          })
          .error(function(data, status, headers, config) {
@@ -103,7 +102,7 @@ angular.module('authenticationModule', [])
          .success(function(data, status, headers, config) {
             console.log("Registration SUCCESSFUL - Account created: " + JSON.stringify(data));
             // TODO: Need to decide wether to cache the account on the client side here
-            $location.path('/accounts') //Redirect to documents page
+            $location.path('/dashboard') //Redirect to documents page
             // TODO : Refactor the redirects and UI stuff out of here
          })
          .error(function(data, status) {

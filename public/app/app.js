@@ -30,7 +30,7 @@ angular.module('app').config(['$routeProvider', '$locationProvider',
 //-------- DASHBOARD ROUTES
       when('/dashboard', {
          templateUrl: 'app/dashboard/dashboard.tmpl.html',
-         controller: 'dashboardCtrl'
+         controller: 'dashboardCtrl as ctrl'
       }).
 //-------- DOCUMENTS ROUTES
       when('/documents', {
@@ -48,11 +48,11 @@ angular.module('app').config(['$routeProvider', '$locationProvider',
 //-------- AUTHENTICATION ROUTES
       when('/login', {
          templateUrl: 'app/authentication/login.tmpl.html',
-         controller: 'loginCtrl'
+         controller: 'loginCtrl as ctrl'
       }).
       when('/register', {
          templateUrl: 'app/authentication/register.tmpl.html',
-         controller: 'registerCtrl'
+         controller: 'registerCtrl as ctrl'
       }).
 //-------- ACCOUNTS ROUTES
       when('/accounts', {
@@ -100,7 +100,7 @@ angular.module('app').config(['$routeProvider', '$locationProvider',
       }).
 //-------- DEFAULT REDIRECT ROUTE
       otherwise({
-         redirectTo: '/documents'
+         redirectTo: '/dashboard'
       });
    }
 ]);
