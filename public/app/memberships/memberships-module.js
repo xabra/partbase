@@ -9,6 +9,7 @@ angular.module('membershipsModule', [])
       // --- Init
       self.items = [];
       self.itemCount = null;
+      self.nextCheckAll = true;  // What will happen to the selection state next time the the "CheckAll" button is clicked
 
       // --- Reading operation
       self.list = function() {
@@ -35,6 +36,14 @@ angular.module('membershipsModule', [])
       self.list();
       self.count();
 
+      // --- Set selection state of all items to state
+      self.selectAll = function(state) {
+         self.items.forEach(function(item) {
+            item.selected = state;
+         });
+         self.nextCheckAll = !self.nextCheckAll;   // Toggle the nextCheckAll state
+      }
+
       // --- Bulk operations on a selection
       self.deleteSelection = function() {
          var i = 0;
@@ -48,6 +57,7 @@ angular.module('membershipsModule', [])
             }
          }
          self.list();      // Refresh the local array
+         self.nextCheckAll = true;  // item selected state will be cleared, so be ready to select all
       }
 
       // --- Single item operation

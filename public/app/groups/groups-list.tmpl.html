@@ -35,10 +35,12 @@
 
          <div class="table-responsive">
             <table class="table table-hover table-condensed">
-               <thead>
+               <thead>  <!-- ======== TABLE HEADER ========== -->
                   <tr>
                      <th>
-                        <input type="checkbox">
+                        <a role="button" ng-click="ctrl.selectAll(ctrl.nextCheckAll)">
+                           <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+                        </a>
                      </th>
                      <th>Name</th>
                      <th>Description</th>
@@ -46,8 +48,7 @@
                      <th>Actions</th>
                   </tr>
                </thead>
-               <tbody>
-                  <!-- ======== ng-repeat LOOP start ========== -->
+               <tbody> <!-- ======== TABLE BODY ng-repeat LOOP start ========== -->
                   <tr ng-repeat="group in ctrl.items">
                      <td>
                         <input type="checkbox" ng-model="group.selected">
@@ -87,6 +88,7 @@
                </tbody>
             </table>
          </div>
+
 
          <!-- END CONTENT AREA ================= -->
       </div>

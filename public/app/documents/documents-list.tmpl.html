@@ -33,7 +33,11 @@
             <table class="table table-hover table-condensed">
                <thead>
                   <tr>
-                     <th><input type="checkbox"></th>
+                     <th>
+                        <a role="button" ng-click="ctrl.selectAll(ctrl.nextCheckAll)">
+                           <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+                        </a>
+                     </th>
                      <th>Number</th>
                      <th>Rev.</th>
                      <th>Title</th>
