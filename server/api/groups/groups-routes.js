@@ -4,6 +4,7 @@ var express = require('express');
 var router = express.Router();
 var groups = require('./groups-controller');
 
+// -- Standard CRUD routes
 router.get('/api/groups/count', groups.count());                 // Get a list of groups
 router.get('/api/groups', groups.getList());                 // Get a list of groups
 router.get('/api/groups/:itemId', groups.getById());         // Get group given its Id

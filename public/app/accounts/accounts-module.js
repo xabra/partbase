@@ -151,6 +151,7 @@ angular.module('accountsModule', [])
       // Init
       self.item = {};
       self.headingText = "";
+      self.groups = [];
 
       var id = $routeParams.itemIndex; // Get the item id from the route params
 
@@ -162,6 +163,18 @@ angular.module('accountsModule', [])
       error(function(response, status) {
          console.log('ERROR:  Could not retrieve the item');
       })
+
+      self.getAccountGroupsList = function(id){
+         Service.getAccountGroupsList(id).
+         success(function(data){
+            self.groups = data;
+         }).
+         error(function(response, status) {
+            console.log('ERR: ListCtrl: list(): Status: ' + status);
+         })
+      }
+
+      self.getAccountGroupsList(id);
    }
 ])
 
@@ -203,6 +216,11 @@ angular.module('accountsModule', [])
    //----- DELETE an entry by _id
    service.delete = function(id) {
       return $http.delete(path + id);
+   }
+
+   //----- GET the list of groups associated with this account id
+   service.getAccountGroupsList = function(id) {
+      return $http.get(path + id + '/groups');
    }
 
    return service;

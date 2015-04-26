@@ -9,7 +9,8 @@
       <div class="col-sm-10 col-sm-offset-1 main">
 
          <h3 class="content-header">
-            <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span>
+            <span id="table-row-icon" class="glyphicon glyphicon-user" aria-hidden="true"></span>
+            <span id="table-row-icon" class="glyphicon glyphicon-user" aria-hidden="true"></span>
             &nbsp {{ctrl.headingText}}
 
             <!-- Header buttons -->
@@ -38,6 +39,35 @@
                {{ctrl.item.status}}
             </dd>
          </dl>
+
+         <!--- ACCOUNTS TABLE -->
+         <h4>
+            <span id="table-row-icon" class="glyphicon glyphicon-user" aria-hidden="true"></span>
+            Members
+         </h4>
+         <div class="table-responsive">
+            <table class="table table-hover table-condensed">
+               <thead>
+                  <tr>
+                     <th>Name</th>
+                     <th>Email</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <!-- ======== ng-repeat LOOP start ========== -->
+                  <tr ng-repeat="account in ctrl.accounts">
+                     <td>
+                        <a ng-href="#/accounts/detail/{{account._id}}">
+                           {{account.givenName +' '+ account.surname}}
+                        </a>
+                     </td>
+                     <td>
+                        {{account.email}}
+                     </td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
 
       </div>
    </div>

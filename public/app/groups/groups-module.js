@@ -174,6 +174,18 @@ angular.module('groupsModule', [])
       error(function(response, status) {
          console.log('ERROR:  Could not retrieve the item');
       })
+
+      self.getGroupAccountsList = function(id){
+         Service.getGroupAccountsList(id).
+         success(function(data){
+            self.accounts = data;
+         }).
+         error(function(response, status) {
+            console.log('ERR: ListCtrl: list(): Status: ' + status);
+         })
+      }
+
+      self.getGroupAccountsList(id);
    }
 ])
 
@@ -215,6 +227,11 @@ angular.module('groupsModule', [])
    //----- DELETE an entry by _id
    service.delete = function(id) {
       return $http.delete(path + id);
+   }
+
+   //----- GET the list of accounts associated with this group id
+   service.getGroupAccountsList = function(id) {
+      return $http.get(path + id + '/accounts');
    }
 
    return service;

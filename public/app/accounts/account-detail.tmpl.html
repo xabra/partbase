@@ -41,6 +41,36 @@
             </dd>
          </dl>
 
+         <!--- GROUPS TABLE -->
+         <h4>
+            <span id="table-row-icon" class="glyphicon glyphicon-user" aria-hidden="true"></span>
+            <span id="table-row-icon" class="glyphicon glyphicon-user" aria-hidden="true"></span>
+            Groups
+         </h4>
+         <div class="table-responsive">
+            <table class="table table-hover table-condensed">
+               <thead>
+                  <tr>
+                     <th>Name</th>
+                     <th>Description</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <!-- ======== ng-repeat LOOP start ========== -->
+                  <tr ng-repeat="group in ctrl.groups">
+                     <td>
+                        <a ng-href="#/groups/detail/{{group._id}}">
+                           {{group.name}}
+                        </a>
+                     </td>
+                     <td>
+                        {{group.description}}
+                     </td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+
       </div>
    </div>
 
