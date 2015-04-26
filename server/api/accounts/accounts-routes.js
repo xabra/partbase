@@ -9,16 +9,11 @@ router.get('/api/accounts/count', accounts.count());
 router.get('/api/accounts', accounts.getList());
 router.get('/api/accounts/:itemId', accounts.getById());
 router.delete('/api/accounts/:itemId', accounts.deleteById());
-router.put('/api/accounts/:itemId', accounts.apiUpdateById);
+router.put('/api/accounts/:itemId', accounts.updateById);
 
-// -- Groups api functions
-/*
-router.get('/api/accounts/:accountId/groups', accounts.getGroupsList());
-
-router.get('/api/accounts/:accountId/groups/:groupsId', accounts.getGroup());
-
-*/
-router.post('/api/accounts/:accountId/groups/:groupsId', accounts.joinGroup);
+// -- Groups & Memberships routes
+router.get('/api/accounts/:itemId/groups', accounts.getAccountGroupsList);
+router.get('/api/accounts/:itemId/memberships', accounts.getAccountMembershipsList);
 
 
 router.post('/api/accounts/authenticate', accounts.authenticate);    //

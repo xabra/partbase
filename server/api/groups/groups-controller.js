@@ -4,8 +4,15 @@
 // TODO: replace mapping with 2-way function, maybe middleware
 // TODO: Implement HATEOAS URL links
 
+var async = require('async');
 var helpers = require('../../utilities/helpers');
+var memberships = require('../memberships/memberships-controller');
+var accounts = require('../accounts/accounts-controller');
+
 var resource = require('mongoose').model('Group');
+var Accounts = require('mongoose').model('Account');
+var Memberships = require('mongoose').model('Membership');
+
 
 
 exports.count = function() {
@@ -92,13 +99,55 @@ exports.create = function() {
    };
 };
 
+exports.getGroupMembershipsList = function(request, response) {
+   var id = request.params.itemId;     // Get the account id from the request path
+
+   Memberships.find({groupId: id}, function(err, collection) {    // Query the Memberships for all entries with that account id
+      response.send(collection.map(memberships.mapping));
+   });
+
+};
+
+exports.getGroupAccountsList = function(request, response) {
+   var id = request.params.itemId;     // Get the account id from the request path
+   var accountsList = [];
+
+   Memberships.find({groupId: id}, function(err, collection) {    // Query the Memberships for all entries with that account id
+      if(err) return handleError(err);
+
+      var iterator = function(membership, cb) {
+         Accounts.findById(membership.accountId, function(err, account) {
+            if(err) {
+               cb(err);
+            } else {
+               console.log("Found Account" + JSON.stringify(account));
+               accountsList.push(account);
+               cb(); // Call cb with null = no error
+            }
+         })
+      };
+
+      var completion = function(err) {
+         if(err) return handleError(err);
+         console.log("Collection:" + JSON.stringify(accountsList));
+         response.send(accountsList.map(accounts.mapping));
+      };
+
+      async.each(collection, iterator, completion);
+
+   });
+
+};
+
 var mapping = function(item) {
    var result = {};
    result._id = item._id;
-   result.href = "TBD"; //request.protocol+"://"+request.hostname+request.path + item._id; // TODO: Pass in URI prefix somehow
+   result.href = "TBI"; //request.protocol+"://"+request.hostname+request.path + item._id; // TODO: Pass in URI prefix somehow
    result.name = item.name;
    result.description = item.description;
    result.status = item.status;
 
    return result;
 }
+
+exports.mapping = mapping;

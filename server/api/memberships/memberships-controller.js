@@ -67,15 +67,12 @@ exports.updateById = function() {
       });
    };
 };
-
+ 
 exports.create = function() {
    return function(request, response) {
       var data = request.body;
       resource.create(data, function(err, item) {
          if (err) { // If error...
-            if (err.toString().indexOf('E11000') > -1) { // If Mongo error E11000 meaning non-uniqueness...
-               err = new Error('Duplicate Group');
-            }
             return response.status(409).send({
                reason: err.toString()
             }); // Otherwise some other error
@@ -95,3 +92,5 @@ var mapping = function(item)
 
    return result;
 }
+
+exports.mapping = mapping;

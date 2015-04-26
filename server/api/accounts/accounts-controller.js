@@ -4,8 +4,11 @@
 // TODO: replace mapping with 2-way function, maybe middleware
 // TODO: Implement HATEOAS URL links
 
+var async = require('async');
 var encrypt = require('../../utilities/encryption');
 var helpers = require('../../utilities/helpers');
+var memberships = require('../memberships/memberships-controller');
+var groups = require('../groups/groups-controller');
 
 var resource = require('mongoose').model('Account');
 var Memberships = require('mongoose').model('Membership');
@@ -15,7 +18,9 @@ var Groups = require('mongoose').model('Group');
 exports.count = function() {
    return function(request, response) {
       resource.count({}, function(err, count) {
-         response.send({ count: count });
+         response.send({
+            count: count
+         });
       });
    };
 };
@@ -48,19 +53,19 @@ exports.deleteById = function() {
 };
 
 
-exports.apiUpdateById = function(request, response) {
+exports.updateById = function(request, response) {
    var id = request.params.itemId;
    var updates = request.body;
 
    updateAccountById(id, updates, function(err, account) {
-      if(err) return handleError(err);
+      if (err) return handleError(err);
       response.status(202).send(mapping(account));
    })
 }
 
 var updateAccountById = function(id, updates, cb) {
    resource.findById(id, function(err, account) {
-      if(err) return handleError(err);
+      if (err) return handleError(err);
       updateAccount(account, updates, cb)
    });
 }
@@ -84,6 +89,47 @@ var updateAccount = function(account, updates, cb) {
    account.save(cb);
 }
 
+exports.getAccountMembershipsList = function(request, response) {
+   var id = request.params.itemId;     // Get the account id from the request path
+
+   Memberships.find({accountId: id}, function(err, collection) {    // Query the Memberships for all entries with that account id
+      response.send(collection.map(memberships.mapping));
+   });
+
+};
+
+exports.getAccountGroupsList = function(request, response) {
+   var id = request.params.itemId;     // Get the account id from the request path
+   var groupsList = [];
+
+   Memberships.find({accountId: id}, function(err, collection) {    // Query the Memberships for all entries with that account id
+      if(err) return handleError(err);
+
+      var iterator = function(membership, cb) {
+         Groups.findById(membership.groupId, function(err, group) {
+            if(err) {
+               cb(err);
+            } else {
+               console.log("Found Group" + JSON.stringify(group));
+               groupsList.push(group);
+               cb(); // Call cb with null = no error
+            }
+         })
+      };
+
+      var completion = function(err) {
+         if(err) return handleError(err);
+         console.log("Collection:" + JSON.stringify(groupsList));
+         response.send(groupsList.map(groups.mapping));
+      };
+
+      async.each(collection, iterator, completion);
+
+   });
+
+};
+
+// ----- AUTHENTICATION -----
 exports.register = function(request, response) {
    var accountData = {};
 
@@ -121,26 +167,8 @@ exports.logout = function(request, response) {
    response.status(200).send({}); // Send response with account that was inserted into DB
 }
 
-//==========  GROUPS functions
 
-exports.joinGroup = function(request, response) {
-   var accountId = request.params.itemId;
-   var groupId = request.params.groupId;
-
-   // Does the group exist?
-   Groups.findById(groupId, function(err, item) {
-      if (err) {
-         // Couldnt find group
-      }
-
-   });
-   // Is the account already a member of the group?
-   // Create a membership between account and group
-
-   response.status(200).send({}); // Send response
-}
-
-
+// ----- MAPPING DB TO API ----
 var mapping = function(item) {
    var result = {};
    result._id = item._id;
@@ -155,6 +183,10 @@ var mapping = function(item) {
    return result;
 }
 
+exports.mapping = mapping;
+
+// ----- ERROR HANDLING -----
+
 var handleError = function(err) {
-   console.log("ERROR:" + err.toString())
+   console.log("ACCOUNTS CONTROLLER ERROR:" + err.toString())
 }
