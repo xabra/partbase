@@ -155,14 +155,16 @@ angular.module('groupsModule', [])
 ])
 
 // --- group DETAIL controller ---
-.controller('groupsDetailCtrl', ['$routeParams', 'groupsService',
-   function($routeParams, groupsService) {
+.controller('groupsDetailCtrl', ['$routeParams', 'groupsService', 'accountsService', 'membershipsService',
+   function($routeParams, groupsService, accountsService, membershipsService) {
       var self = this; // Capture scope
       var Service = groupsService;
 
       // Init
-      self.item = {};
+      self.item = {};      // Ths group
       self.headingText = "";
+      self.accounts = [];     // List of accounts belonging to this group
+      self.otherAccounts = [];   // List of accounts to populate dropdown menus for adding otehr Accounts to groups
 
       var id = $routeParams.itemIndex; // Get the item id from the route params
 
@@ -185,7 +187,45 @@ angular.module('groupsModule', [])
          })
       }
 
+      self.getOtherAccountsList = function(){
+
+         // TODO  - get only accounts NOT in the account list
+         accountsService.list().
+         success(function(data){
+            self.otherAccounts = data;
+            console.log('ACCOUNTS:: ' + JSON.stringify(data));
+         }).
+         error(function(response, status) {
+            console.log('ERR: ListCtrl: list(): Status: ' + status);
+         })
+      }
+
       self.getGroupAccountsList(id);
+      self.getOtherAccountsList();
+
+      self.addAccount = function(accountId) {
+         membershipsService.create({accountId: accountId, groupId: self.item._id}).
+         success(function(data){
+            console.log('ADDED ACCOUNT: ' + JSON.stringify(data));
+            self.getGroupAccountsList(self.item._id);    // Refresh the group accounts list from the DB
+            // TODO - refresh the otherAccounts list here too
+         }).
+         error(function(response, status) {
+            console.log('ERR: ' + status);
+         })
+      }
+
+      self.removeGroupAccount = function(accountId) {
+         console.log('REMOVING GROUP/ACCOUNT IDs: '+ self.item._id +' / ' + accountId);
+         groupsService.deleteGroupAccount(self.item._id, accountId).
+         success(function(data){
+            console.log('DELETED ACCOUNT: ' + JSON.stringify(data));
+            self.getGroupAccountsList(self.item._id);    // Refresh the group accounts list from the DB
+         }).
+         error(function(response, status) {
+            console.log('ERR: ' + status);
+         })
+      }
    }
 ])
 
@@ -232,6 +272,11 @@ angular.module('groupsModule', [])
    //----- GET the list of accounts associated with this group id
    service.getGroupAccountsList = function(id) {
       return $http.get(path + id + '/accounts');
+   }
+
+   //----- DELETE account associated with this group id
+   service.deleteGroupAccount = function(groupId, accountId) {
+      return $http.delete(path + groupId + '/accounts/' + accountId);
    }
 
    return service;

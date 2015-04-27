@@ -67,7 +67,7 @@ exports.updateById = function() {
       });
    };
 };
- 
+
 exports.create = function() {
    return function(request, response) {
       var data = request.body;
@@ -87,8 +87,8 @@ var mapping = function(item)
    var result = {};
    result._id = item._id;
    result.href = "http://localhost:3000/api/memberships/" + item._id;
-   result.account = {href: "http://localhost:3000/api/accounts/" + item.accountId};      // TODO: Pass in URI prefix somehow
-   result.group = {href: "http://localhost:3000/api/groups/" + item.groupId};      // TODO: Pass in URI prefix somehow
+   result.account = {id: item.accountId, href: "http://localhost:3000/api/accounts/" + item.accountId};      // TODO: Pass in URI prefix somehow
+   result.group = {id: item.groupId, href: "http://localhost:3000/api/groups/" + item.groupId};      // TODO: Pass in URI prefix somehow
 
    return result;
 }

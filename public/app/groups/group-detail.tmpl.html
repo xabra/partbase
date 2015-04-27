@@ -44,6 +44,17 @@
          <h4>
             <span id="table-row-icon" class="glyphicon glyphicon-user" aria-hidden="true"></span>
             Members
+            <div class="btn-group">
+               <button type="button" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                  Add
+                  <span class="caret"></span>
+               </button>
+               <ul class="dropdown-menu" role="menu">
+                  <li ng-repeat="account in ctrl.otherAccounts">
+                     <a href="" ng-click="ctrl.addAccount(account._id)">{{account.givenName + ' ' + account.surname}}</a>
+                  </li>
+               </ul>
+            </div>
          </h4>
          <div class="table-responsive">
             <table class="table table-hover table-condensed">
@@ -51,6 +62,7 @@
                   <tr>
                      <th>Name</th>
                      <th>Email</th>
+                     <th> </th>
                   </tr>
                </thead>
                <tbody>
@@ -64,6 +76,11 @@
                      <td>
                         {{account.email}}
                      </td>
+                     <td>
+                        <a href="" type="button" ng-click="ctrl.removeGroupAccount(account._id)">
+                           <span id="table-row-icon" class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        </a>
+                     </td>
                   </tr>
                </tbody>
             </table>
@@ -71,8 +88,6 @@
 
       </div>
    </div>
-
-
 
 </div>
 <!-- END container-flud -->

@@ -153,6 +153,7 @@ angular.module('accountsModule', [])
       self.headingText = "";
       self.groups = [];
 
+
       var id = $routeParams.itemIndex; // Get the item id from the route params
 
       Service.getById(id).
@@ -173,6 +174,7 @@ angular.module('accountsModule', [])
             console.log('ERR: ListCtrl: list(): Status: ' + status);
          })
       }
+
 
       self.getAccountGroupsList(id);
    }

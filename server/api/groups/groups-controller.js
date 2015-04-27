@@ -105,7 +105,6 @@ exports.getGroupMembershipsList = function(request, response) {
    Memberships.find({groupId: id}, function(err, collection) {    // Query the Memberships for all entries with that account id
       response.send(collection.map(memberships.mapping));
    });
-
 };
 
 exports.getGroupAccountsList = function(request, response) {
@@ -134,10 +133,20 @@ exports.getGroupAccountsList = function(request, response) {
       };
 
       async.each(collection, iterator, completion);
-
    });
-
 };
+
+exports.deleteGroupAccount = function(request, response) {
+   var groupId = request.params.itemId;     // Get the account id from the request path
+   var accountId = request.params.accountId;     // Get the account id from the request path
+
+   Memberships.remove ({groupId: groupId, accountId: accountId}, function(err) {    // Query the Memberships for all entries with that account id
+      if(err) return handleError(err);
+      response.status(204).send();
+   });
+};
+
+
 
 var mapping = function(item) {
    var result = {};

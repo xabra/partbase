@@ -15,6 +15,7 @@ router.post('/api/groups', groups.create());              // Create a new group
 // -- Accounts & Memberships routes
 router.get('/api/groups/:itemId/accounts', groups.getGroupAccountsList);
 router.get('/api/groups/:itemId/memberships', groups.getGroupMembershipsList);
+router.delete('/api/groups/:itemId/accounts/:accountId', groups.deleteGroupAccount);
 
 
 module.exports = router;
