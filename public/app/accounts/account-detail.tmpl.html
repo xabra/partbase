@@ -46,6 +46,18 @@
             <span id="table-row-icon" class="glyphicon glyphicon-user" aria-hidden="true"></span>
             <span id="table-row-icon" class="glyphicon glyphicon-user" aria-hidden="true"></span>
             Groups
+
+            <div class="btn-group">
+               <button type="button" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                  Join &nbsp 
+                  <span class="caret"></span>
+               </button>
+               <ul class="dropdown-menu" role="menu">
+                  <li ng-repeat="group in ctrl.otherGroups">
+                     <a href="" ng-click="ctrl.addGroup(group._id)">{{group.name}}</a>
+                  </li>
+               </ul>
+            </div>
          </h4>
          <div class="table-responsive">
             <table class="table table-hover table-condensed">
@@ -68,7 +80,9 @@
                         {{group.description}}
                      </td>
                      <td>
-                        <span id="table-row-icon" class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        <a href="" type="button" ng-click="ctrl.removeAccountGroup(group._id)">
+                           <span id="table-row-icon" class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        </a>
                      </td>
                   </tr>
                </tbody>

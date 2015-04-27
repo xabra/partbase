@@ -181,34 +181,47 @@ angular.module('groupsModule', [])
          Service.getGroupAccountsList(id).
          success(function(data){
             self.accounts = data;
+            accountsService.list().
+            success(function(other){
+               self.otherAccounts = arrayReject(other, self.accounts, function(a1, a2) {return a1._id == a2._id})
+               console.log('ACCOUNTS:: ' + JSON.stringify(data));
+            }).
+            error(function(response, status) {
+               console.log('ERR: ListCtrl: list(): Status: ' + status);
+            })
          }).
          error(function(response, status) {
             console.log('ERR: ListCtrl: list(): Status: ' + status);
          })
       }
 
-      self.getOtherAccountsList = function(){
+      var arrayReject = function(arr1, arr2, test){
 
-         // TODO  - get only accounts NOT in the account list
-         accountsService.list().
-         success(function(data){
-            self.otherAccounts = data;
-            console.log('ACCOUNTS:: ' + JSON.stringify(data));
-         }).
-         error(function(response, status) {
-            console.log('ERR: ListCtrl: list(): Status: ' + status);
-         })
+         //TODO  Put this function in a common utilities module  - see identical code in accounts-module.js
+         result = [];
+
+         for(var i=0; i<arr1.length; i++) {
+
+            match = false;
+            for(var j=0; j<arr2.length; j++){
+               if(test(arr1[i], arr2[j])) {
+                  match = true;
+                  break;
+               }
+            }
+            if(!match) {result.push(arr1[i]);}
+         }
+         return result;
       }
 
       self.getGroupAccountsList(id);
-      self.getOtherAccountsList();
 
       self.addAccount = function(accountId) {
          membershipsService.create({accountId: accountId, groupId: self.item._id}).
          success(function(data){
             console.log('ADDED ACCOUNT: ' + JSON.stringify(data));
             self.getGroupAccountsList(self.item._id);    // Refresh the group accounts list from the DB
-            // TODO - refresh the otherAccounts list here too
+            //self.getOtherAccountsList(); // Refresh the otherAccounts list here too
          }).
          error(function(response, status) {
             console.log('ERR: ' + status);

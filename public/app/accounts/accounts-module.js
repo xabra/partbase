@@ -10,7 +10,7 @@ angular.module('accountsModule', [])
       // --- Init
       self.items = [];
       self.itemCount = null;
-      self.nextCheckAll = true;  // What will happen to the selection state next time the the "CheckAll" button is clicked
+      self.nextCheckAll = true; // What will happen to the selection state next time the the "CheckAll" button is clicked
 
       // --- Reading operation
       self.list = function() {
@@ -41,7 +41,7 @@ angular.module('accountsModule', [])
          self.items.forEach(function(item) {
             item.selected = state;
          });
-         self.nextCheckAll = !self.nextCheckAll;   // Toggle the nextCheckAll state
+         self.nextCheckAll = !self.nextCheckAll; // Toggle the nextCheckAll state
       }
 
 
@@ -52,7 +52,7 @@ angular.module('accountsModule', [])
                self.setItemStatus(item._id, index, newStatus);
             }
          });
-         self.nextCheckAll = true;  // item selected state will be cleared, so be ready to select all
+         self.nextCheckAll = true; // item selected state will be cleared, so be ready to select all
       }
 
       self.deleteSelection = function() {
@@ -66,8 +66,8 @@ angular.module('accountsModule', [])
                self.deleteItem(item._id, i); //Delete the item from DB and local array
             }
          }
-         self.list();      // Refresh the local array
-         self.nextCheckAll = true;  // item selected state will be cleared, so be ready to select all
+         self.list(); // Refresh the local array
+         self.nextCheckAll = true; // item selected state will be cleared, so be ready to select all
       }
 
       // --- Single item operations
@@ -143,8 +143,8 @@ angular.module('accountsModule', [])
 ])
 
 // --- Account DETAIL controller ---
-.controller('accountsDetailCtrl', ['$routeParams', 'accountsService',
-   function($routeParams, accountsService) {
+.controller('accountsDetailCtrl', ['$routeParams', 'accountsService', 'groupsService', 'membershipsService',
+   function($routeParams, accountsService, groupsService, membershipsService) {
       var self = this; // Capture scope
       var Service = accountsService;
 
@@ -152,6 +152,7 @@ angular.module('accountsModule', [])
       self.item = {};
       self.headingText = "";
       self.groups = [];
+      self.otherGroups = []; // List of accounts to populate dropdown menus for adding otehr Accounts to groups
 
 
       var id = $routeParams.itemIndex; // Get the item id from the route params
@@ -165,10 +166,19 @@ angular.module('accountsModule', [])
          console.log('ERROR:  Could not retrieve the item');
       })
 
-      self.getAccountGroupsList = function(id){
+      self.getAccountGroupsList = function(id) {
          Service.getAccountGroupsList(id).
-         success(function(data){
+         success(function(data) {
             self.groups = data;
+            groupsService.list().
+            success(function(other) {
+               self.otherGroups = arrayReject(other, self.groups, function(a1, a2) {
+                  return a1._id == a2._id;
+               });
+            }).
+            error(function(response, status) {
+               console.log('ERR: ListCtrl: list(): Status: ' + status);
+            })
          }).
          error(function(response, status) {
             console.log('ERR: ListCtrl: list(): Status: ' + status);
@@ -176,7 +186,56 @@ angular.module('accountsModule', [])
       }
 
 
+      var arrayReject = function(arr1, arr2, test) {
+
+         //TODO  Put this function in a common utilities module  - see identical code in accounts-module.js
+         result = [];
+
+         for (var i = 0; i < arr1.length; i++) {
+
+            match = false;
+            for (var j = 0; j < arr2.length; j++) {
+               if (test(arr1[i], arr2[j])) {
+                  match = true;
+                  break;
+               }
+            }
+            if (!match) {
+               result.push(arr1[i]);
+            }
+         }
+         return result;
+      }
+
       self.getAccountGroupsList(id);
+
+      self.addGroup = function(groupId) {
+         membershipsService.create({
+            accountId: self.item._id,
+            groupId: groupId
+         }).
+         success(function(data) {
+            console.log('ADDED GROUP: ' + JSON.stringify(data));
+            self.getAccountGroupsList(self.item._id); // Refresh the group accounts list from the DB
+            // TODO - refresh the otherAccounts list here too
+         }).
+         error(function(response, status) {
+            console.log('ERR: ' + status);
+         })
+      }
+
+      self.removeAccountGroup = function(groupId) {
+         console.log('REMOVING ACCOUNT/GROUP IDs: ' + self.item._id + ' / ' + groupId);
+         accountsService.deleteAccountGroup(self.item._id, groupId).
+         success(function(data) {
+            console.log('DELETED ACCOUNT: ' + JSON.stringify(data));
+            self.getAccountGroupsList(self.item._id); // Refresh the group accounts list from the DB
+         }).
+         error(function(response, status) {
+            console.log('ERR: ' + status);
+         })
+      }
+
    }
 ])
 
@@ -225,5 +284,9 @@ angular.module('accountsModule', [])
       return $http.get(path + id + '/groups');
    }
 
+   //----- DELETE account associated with this group id
+   service.deleteAccountGroup = function(accountId, groupId) {
+      return $http.delete(path + accountId + '/groups/' + groupId);
+   }
    return service;
 });

@@ -129,6 +129,17 @@ exports.getAccountGroupsList = function(request, response) {
 
 };
 
+exports.deleteAccountGroup= function(request, response) {
+   var accountId= request.params.itemId;     // Get the account id from the request path
+   var groupId = request.params.groupId;     // Get the account id from the request path
+
+   Memberships.remove ({groupId: groupId, accountId: accountId}, function(err) {    // Query the Memberships for all entries with that account id
+      if(err) return handleError(err);
+      response.status(204).send();
+   });
+};
+
+
 // ----- AUTHENTICATION -----
 exports.register = function(request, response) {
    var accountData = {};

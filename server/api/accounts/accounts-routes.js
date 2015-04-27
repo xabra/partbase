@@ -20,6 +20,6 @@ router.get('/api/accounts/logout', accounts.logout);                 //
 // -- Groups & Memberships routes
 router.get('/api/accounts/:itemId/groups', accounts.getAccountGroupsList);
 router.get('/api/accounts/:itemId/memberships', accounts.getAccountMembershipsList);
-
+router.delete('/api/accounts/:itemId/groups/:groupId', accounts.deleteAccountGroup);
 
 module.exports = router;
